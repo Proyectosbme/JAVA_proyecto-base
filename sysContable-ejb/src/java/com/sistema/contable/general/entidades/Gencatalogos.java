@@ -8,6 +8,7 @@ package com.sistema.contable.general.entidades;
 import com.sistema.contable.seguridad.entidades.Segmodulo;
 import java.io.Serializable;
 import java.math.BigInteger;
+///555
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
