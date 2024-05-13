@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet library="primefaces-nova" name="nova-light/theme.css" />
+    </h:head>
+    <h:body>
+        <ui:fragment > 
+            <!-- Contenido del index -->
+            <div class='dashboard'>
+                <div class="dashboard-nav">
+                    <h:form id="menu" style="margin-top: -10px !important;">
+                        <p:panel id="menu" styleClass="custom-panel" style="border: black">
+                            <f:facet name="header">
+                                <div >Menu</div>
+                            </f:facet>
+                            <p:accordionPanel value="#{contextMenuView.lstMenu}" var="n" 
+                                              style="margin-left: -10px !important; margin-right: -10px !important;" 
+                                              styleClass="custom-accordion"
+                                              multiple="true"
+                                              activeIndex="null"> 
+                                <p:tab title="#{n.nombre}" >
+                                    <p:tree value="#{n.tree}" var="doc" selectionMode="single" selection="#{contextMenuView.selectedNode}"
+                                            style="margin-left: -25px !important;
+                                            margin-top: -10px !important;
+                                            margin-bottom: -8px !important;
+                                            border: none; background: transparent !important">
+                                        <p:ajax event="select" update="includePanel" listener="#{contextMenuView.onNodeSelect}"  />
+                                        <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">
+                                            <h:outputText value="#{doc.name}"/>
+                                        </p:treeNode>
+                                        <p:treeNode type="Submenu" icon="pi pi-file">
+                                            <h:outputText value="#{doc.name}" />
+                                        </p:treeNode>
+                                        <p:treeNode type="pantalla" icon="pi pi-th-large">
+                                            <h:outputText value="#{doc.name}" />
+                                        </p:treeNode>
+                                    </p:tree>
+                                </p:tab>
+                            </p:accordionPanel>
+                        </p:panel>
+
+                    </h:form>
+                </div>
+                <div class='dashboard-app'>
+                    <header class="dashboard-toolbar">
+                        <div class="menu-toggle">Menu</div>
+                        <div class="user-info">
+                            <span class="menu-label">Usuario #{loginBean.username}</span>
+                            <span class="menu-label">Fecha
+                                <p:outputLabel value="#{loginBean.fecha}" styleClass="small-text">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </p:outputLabel></span>
+                        </div>
+                        <p:commandButton value="Cerrar Sesión" action="#{loginBean.logout}" styleClass="logout-button" />
+                    </header>
+                    <div class='card-body'>
+                        <p:panel id="includePanel">
+                            <ui:include src="#{contextMenuView.currentPage}" />
+                        </p:panel>
+                    </div>
+                </div>
+
+            </div>
+            <script>
+                const mobileScreen = window.matchMedia("(max-width: 990px )");
+                $(document).ready(function () {
+                    $(".dashboard-nav-dropdown-toggle").click(function () {
+                        $(this).closest(".dashboard-nav-dropdown")
+                                .toggleClass("show")
+                                .find(".dashboard-nav-dropdown")
+                                .removeClass("show");
+                        $(this).parent()
+                                .siblings()
+                                .removeClass("show");
+                    });
+                    $(".menu-toggle").click(function () {
+                        if (mobileScreen.matches) {
+                            $(".dashboard-nav").toggleClass("mobile-show");
+                        } else {
+                            $(".dashboard").toggleClass("dashboard-compact");
+                        }
+                    });
+                });
+            </script>
+        </ui:fragment>
+    </h:body>
+</html>
+

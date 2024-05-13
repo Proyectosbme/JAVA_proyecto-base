@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:h="http://xmlns.jcp.org/jsf/html"
+       xmlns:p="http://primefaces.org/ui"
+       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+        <style type="text/css">
+            .ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell {
+                text-align: center;
+            }
+
+            .customPanelGrid .ui-panelgrid-content {
+                align-items: center;
+            }
+
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:tabView dynamic="true" activeIndex="#{mttenimientoModulos.indexTab}">
+                <p:tab title="Busqueda" >
+                    <p:toolbar>
+                        <f:facet name="left">
+                            <p:commandButton type="button" value="Agregar" icon="pi pi-plus" onclick="PF('addModulo').show();" />
+                            <p:commandButton type="button" value="Limpiar" icon="pi pi-folder-open"
+                                             />
+
+                            <span class="ui-separator">
+                                <span class="ui-icon pi pi-ellipsis-v" />
+                            </span>
+
+                            <p:commandButton type="button" title="Save" icon="pi pi-save" />
+                            <p:commandButton type="button" title="Delete" icon="pi pi-trash" />
+                            <p:commandButton type="button" title="Print" icon="pi pi-print" />
+                        </f:facet>
+
+
+
+                    </p:toolbar>
+
+                    <p:panel style="margin: none">
+                        <p:dataTable id="singleDT" var="m" value="#{mttenimientoModulos.lstModulos}" 
+                                     rowKey="#{m.codmod}"
+                                     paginator="true" 
+                                     paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rows="10"
+                                     styleClass="excel-style"
+                                     selectionMode="single" 
+                                     selection="#{mttenimientoModulos.selectecModulo}">
+                            <p:ajax event="rowSelect"  listener="#{mttenimientoModulos.cargarPantallas}" update="form"  />
+                            <f:facet name="header">
+                                MODULOS
+                            </f:facet>
+
+                            <p:column headerText="Codigo">
+                                <h:outputText value="#{m.codmod}" />
+                            </p:column>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{m.nommodulo}" />
+                            </p:column>
+                        </p:dataTable>
+
+                    </p:panel>
+
+                </p:tab>
+                <p:tab title="Detalle">
+                    <p:panel style="margin: none" >
+                        <p:dataTable id="catadeta" var="m" value="#{mttenimientoModulos.selectecModulo.segpantallasList}" 
+                                     rowKey="#{m.segmodulo.codmod}"
+                                     paginator="true" 
+                                     rows="10"
+                                     styleClass="ui-datatable"
+                                     selectionMode="single" >
+                            <f:facet name="header">
+                                pantallas
+                            </f:facet>
+                            <p:column headerText="COD">
+                                <h:outputText value="#{m.segpantallasPK.codpantalla}" />
+                            </p:column>
+                            <p:column headerText="nombre">
+                                <h:outputText value="#{m.nompantalla}" />
+                            </p:column>
+                            <p:column headerText="URL">
+                                <h:outputText value="#{m.urlpantalla}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+
+
+        <p:dialog id="busc" 
+                  header="Informacion" 
+                  widgetVar="dlg1"
+                  width="70%" height="40%"
+                  modal="true"
+                  >
+            <p:messages 
+                id="msj"
+                showDetail="true" 
+                closable="false"
+                >
+                <p:autoUpdate />
+            </p:messages>
+        </p:dialog>
+
+        <p:dialog header="Agregar Modulo" 
+                  widgetVar="addModulo" 
+                  minHeight="40"
+                  modal="true">
+            <p:commandButton type="button" value="Agregar" icon="pi pi-plus" onclick="PF('addModulo').hide();"/>
+            <br></br>
+            <p:panelGrid columns="2" layout="grid" 
+                         styleClass="customPanelGrid"
+                         contentStyleClass="ui-fluid" 
+                         style="padding-top: 10px">
+
+                <p:outputLabel for="textA1" value="Nombre" />
+                <p:inputText id="textA1" />
+
+            </p:panelGrid>
+        </p:dialog>
+    </h:body>
+</html>
+
