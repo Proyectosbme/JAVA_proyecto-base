@@ -5,9 +5,7 @@
  */
 package com.sistema.contable.seguridad.busquedas;
 
-import com.sistema.contable.general.AbstractFacade;
 import com.sistema.contable.seguridad.entidades.Segusuarios;
-import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,19 +18,10 @@ import javax.persistence.Query;
  * @author BME_PERSONAL
  */
 @Stateless
-public class SegusuariosBusqueda extends AbstractFacade<Segusuarios> implements SegusuariosBusquedaLocal {
+public class SegusuariosBusqueda implements SegusuariosBusquedaLocal {
 
     @PersistenceContext(unitName = "sysContable-ejbPU")
     private EntityManager em;
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-
-    public SegusuariosBusqueda() {
-        super(Segusuarios.class);
-    }
 
     @Override
     public Segusuarios buscarSubMenu(Map elementos) throws NullPointerException, Exception {

@@ -111,18 +111,31 @@
         <p:dialog header="Agregar Modulo" 
                   widgetVar="addModulo" 
                   minHeight="40"
+                  width="30%"
                   modal="true">
-            <p:commandButton type="button" value="Agregar" icon="pi pi-plus" onclick="PF('addModulo').hide();"/>
-            <br></br>
-            <p:panelGrid columns="2" layout="grid" 
-                         styleClass="customPanelGrid"
-                         contentStyleClass="ui-fluid" 
-                         style="padding-top: 10px">
+            <h:form>
+                <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton type="button" value="Agregar" icon="pi pi-plus" onclick="PF('addModulo').show();" />
+                        <p:commandButton type="button" value="Limpiar" icon="pi pi-trash" onclick="PF('addModulo').show();" />
+                    </f:facet>
+                </p:toolbar>
 
-                <p:outputLabel for="textA1" value="Nombre" />
-                <p:inputText id="textA1" />
+                <br></br>
+                <p:panelGrid columns="2" layout="grid" 
+                             styleClass="ui-panelgrid-blank ui-fluid"
+                             >
+                    <p:column>
+                         <div class="responsive-label-input">
+                        <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />
+                        <p:inputText id="lbNombre" value="#{mttenimientoModulos.nomModulo}" styleClass="input-right"/>
+                    </div>
+                    </p:column>
+                   
 
-            </p:panelGrid>
+
+                </p:panelGrid>
+            </h:form>
         </p:dialog>
     </h:body>
 </html>

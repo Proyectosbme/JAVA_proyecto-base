@@ -17,19 +17,6 @@ import javax.ejb.Local;
 @Local
 public interface SegmenuBusquedaLocal {
 
-    void create(Segmenu segmenu);
-
-    void edit(Segmenu segmenu);
-
-    void remove(Segmenu segmenu);
-
-    Segmenu find(Object id);
-
-    List<Segmenu> findAll();
-
-    List<Segmenu> findRange(int[] range);
-
-    int count();
     
     public List<Segmenu> buscarMenu(BigInteger codPerfil);
     

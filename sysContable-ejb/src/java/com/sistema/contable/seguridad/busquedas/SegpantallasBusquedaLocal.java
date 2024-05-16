@@ -15,19 +15,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface SegpantallasBusquedaLocal {
-
-    void create(Segpantallas segpantallas);
-
-    void edit(Segpantallas segpantallas);
-
-    void remove(Segpantallas segpantallas);
-
-    Segpantallas find(Object id);
-
-    List<Segpantallas> findAll();
-
-    List<Segpantallas> findRange(int[] range);
-
-    int count();
     
 }

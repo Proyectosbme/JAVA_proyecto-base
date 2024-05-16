@@ -36,20 +36,25 @@ public class MenuService implements Serializable {
     private List<Menu> lstMenu = new ArrayList();
 
     public List<Menu> crearMenuPadre() {
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        Segusuarios usuario = (Segusuarios) session.getAttribute("usuario");
-        lstSegmenu = segmenuFacade.buscarMenu(usuario.getCodperfil().getCodperfil());
-        // lstSegmenu = segmenuFacade.buscarSubMenu(new BigInteger("10"), new BigInteger("10"));
-        for (Segmenu m : lstSegmenu) {
-            root = new DefaultTreeNode(new MenuStructura("Menus", "-", "Modulos", "-"), null);
-            Menu m1 = new Menu();
-            if (m.getCodmenupadre() == null) {
-                m1.setNombre(m.getNommenu());
-                crearSubMenu(root, usuario.getCodperfil().getCodperfil(), m);
-            }
-            m1.setTree(root);
-            lstMenu.add(m1);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+        Segusuarios usuario = new Segusuarios();
+        if (session != null) {
+            usuario = (Segusuarios) session.getAttribute("usuario");
 
+            lstSegmenu = segmenuFacade.buscarMenu(usuario.getCodperfil().getCodperfil());
+            // lstSegmenu = segmenuFacade.buscarSubMenu(new BigInteger("10"), new BigInteger("10"));
+            for (Segmenu m : lstSegmenu) {
+                root = new DefaultTreeNode(new MenuStructura("Menus", "-", "Modulos", "-"), null);
+                Menu m1 = new Menu();
+                if (m.getCodmenupadre() == null) {
+                    m1.setNombre(m.getNommenu());
+                    crearSubMenu(root, usuario.getCodperfil().getCodperfil(), m);
+                }
+                m1.setTree(root);
+                lstMenu.add(m1);
+
+            }
         }
         return lstMenu;
     }

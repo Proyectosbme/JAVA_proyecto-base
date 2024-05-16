@@ -17,7 +17,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
 import com.sistema.contable.seguridad.busquedas.SegmoduloBusquedaLocal;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -32,8 +35,11 @@ public class MttenimientoModulos implements Serializable {
 
     private List<Segmodulo> lstModulos = new ArrayList();
     private Segmodulo selectecModulo = new Segmodulo();
+    private Segmodulo moduloAgregar = new Segmodulo();
+    private String nomModulo="";
     private List<FacesMessage> messages = new ArrayList<>();
     private int indexTab = 0;
+    private static final Logger LOGGER = Logger.getLogger(MttenimientoModulos.class.getName());
 
     /**
      * Creates a new instance of MttenimientoModulos
@@ -45,30 +51,37 @@ public class MttenimientoModulos implements Serializable {
     }
 
     /**
-     * Metodo que se manda a llamar la primera ves que se carga la pagina
-     * propiedad de jsf
+     *
      */
     @PostConstruct
     public void init() {
         try {
             lstModulos = segmoduloFacade.buscarModulos();
         } catch (Exception e) {
-
+            LOGGER.log(Level.SEVERE, "Error al buscar módulos", e);
         }
 
     }
 
+    /**
+     *Metodo que carga las pantallas que contiene el modulo
+     * y envia un msj en dado caso el modulo no tenga pantallas
+     */
     public void cargarPantallas() {
         if (this.selectecModulo.getSegpantallasList().isEmpty()) {
             agregarMsj(1, "El modulo no contiene pantallas");
             mostrarMsj();
             return;
-        }else{
+        } else {
             this.setIndexTab(1);
-             FacesContext context = FacesContext.getCurrentInstance();
+            FacesContext context = FacesContext.getCurrentInstance();
         }
     }
 
+    /**
+     *Metodo que muestra el mensaje al usuario 
+     * y abre un popup
+     */
     public void mostrarMsj() {
         PrimeFaces.current().executeScript("PF('dlg1').show();");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -78,6 +91,11 @@ public class MttenimientoModulos implements Serializable {
         messages.clear();
     }
 
+    /**
+     *Metodo que agrega el mensaje a una lista
+     * @param numero
+     * @param msj
+     */
     public void agregarMsj(int numero, String msj) {
         switch (numero) {
             case 1:
@@ -129,5 +147,25 @@ public class MttenimientoModulos implements Serializable {
         this.selectecModulo = selectecModulo;
     }
 
+//<editor-fold defaultstate="collapsed" desc="AGREGAR MODULO">
+    public Segmodulo getModuloAgregar() {
+        return moduloAgregar;
+    }
+
+    public void setModuloAgregar(Segmodulo moduloAgregar) {
+        this.moduloAgregar = moduloAgregar;
+    }
+      public String getNomModulo() {
+        return nomModulo;
+    }
+
+    public void setNomModulo(String nomModulo) {
+        this.nomModulo = nomModulo;
+    }
+    
 //</editor-fold>
+
+//</editor-fold>
+
+  
 }

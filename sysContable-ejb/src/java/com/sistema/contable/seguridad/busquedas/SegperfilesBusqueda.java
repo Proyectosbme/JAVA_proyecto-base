@@ -5,7 +5,6 @@
  */
 package com.sistema.contable.seguridad.busquedas;
 
-import com.sistema.contable.general.AbstractFacade;
 import com.sistema.contable.seguridad.entidades.Segperfiles;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,18 +15,10 @@ import javax.persistence.PersistenceContext;
  * @author BME_PERSONAL
  */
 @Stateless
-public class SegperfilesBusqueda extends AbstractFacade<Segperfiles> implements SegperfilesBusquedaLocal {
+public class SegperfilesBusqueda implements SegperfilesBusquedaLocal {
 
     @PersistenceContext(unitName = "sysContable-ejbPU")
     private EntityManager em;
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-
-    public SegperfilesBusqueda() {
-        super(Segperfiles.class);
-    }
-    
+  
 }
