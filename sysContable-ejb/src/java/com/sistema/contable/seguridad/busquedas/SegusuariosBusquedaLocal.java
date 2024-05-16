@@ -17,20 +17,6 @@ import javax.ejb.Local;
 @Local
 public interface SegusuariosBusquedaLocal {
 
-    void create(Segusuarios segusuarios);
-
-    void edit(Segusuarios segusuarios);
-
-    void remove(Segusuarios segusuarios);
-
-    Segusuarios find(Object id);
-
-    List<Segusuarios> findAll();
-
-    List<Segusuarios> findRange(int[] range);
-
-    int count();
-
     public Segusuarios buscarSubMenu(Map elementos) throws NullPointerException,Exception;
 
 }

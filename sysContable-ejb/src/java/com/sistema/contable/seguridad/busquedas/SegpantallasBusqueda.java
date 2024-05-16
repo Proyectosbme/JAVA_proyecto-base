@@ -5,7 +5,6 @@
  */
 package com.sistema.contable.seguridad.busquedas;
 
-import com.sistema.contable.general.AbstractFacade;
 import com.sistema.contable.seguridad.entidades.Segpantallas;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,18 +15,9 @@ import javax.persistence.PersistenceContext;
  * @author BME_PERSONAL
  */
 @Stateless
-public class SegpantallasBusqueda extends AbstractFacade<Segpantallas> implements SegpantallasBusquedaLocal {
+public class SegpantallasBusqueda implements SegpantallasBusquedaLocal {
 
     @PersistenceContext(unitName = "sysContable-ejbPU")
     private EntityManager em;
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-
-    public SegpantallasBusqueda() {
-        super(Segpantallas.class);
-    }
     
 }

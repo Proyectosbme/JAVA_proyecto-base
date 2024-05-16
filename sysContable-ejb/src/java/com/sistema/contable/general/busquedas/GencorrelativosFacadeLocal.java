@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sistema.contable.seguridad.busquedas;
+package com.sistema.contable.general.busquedas;
 
-import com.sistema.contable.seguridad.entidades.Segmodulo;
+import com.sistema.contable.general.entidades.Gencorrelativos;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -14,9 +14,7 @@ import javax.ejb.Local;
  * @author BME_PERSONAL
  */
 @Local
-public interface SegmoduloBusquedaLocal {
+public interface GencorrelativosFacadeLocal {
 
-   
-    public List<Segmodulo> buscarModulos() throws NullPointerException,Exception;
-    
+      
 }

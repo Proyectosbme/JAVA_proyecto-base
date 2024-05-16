@@ -5,7 +5,6 @@
  */
 package com.sistema.contable.seguridad.busquedas;
 
-import com.sistema.contable.general.AbstractFacade;
 import com.sistema.contable.seguridad.entidades.Segmenu;
 import java.math.BigInteger;
 import java.util.List;
@@ -19,21 +18,12 @@ import javax.persistence.Query;
  * @author BME_PERSONAL
  */
 @Stateless
-public class SegmenuBusqueda extends AbstractFacade<Segmenu> implements SegmenuBusquedaLocal {
+public class SegmenuBusqueda implements SegmenuBusquedaLocal {
 
     @PersistenceContext(unitName = "sysContable-ejbPU")
     private EntityManager em;
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-
-    public SegmenuBusqueda() {
-        super(Segmenu.class);
-    }
-
-    @Override
+     @Override
     public List<Segmenu> buscarMenu(BigInteger codPerfil) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT m.* FROM SEGMENU m ")

@@ -5,7 +5,6 @@
  */
 package com.sistema.contable.seguridad.busquedas;
 
-import com.sistema.contable.general.AbstractFacade;
 import com.sistema.contable.seguridad.entidades.Segmodulo;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,19 +18,10 @@ import javax.persistence.Query;
  * @author BME_PERSONAL
  */
 @Stateless
-public class SegmoduloBusqueda extends AbstractFacade<Segmodulo> implements SegmoduloBusquedaLocal {
+public class SegmoduloBusqueda implements SegmoduloBusquedaLocal {
 
     @PersistenceContext(unitName = "sysContable-ejbPU")
     private EntityManager em;
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-
-    public SegmoduloBusqueda() {
-        super(Segmodulo.class);
-    }
 
     @Override
     public List<Segmodulo> buscarModulos() throws NullPointerException, Exception {

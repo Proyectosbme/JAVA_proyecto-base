@@ -16,18 +16,5 @@ import javax.ejb.Local;
 @Local
 public interface SegperfilesBusquedaLocal {
 
-    void create(Segperfiles segperfiles);
-
-    void edit(Segperfiles segperfiles);
-
-    void remove(Segperfiles segperfiles);
-
-    Segperfiles find(Object id);
-
-    List<Segperfiles> findAll();
-
-    List<Segperfiles> findRange(int[] range);
-
-    int count();
-    
+   
 }

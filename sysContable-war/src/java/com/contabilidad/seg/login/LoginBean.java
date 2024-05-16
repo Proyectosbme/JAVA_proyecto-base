@@ -57,7 +57,7 @@ public class LoginBean implements Serializable {
             if (messages != null && messages.isEmpty()) {
                 Map elementos = new HashMap();
                 elementos.put("usuario", this.username);
-                elementos.put("password", this.password);
+                elementos.put("password2", this.password);
 
                 // Lógica para verificar las credenciales del usuario
                 this.validaDatosUsuario(elementos);
@@ -99,6 +99,8 @@ public class LoginBean implements Serializable {
             } else if (usuario.getEstado().compareTo(BigInteger.ONE) != 0) {
                 agregarMsj(1, "Usuario inactivo");
 
+            }else if(!usuario.getClave().equals(password)){
+                agregarMsj(1, "La contraseña es incorrecta");
             }
         } catch (Exception ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);

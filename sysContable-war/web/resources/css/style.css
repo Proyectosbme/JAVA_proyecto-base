@@ -287,3 +287,16 @@ body {
         margin-left: 0;
     }
 }
+
+.responsive-label-input {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.label-left {
+    margin-right: 10px !important;
+}
+
+.input-right {
+    flex: 1 !important;
+}

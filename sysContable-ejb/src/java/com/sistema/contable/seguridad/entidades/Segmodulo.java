@@ -7,7 +7,7 @@ package com.sistema.contable.seguridad.entidades;
 
 import com.sistema.contable.general.entidades.Gencatalogos;
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -53,22 +53,22 @@ public class Segmodulo implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODMOD")
-    private BigDecimal codmod;
+    private BigInteger codmod;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "segmodulo")
     private List<Segpantallas> segpantallasList;
 
     public Segmodulo() {
     }
 
-    public Segmodulo(BigDecimal codmod) {
+    public Segmodulo(BigInteger codmod) {
         this.codmod = codmod;
     }
 
-    public BigDecimal getCodmod() {
+    public BigInteger getCodmod() {
         return codmod;
     }
 
-    public void setCodmod(BigDecimal codmod) {
+    public void setCodmod(BigInteger codmod) {
         this.codmod = codmod;
     }
 
