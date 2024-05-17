@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 @WebServlet("/logout")
@@ -23,7 +21,7 @@ public class LogoutServlet extends HttpServlet {
 
         // Redirige al usuario a la página de inicio de sesión
         String contextPath = request.getContextPath();
-        response.sendRedirect(contextPath + "/login.xhtml");
+        response.sendRedirect(contextPath + "faces/login.xhtml");
     }
 }
 

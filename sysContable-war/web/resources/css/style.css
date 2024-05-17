@@ -49,7 +49,9 @@ body {
 .ui-datatable.excel-style th, 
 .ui-datatable.excel-style td {
     border: 1px solid #aaa;
-    padding: 8px;
+    padding: -8px;
+    height: 10px !important; /* Alto de las celdas */
+
 }
 
 .ui-datatable.excel-style th {
@@ -72,6 +74,11 @@ body {
 .ui-paginator-bottom.excel-style .ui-paginator-rpp-options {
     float: left;
     margin-right: 10px;
+}
+.ui-datatable.excel-style .ui-state-highlight {
+    background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.5)) !important; /* Fondo con gradiente */
+    color: black !important; /* Color del texto */
+    font-weight: bold !important; /* Negrita */
 }
 
 .dashboard {

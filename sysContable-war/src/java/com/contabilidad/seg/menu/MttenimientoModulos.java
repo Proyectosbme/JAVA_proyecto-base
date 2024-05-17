@@ -5,7 +5,6 @@
  */
 package com.contabilidad.seg.menu;
 
-import com.sistema.contable.general.busquedas.GenBusquedadLocal;
 import com.sistema.contable.seguridad.entidades.Segmodulo;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -21,6 +20,7 @@ import com.sistema.contable.seguridad.busquedas.SegmoduloBusquedaLocal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.sistema.contable.general.busquedas.GencorrelativosBusquedaLocal;
+import com.sistema.contable.general.procesos.GenProcesosLocal;
 import com.sistema.contable.general.validaciones.ValidacionesException;
 import java.math.BigInteger;
 
@@ -33,7 +33,7 @@ import java.math.BigInteger;
 public class MttenimientoModulos implements Serializable {
 
     @EJB
-    private GenBusquedadLocal genbusqueda;
+    private GenProcesosLocal genProcesos;
     @EJB
     private GencorrelativosBusquedaLocal busGenCors;
     @EJB
@@ -56,7 +56,7 @@ public class MttenimientoModulos implements Serializable {
      */
     private String nomModulo = "";
     /**
-     * Mensjae que se mostraran al usuario 
+     * Mensjae que se mostraran al usuario
      */
     private List<FacesMessage> messages = new ArrayList<>();
     /**
@@ -68,12 +68,11 @@ public class MttenimientoModulos implements Serializable {
      */
     private static final Logger LOGGER = Logger.getLogger(MttenimientoModulos.class.getName());
 
-    
     public MttenimientoModulos() {
     }
 
     /**
-     *Metodo que se cargara al inicio, cuando se manda a llamar la pantalla
+     * Metodo que se cargara al inicio, cuando se manda a llamar la pantalla
      */
     @PostConstruct
     public void init() {
@@ -117,14 +116,14 @@ public class MttenimientoModulos implements Serializable {
             correlati = busGenCors.obtenerCorrelativo("GENCORSMODULO2");
             moduloAgregar = new Segmodulo();
             moduloAgregar.setCodmod(correlati);
-            moduloAgregar.setNommodulo(nomModulo);
-            moduloAgregar.setUrldirecc("local");
-            genbusqueda.create(moduloAgregar);
+            moduloAgregar.setNommodulo(nomModulo.toUpperCase());
+            moduloAgregar.setUrldirecc("LOCAL");
+            genProcesos.create(moduloAgregar);
             lstModulos.add(moduloAgregar);
             agregarMsj(1, "Modulo agregado correctamente");
             mostrarMsj();
             this.setIndexTab(0);
-            
+
             //ERRORES
         } catch (ValidacionesException ve) {
             agregarMsj(1, ve.getMessage());
@@ -132,8 +131,24 @@ public class MttenimientoModulos implements Serializable {
             mostrarMsj();
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error al buscar módulos", ex);
-             agregarMsj(1, "Error inesperado");
+            agregarMsj(1, "Error inesperado");
         }
+    }
+
+    public void eliminarModulo(Segmodulo modulo) {
+        genProcesos.remove(modulo);
+        lstModulos.remove(modulo);
+    }
+
+    public void asigEditarModulo(Segmodulo modulo) {
+        selectecModulo = modulo;
+        PrimeFaces.current().executeScript("PF('editModulo').show();");
+    }
+
+    public void editarModulo() {
+        genProcesos.edit(selectecModulo);
+        lstModulos.set(lstModulos.indexOf(selectecModulo), selectecModulo);
+        PrimeFaces.current().executeScript("PF('editModulo').hide();");
     }
 
     /**
