@@ -38,7 +38,7 @@
                                      styleClass="excel-style"
                                      selectionMode="single" 
                                      selection="#{mttenimientoModulos.selectecModulo}">
-                            <p:ajax event="rowSelect"  listener="#{mttenimientoModulos.cargarPantallas}" update="form"  />
+                            <p:ajax event="rowSelect"  listener="#{mttenimientoModulos.cargarPantallas}"   />
                             <f:facet name="header">
                                 MODULOS
                             </f:facet>
@@ -49,30 +49,45 @@
                             <p:column headerText="Nombre">
                                 <h:outputText value="#{m.nommodulo}" />
                             </p:column>
+                            <p:column  headerText="EDITAR" style="width:47px;text-align: center">
+                                <p:commandButton  icon="pi pi-pencil" 
+                                                  update="editmodA"
+                                                  title="Icon Only" action="#{mttenimientoModulos.asigEditarModulo(m)}" >
+                                </p:commandButton>
+                            </p:column>
+                            <p:column headerText="ELIMINAR" style="width:67px; text-align: center">
+                                <p:commandButton  icon="pi pi-trash" ajax="false" 
+                                                  title="Icon Only" action="#{mttenimientoModulos.eliminarModulo(m)}" >
+                                </p:commandButton>
+                            </p:column>
                         </p:dataTable>
 
                     </p:panel>
 
                 </p:tab>
                 <p:tab title="Detalle">
-                    <p:panel style="margin: none" >
+                    <p:panel >
+                        <f:facet name="header">
+                            <h:outputText value=  "MODULO : #{mttenimientoModulos.selectecModulo.nommodulo}"/>
+                        </f:facet>
+                        <br></br>
                         <p:dataTable id="catadeta" var="m" value="#{mttenimientoModulos.selectecModulo.segpantallasList}" 
                                      rowKey="#{m.segmodulo.codmod}"
                                      paginator="true" 
                                      rows="10"
-                                     styleClass="ui-datatable"
+                                     styleClass="excel-style"
                                      selectionMode="single" >
-                            <f:facet name="header">
-                                pantallas
-                            </f:facet>
-                            <p:column headerText="COD">
-                                <h:outputText value="#{m.segpantallasPK.codpantalla}" />
-                            </p:column>
                             <p:column headerText="nombre">
                                 <h:outputText value="#{m.nompantalla}" />
                             </p:column>
                             <p:column headerText="URL">
                                 <h:outputText value="#{m.urlpantalla}" />
+                            </p:column>
+                            <p:column headerText="EDITAR">
+                                <h:outputText value="#{m.segpantallasPK.codpantalla}" />
+                            </p:column>
+                            <p:column headerText="ELIMINAR">
+                                <h:outputText value="#{m.segpantallasPK.codpantalla}" />
                             </p:column>
                         </p:dataTable>
                     </p:panel>
@@ -119,6 +134,31 @@
                             <p:inputText id="lbNombre" value="#{mttenimientoModulos.nomModulo}" styleClass="input-right"/>
                         </div>
                     </p:column>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+
+
+        <p:dialog id="editmodA"
+            header="Editar Modulo" 
+                  widgetVar="editModulo" 
+                  minHeight="40"
+                  width="30%"
+                  modal="true">
+            <h:form>
+                <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton  value="Agregar" icon="pi pi-plus" 
+                                          ajax="false"
+                                          action="#{mttenimientoModulos.editarModulo()}"/>
+                    </f:facet>
+                </p:toolbar>
+                <br></br>
+                <p:panelGrid columns="2" layout="grid" 
+                             styleClass="ui-panelgrid-blank ui-fluid"
+                             >
+                    <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />
+                    <p:inputText id="lbNombre" value="#{mttenimientoModulos.selectecModulo.nommodulo}" styleClass="input-right"/>
                 </p:panelGrid>
             </h:form>
         </p:dialog>
