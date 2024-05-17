@@ -31,8 +31,8 @@ public class SegmoduloBusqueda implements SegmoduloBusquedaLocal {
             sql.append("SELECT M FROM Segmodulo M ");
             sql.append("ORDER BY m.codmod");
             Query result = em.createQuery(sql.toString());
-
-            return lstModulos = result.getResultList();
+            lstModulos = result.getResultList();
+            return lstModulos;
         } catch (NullPointerException e) {
             e.printStackTrace();
             return null;

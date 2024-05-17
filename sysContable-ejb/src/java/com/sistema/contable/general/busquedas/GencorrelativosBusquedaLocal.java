@@ -6,6 +6,8 @@
 package com.sistema.contable.general.busquedas;
 
 import com.sistema.contable.general.entidades.Gencorrelativos;
+import com.sistema.contable.general.validaciones.ValidacionesException;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -14,7 +16,8 @@ import javax.ejb.Local;
  * @author BME_PERSONAL
  */
 @Local
-public interface GencorrelativosFacadeLocal {
+public interface GencorrelativosBusquedaLocal {
 
-      
+    public BigInteger obtenerCorrelativo(String nombreEntidad)
+            throws ValidacionesException, NullPointerException, Exception;
 }

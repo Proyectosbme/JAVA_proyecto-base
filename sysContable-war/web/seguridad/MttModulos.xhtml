@@ -27,20 +27,8 @@
                             <p:commandButton type="button" value="Agregar" icon="pi pi-plus" onclick="PF('addModulo').show();" />
                             <p:commandButton type="button" value="Limpiar" icon="pi pi-folder-open"
                                              />
-
-                            <span class="ui-separator">
-                                <span class="ui-icon pi pi-ellipsis-v" />
-                            </span>
-
-                            <p:commandButton type="button" title="Save" icon="pi pi-save" />
-                            <p:commandButton type="button" title="Delete" icon="pi pi-trash" />
-                            <p:commandButton type="button" title="Print" icon="pi pi-print" />
                         </f:facet>
-
-
-
                     </p:toolbar>
-
                     <p:panel style="margin: none">
                         <p:dataTable id="singleDT" var="m" value="#{mttenimientoModulos.lstModulos}" 
                                      rowKey="#{m.codmod}"
@@ -116,24 +104,21 @@
             <h:form>
                 <p:toolbar>
                     <f:facet name="left">
-                        <p:commandButton type="button" value="Agregar" icon="pi pi-plus" onclick="PF('addModulo').show();" />
-                        <p:commandButton type="button" value="Limpiar" icon="pi pi-trash" onclick="PF('addModulo').show();" />
+                        <p:commandButton  value="Agregar" icon="pi pi-plus" 
+                                          ajax="false"
+                                          action="#{mttenimientoModulos.agregarModulo()}"/>
                     </f:facet>
                 </p:toolbar>
-
                 <br></br>
                 <p:panelGrid columns="2" layout="grid" 
                              styleClass="ui-panelgrid-blank ui-fluid"
                              >
                     <p:column>
-                         <div class="responsive-label-input">
-                        <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />
-                        <p:inputText id="lbNombre" value="#{mttenimientoModulos.nomModulo}" styleClass="input-right"/>
-                    </div>
+                        <div class="responsive-label-input">
+                            <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />
+                            <p:inputText id="lbNombre" value="#{mttenimientoModulos.nomModulo}" styleClass="input-right"/>
+                        </div>
                     </p:column>
-                   
-
-
                 </p:panelGrid>
             </h:form>
         </p:dialog>
