@@ -5,6 +5,7 @@
  */
 package com.contabilidad.seg.menu;
 
+import com.sistema.contable.general.busquedas.GenBusquedadLocal;
 import com.sistema.contable.seguridad.entidades.Segmodulo;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -17,10 +18,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
 import com.sistema.contable.seguridad.busquedas.SegmoduloBusquedaLocal;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.sistema.contable.general.busquedas.GencorrelativosBusquedaLocal;
+import com.sistema.contable.general.validaciones.ValidacionesException;
+import java.math.BigInteger;
 
 /**
  *
@@ -31,32 +33,52 @@ import java.util.logging.Logger;
 public class MttenimientoModulos implements Serializable {
 
     @EJB
-    private SegmoduloBusquedaLocal segmoduloFacade;
-
-    private List<Segmodulo> lstModulos = new ArrayList();
-    private Segmodulo selectecModulo = new Segmodulo();
-    private Segmodulo moduloAgregar = new Segmodulo();
-    private String nomModulo="";
-    private List<FacesMessage> messages = new ArrayList<>();
-    private int indexTab = 0;
-    private static final Logger LOGGER = Logger.getLogger(MttenimientoModulos.class.getName());
+    private GenBusquedadLocal genbusqueda;
+    @EJB
+    private GencorrelativosBusquedaLocal busGenCors;
+    @EJB
+    private SegmoduloBusquedaLocal busquedaModulo;
 
     /**
-     * Creates a new instance of MttenimientoModulos
+     * Guarda la lista de modulos que se encuentran en la base de datos
      */
-    /*
-    Declaracion de variables
+    private List<Segmodulo> lstModulos = new ArrayList();
+    /**
+     * Variable que se usa para almacenar el modulo seleccionado
      */
+    private Segmodulo selectecModulo = new Segmodulo();
+    /**
+     * Variable que se ocupoara para alamacenar el nuevo modulo
+     */
+    private Segmodulo moduloAgregar;
+    /**
+     * Almacenara el nombre del modulo que se desea guardar
+     */
+    private String nomModulo = "";
+    /**
+     * Mensjae que se mostraran al usuario 
+     */
+    private List<FacesMessage> messages = new ArrayList<>();
+    /**
+     * Maneja el valor del tab que se mostrara
+     */
+    private int indexTab = 0;
+    /**
+     * Variable que mostrara los mensjaes a mayor detalle en el log
+     */
+    private static final Logger LOGGER = Logger.getLogger(MttenimientoModulos.class.getName());
+
+    
     public MttenimientoModulos() {
     }
 
     /**
-     *
+     *Metodo que se cargara al inicio, cuando se manda a llamar la pantalla
      */
     @PostConstruct
     public void init() {
         try {
-            lstModulos = segmoduloFacade.buscarModulos();
+            lstModulos = busquedaModulo.buscarModulos();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al buscar módulos", e);
         }
@@ -64,23 +86,58 @@ public class MttenimientoModulos implements Serializable {
     }
 
     /**
-     *Metodo que carga las pantallas que contiene el modulo
-     * y envia un msj en dado caso el modulo no tenga pantallas
+     * Metodo que carga las pantallas que contiene el modulo y envia un msj en
+     * dado caso el modulo no tenga pantallas
      */
     public void cargarPantallas() {
         if (this.selectecModulo.getSegpantallasList().isEmpty()) {
             agregarMsj(1, "El modulo no contiene pantallas");
             mostrarMsj();
-            return;
         } else {
             this.setIndexTab(1);
-            FacesContext context = FacesContext.getCurrentInstance();
         }
     }
 
     /**
-     *Metodo que muestra el mensaje al usuario 
-     * y abre un popup
+     * Metodo que se utiliza para agregar modulo nuevo y persistirlos
+     */
+    public void agregarModulo() {
+        try {
+
+            /**
+             * VALIDACION DE VARIABLES
+             */
+            if (nomModulo == null || nomModulo.isEmpty()) {
+                agregarMsj(1, "Ingrese el nombre del modulo");
+                mostrarMsj();
+                return;
+            }
+            //PROCESOS
+            BigInteger correlati;
+            correlati = busGenCors.obtenerCorrelativo("GENCORSMODULO2");
+            moduloAgregar = new Segmodulo();
+            moduloAgregar.setCodmod(correlati);
+            moduloAgregar.setNommodulo(nomModulo);
+            moduloAgregar.setUrldirecc("local");
+            genbusqueda.create(moduloAgregar);
+            lstModulos.add(moduloAgregar);
+            agregarMsj(1, "Modulo agregado correctamente");
+            mostrarMsj();
+            this.setIndexTab(0);
+            
+            //ERRORES
+        } catch (ValidacionesException ve) {
+            agregarMsj(1, ve.getMessage());
+            agregarMsj(1, ve.getMensaje());
+            mostrarMsj();
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error al buscar módulos", ex);
+             agregarMsj(1, "Error inesperado");
+        }
+    }
+
+    /**
+     * Metodo que muestra el mensaje al usuario y abre un popup
      */
     public void mostrarMsj() {
         PrimeFaces.current().executeScript("PF('dlg1').show();");
@@ -92,7 +149,8 @@ public class MttenimientoModulos implements Serializable {
     }
 
     /**
-     *Metodo que agrega el mensaje a una lista
+     * Metodo que agrega el mensaje a una lista
+     *
      * @param numero
      * @param msj
      */
@@ -155,17 +213,15 @@ public class MttenimientoModulos implements Serializable {
     public void setModuloAgregar(Segmodulo moduloAgregar) {
         this.moduloAgregar = moduloAgregar;
     }
-      public String getNomModulo() {
+
+    public String getNomModulo() {
         return nomModulo;
     }
 
     public void setNomModulo(String nomModulo) {
         this.nomModulo = nomModulo;
     }
-    
-//</editor-fold>
 
 //</editor-fold>
-
-  
+//</editor-fold>
 }
