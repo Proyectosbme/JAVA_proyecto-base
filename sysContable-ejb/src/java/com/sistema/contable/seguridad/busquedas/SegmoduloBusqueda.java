@@ -9,6 +9,7 @@ import com.sistema.contable.seguridad.entidades.Segmodulo;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.persistence.CacheRetrieveMode;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -31,6 +32,7 @@ public class SegmoduloBusqueda implements SegmoduloBusquedaLocal {
             sql.append("SELECT M FROM Segmodulo M ");
             sql.append("ORDER BY m.codmod");
             Query result = em.createQuery(sql.toString());
+            result.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
             lstModulos = result.getResultList();
             return lstModulos;
         } catch (NullPointerException e) {
