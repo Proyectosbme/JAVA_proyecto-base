@@ -43,4 +43,13 @@ public class GenProcesos<T> implements GenProcesosLocal<T> {
         javax.persistence.Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
+    
+     @Override
+     public void refreshAllEntities() {
+        em.getEntityManagerFactory().getMetamodel().getEntities().forEach(entityType -> {
+            em.createQuery("SELECT e FROM " + entityType.getName() + " e").getResultList().forEach(entity -> {
+                em.refresh(entity);
+            });
+        });
+    }
 }

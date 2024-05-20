@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import com.sistema.contable.general.busquedas.GencorrelativosBusquedaLocal;
 import com.sistema.contable.general.procesos.GenProcesosLocal;
 import com.sistema.contable.general.validaciones.ValidacionesException;
+import com.sistema.contable.seguridad.entidades.Segpantallas;
 import java.math.BigInteger;
 
 /**
@@ -32,6 +33,7 @@ import java.math.BigInteger;
 @SessionScoped
 public class MttenimientoModulos implements Serializable {
 
+//<editor-fold defaultstate="collapsed" desc="Declaración de variables">
     @EJB
     private GenProcesosLocal genProcesos;
     @EJB
@@ -39,6 +41,7 @@ public class MttenimientoModulos implements Serializable {
     @EJB
     private SegmoduloBusquedaLocal busquedaModulo;
 
+//<editor-fold defaultstate="collapsed" desc="Variables de modulo">
     /**
      * Guarda la lista de modulos que se encuentran en la base de datos
      */
@@ -48,7 +51,7 @@ public class MttenimientoModulos implements Serializable {
      */
     private Segmodulo selectecModulo = new Segmodulo();
     /**
-     * Variable que se ocupoara para alamacenar el nuevo modulo
+     * Variable que se ocupara para alamacenar el nuevo modulo
      */
     private Segmodulo moduloAgregar;
     /**
@@ -67,7 +70,24 @@ public class MttenimientoModulos implements Serializable {
      * Variable que mostrara los mensjaes a mayor detalle en el log
      */
     private static final Logger LOGGER = Logger.getLogger(MttenimientoModulos.class.getName());
+    /**
+     * Variables que contiene el modulo a eliminar
+     */
+    private Segmodulo eliminarModulo = new Segmodulo();
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="Variables para pantallas">
+    /**
+     * Almacenara el valor a eliminar
+     */
+    private Segpantallas eliminarPantalla = new Segpantallas();
+    /**
+     * Almacenara el valor de la pantalla a editart
+     */
+    private Segpantallas editPantalla = new Segpantallas();
+
+//</editor-fold>
+//</editor-fold>
     public MttenimientoModulos() {
     }
 
@@ -131,24 +151,102 @@ public class MttenimientoModulos implements Serializable {
             mostrarMsj();
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error al buscar módulos", ex);
-            agregarMsj(1, "Error inesperado");
+            agregarMsj(4, "Error inesperado");
         }
     }
 
-    public void eliminarModulo(Segmodulo modulo) {
-        genProcesos.remove(modulo);
-        lstModulos.remove(modulo);
+    public void asigModEliminar(Segmodulo modulo) {
+        if (modulo != null) {
+            eliminarModulo = modulo;
+            PrimeFaces.current().executeScript("PF('deleteMod').show();");
+        } else {
+            agregarMsj(4, "Seleccione un modulo");
+            mostrarMsj();
+        }
+
+    }
+
+    public void eliminarModulo() {
+        if (eliminarModulo != null) {
+            genProcesos.remove(eliminarModulo);
+            lstModulos.remove(eliminarModulo);
+            agregarMsj(1, "Modulo eliminado con exito");
+        } else {
+            agregarMsj(4, "Seleccione un modulo");
+        }
+        mostrarMsj();
+
     }
 
     public void asigEditarModulo(Segmodulo modulo) {
-        selectecModulo = modulo;
-        PrimeFaces.current().executeScript("PF('editModulo').show();");
+        if (modulo != null) {
+            selectecModulo = modulo;
+            PrimeFaces.current().executeScript("PF('editModulo').show();");
+        } else {
+            agregarMsj(4, "Seleccione un modulo");
+            mostrarMsj();
+        }
+
     }
 
     public void editarModulo() {
-        genProcesos.edit(selectecModulo);
-        lstModulos.set(lstModulos.indexOf(selectecModulo), selectecModulo);
-        PrimeFaces.current().executeScript("PF('editModulo').hide();");
+        if (selectecModulo != null) {
+            genProcesos.edit(selectecModulo);
+            lstModulos.set(lstModulos.indexOf(selectecModulo), selectecModulo);
+            PrimeFaces.current().executeScript("PF('editModulo').hide();");
+            agregarMsj(1, "Modulo editado con exito");
+        } else {
+            agregarMsj(4, "Seleccione u nmodulo");
+        }
+        mostrarMsj();
+    }
+
+    public void asigPanEliminar(Segpantallas pantalla) {
+        if (pantalla != null) {
+            eliminarPantalla = pantalla;
+            PrimeFaces.current().executeScript("PF('deletePantaid').show();");
+        } else {
+            agregarMsj(4, "Seleccione una pantalla");
+            mostrarMsj();
+        }
+
+    }
+
+    public void eliminarPantalla() {
+        if (eliminarPantalla != null) {
+            genProcesos.remove(eliminarPantalla);
+            selectecModulo.getSegpantallasList().remove(eliminarPantalla);
+            agregarMsj(1, "Pantalla eliminada con exito");
+        } else {
+            agregarMsj(4, "Seleccione una pantalla");
+        }
+        mostrarMsj();
+
+    }
+
+    public void asigEditarPantalla(Segpantallas pantalla) {
+        if (pantalla != null) {
+            editPantalla = pantalla;
+            PrimeFaces.current().executeScript("PF('editPantalla').show();");
+        } else {
+            agregarMsj(4, "Seleccione una pantalla");
+            mostrarMsj();
+        }
+
+    }
+
+    public void editarPantalla() {
+        if (editPantalla != null) {
+            genProcesos.edit(editPantalla);
+            selectecModulo.getSegpantallasList()
+                    .set(selectecModulo.getSegpantallasList().indexOf(editPantalla),
+                            editPantalla);
+            PrimeFaces.current().executeScript("PF('editPantalla').hide();");
+            agregarMsj(1, "Pantalla editado con exito");
+        } else {
+            agregarMsj(4, "Seleccione una pantalla");
+        }
+        mostrarMsj();
     }
 
     /**
@@ -239,4 +337,14 @@ public class MttenimientoModulos implements Serializable {
 
 //</editor-fold>
 //</editor-fold>
+
+    public Segpantallas getEditPantalla() {
+        return editPantalla;
+    }
+
+    public void setEditPantalla(Segpantallas editPantalla) {
+        this.editPantalla = editPantalla;
+    }
+    
+    
 }

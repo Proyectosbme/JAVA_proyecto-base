@@ -21,4 +21,6 @@ public interface GenProcesosLocal <T> {
     void remove(T entity);
     
      int count();
+     
+      public void refreshAllEntities();
 }

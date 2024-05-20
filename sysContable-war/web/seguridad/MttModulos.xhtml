@@ -35,10 +35,12 @@
                                      paginator="true" 
                                      paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rows="10"
+                                     paginatorPosition="bottom"
                                      styleClass="excel-style"
                                      selectionMode="single" 
                                      selection="#{mttenimientoModulos.selectecModulo}">
-                            <p:ajax event="rowSelect"  listener="#{mttenimientoModulos.cargarPantallas}"   />
+                            <p:ajax event="rowSelect"  listener="#{mttenimientoModulos.cargarPantallas}" 
+                                    update="form"/>
                             <f:facet name="header">
                                 MODULOS
                             </f:facet>
@@ -49,15 +51,20 @@
                             <p:column headerText="Nombre">
                                 <h:outputText value="#{m.nommodulo}" />
                             </p:column>
-                            <p:column  headerText="EDITAR" style="width:47px;text-align: center">
+                            <p:column  headerText="EDITAR" 
+                                       style="width:47px;text-align: center">
                                 <p:commandButton  icon="pi pi-pencil" 
                                                   update="editmodA"
-                                                  title="Icon Only" action="#{mttenimientoModulos.asigEditarModulo(m)}" >
+                                                  title="Icon Only" 
+                                                  action="#{mttenimientoModulos.asigEditarModulo(m)}" >
                                 </p:commandButton>
                             </p:column>
-                            <p:column headerText="ELIMINAR" style="width:67px; text-align: center">
-                                <p:commandButton  icon="pi pi-trash" ajax="false" 
-                                                  title="Icon Only" action="#{mttenimientoModulos.eliminarModulo(m)}" >
+                            <p:column headerText="ELIMINAR" 
+                                      style="width:67px; text-align: center">
+                                <p:commandButton  icon="pi pi-trash" 
+                                                  update="deleteModid"
+                                                  title="Icon Only" 
+                                                  action="#{mttenimientoModulos.asigModEliminar(m)}" >
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>
@@ -66,36 +73,67 @@
 
                 </p:tab>
                 <p:tab title="Detalle">
-                    <p:panel >
-                        <f:facet name="header">
+                    <p:panel  styleClass="panel-pantalla">
+                        <f:facet  name="header">
                             <h:outputText value=  "MODULO : #{mttenimientoModulos.selectecModulo.nommodulo}"/>
                         </f:facet>
-                        <br></br>
-                        <p:dataTable id="catadeta" var="m" value="#{mttenimientoModulos.selectecModulo.segpantallasList}" 
+                        <p:dataTable id="catadeta" var="m" 
+                                     value="#{mttenimientoModulos.selectecModulo.segpantallasList}" 
                                      rowKey="#{m.segmodulo.codmod}"
                                      paginator="true" 
                                      rows="10"
+                                     paginatorPosition="bottom"
                                      styleClass="excel-style"
                                      selectionMode="single" >
+                            <f:facet name="header">
+                                Pantalla del modulo
+                            </f:facet>
                             <p:column headerText="nombre">
                                 <h:outputText value="#{m.nompantalla}" />
                             </p:column>
                             <p:column headerText="URL">
                                 <h:outputText value="#{m.urlpantalla}" />
                             </p:column>
-                            <p:column headerText="EDITAR">
-                                <h:outputText value="#{m.segpantallasPK.codpantalla}" />
+                            <p:column  headerText="EDITAR" 
+                                       style="width:47px;text-align: center">
+                                <p:commandButton  icon="pi pi-pencil" 
+                                                  update="editPantalla"
+                                                  title="Icon Only" 
+                                                  action="#{mttenimientoModulos.asigEditarPantalla(m)}" >
+                                </p:commandButton>
                             </p:column>
-                            <p:column headerText="ELIMINAR">
-                                <h:outputText value="#{m.segpantallasPK.codpantalla}" />
+                            <p:column headerText="ELIMINAR" 
+                                      style="width:67px; text-align: center">
+                                <p:commandButton  icon="pi pi-trash" 
+                                                  update="deletePantaid"
+                                                  title="Icon Only" 
+                                                  action="#{mttenimientoModulos.asigPanEliminar(m)}" >
+                                </p:commandButton>
                             </p:column>
                         </p:dataTable>
                     </p:panel>
                 </p:tab>
             </p:tabView>
         </h:form>
-
-
+        <p:confirmDialog  global="true" 
+                          showEffect="fade" 
+                          hideEffect="fade"
+                          id="deleteModid"
+                          header="Confirmar eliminar la pantalla" 
+                          widgetVar="deleteMod"
+                          message="Esta seguro de eliminar la pantalla ?">
+            <h:form>
+                <p:commandButton value="Yes"  
+                                 icon="pi pi-check" 
+                                 actionListener="#{mttenimientoModulos.eliminarModulo()}"
+                                 onclick="PF('eliminarModulo').hide();"/>
+                <p:commandButton value="No" 
+                                 icon="pi pi-times" 
+                                 onclick="PF('eliminarModulo').hide();"
+                                 />
+            </h:form>
+        </p:confirmDialog> 
+        <!--dialogo para los msj-->
         <p:dialog id="busc" 
                   header="Informacion" 
                   widgetVar="dlg1"
@@ -111,6 +149,7 @@
             </p:messages>
         </p:dialog>
 
+        <!--dialogo para agregar modulo-->
         <p:dialog header="Agregar Modulo" 
                   widgetVar="addModulo" 
                   minHeight="40"
@@ -140,7 +179,7 @@
 
 
         <p:dialog id="editmodA"
-            header="Editar Modulo" 
+                  header="Editar Modulo" 
                   widgetVar="editModulo" 
                   minHeight="40"
                   width="30%"
@@ -157,11 +196,57 @@
                 <p:panelGrid columns="2" layout="grid" 
                              styleClass="ui-panelgrid-blank ui-fluid"
                              >
-                    <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />
+                    <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />  
                     <p:inputText id="lbNombre" value="#{mttenimientoModulos.selectecModulo.nommodulo}" styleClass="input-right"/>
                 </p:panelGrid>
             </h:form>
         </p:dialog>
+        <p:dialog id="editPantalla"
+                  header="Editar Modulo" 
+                  widgetVar="editPantalla" 
+                  minHeight="40"
+                  width="30%"
+                  modal="true">
+            <h:form>
+                <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton  value="Agregar" icon="pi pi-plus" 
+                                          ajax="false"
+                                          action="#{mttenimientoModulos.editarPantalla()}"/>
+                    </f:facet>
+                </p:toolbar>
+                <br></br>
+                <p:panelGrid columns="2" layout="grid" 
+                             styleClass="ui-panelgrid-blank ui-fluid"
+                             >
+                    <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />
+                    <p:inputText id="lbNombre" value="#{mttenimientoModulos.editPantalla.nompantalla}" styleClass="input-right"/>
+                    <p:outputLabel for="lbUrl" value="URL :" styleClass="label-left" />
+                    <p:inputText id="lbUrl" 
+                                 value="#{mttenimientoModulos.editPantalla.urlpantalla}" 
+                                 styleClass="input-right"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+           <p:confirmDialog  global="true" 
+                              showEffect="fade" 
+                              hideEffect="fade"
+                              id="deletePantaid"
+                              header="Confirmar eliminar pantalla" 
+                              widgetVar="deletePantaid"
+                              message="Esta seguro de eliminar la pantalla ?">
+                <h:form>
+                    <p:commandButton value="Yes"  
+                                     icon="pi pi-check" 
+                                     ajax="false"
+                                     actionListener="#{mttenimientoModulos.eliminarPantalla()}"
+                                     onclick="PF('deletePantaid').hide();"/>
+                    <p:commandButton value="No" 
+                                     icon="pi pi-times" 
+                                     onclick="PF('deletePantaid').hide();"
+                                     />
+                </h:form>
+            </p:confirmDialog> 
     </h:body>
 </html>
 
