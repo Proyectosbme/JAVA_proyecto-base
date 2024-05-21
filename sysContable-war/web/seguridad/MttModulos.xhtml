@@ -25,8 +25,7 @@
                     <p:toolbar>
                         <f:facet name="left">
                             <p:commandButton type="button" value="Agregar" icon="pi pi-plus" onclick="PF('addModulo').show();" />
-                            <p:commandButton type="button" value="Limpiar" icon="pi pi-folder-open"
-                                             />
+                            <p:commandButton type="button" value="Limpiar" icon="pi pi-folder-open"/>
                         </f:facet>
                     </p:toolbar>
                     <p:panel style="margin: none">
@@ -111,6 +110,7 @@
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>
+                        <p:commandButton  value="Agregar" icon="pi pi-plus" onclick="PF('addPantalla').show();" />
                     </p:panel>
                 </p:tab>
             </p:tabView>
@@ -119,9 +119,9 @@
                           showEffect="fade" 
                           hideEffect="fade"
                           id="deleteModid"
-                          header="Confirmar eliminar la pantalla" 
+                          header="Confirmar eliminar el modulo" 
                           widgetVar="deleteMod"
-                          message="Esta seguro de eliminar la pantalla ?">
+                          message="Esta seguro de eliminar el modulo ?">
             <h:form>
                 <p:commandButton value="Yes"  
                                  icon="pi pi-check" 
@@ -170,7 +170,10 @@
                     <p:column>
                         <div class="responsive-label-input">
                             <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />
-                            <p:inputText id="lbNombre" value="#{mttenimientoModulos.nomModulo}" styleClass="input-right"/>
+                            <p:inputText id="lbNombre" 
+                                         value="#{mttenimientoModulos.nomModulo}" 
+                                         styleClass="input-right" 
+                                         onkeypress="return validarSoloLetras(event)"/>
                         </div>
                     </p:column>
                 </p:panelGrid>
@@ -197,12 +200,14 @@
                              styleClass="ui-panelgrid-blank ui-fluid"
                              >
                     <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />  
-                    <p:inputText id="lbNombre" value="#{mttenimientoModulos.selectecModulo.nommodulo}" styleClass="input-right"/>
+                    <p:inputText id="lbNombre" value="#{mttenimientoModulos.selectecModulo.nommodulo}" 
+                                 styleClass="input-right"
+                                 onkeypress="return validarSoloLetras(event)"/>
                 </p:panelGrid>
             </h:form>
         </p:dialog>
         <p:dialog id="editPantalla"
-                  header="Editar Modulo" 
+                  header="Editar Pantalla" 
                   widgetVar="editPantalla" 
                   minHeight="40"
                   width="30%"
@@ -220,33 +225,68 @@
                              styleClass="ui-panelgrid-blank ui-fluid"
                              >
                     <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />
-                    <p:inputText id="lbNombre" value="#{mttenimientoModulos.editPantalla.nompantalla}" styleClass="input-right"/>
+                    <p:inputText id="lbNombre" value="#{mttenimientoModulos.editPantalla.nompantalla}" 
+                                 styleClass="input-right" onkeypress="return validarSoloLetras(event)"/>
                     <p:outputLabel for="lbUrl" value="URL :" styleClass="label-left" />
                     <p:inputText id="lbUrl" 
                                  value="#{mttenimientoModulos.editPantalla.urlpantalla}" 
-                                 styleClass="input-right"/>
+                                 styleClass="input-right" onkeypress="return validarSoloLetras(event)"/>
                 </p:panelGrid>
             </h:form>
         </p:dialog>
-           <p:confirmDialog  global="true" 
-                              showEffect="fade" 
-                              hideEffect="fade"
-                              id="deletePantaid"
-                              header="Confirmar eliminar pantalla" 
-                              widgetVar="deletePantaid"
-                              message="Esta seguro de eliminar la pantalla ?">
-                <h:form>
-                    <p:commandButton value="Yes"  
-                                     icon="pi pi-check" 
-                                     ajax="false"
-                                     actionListener="#{mttenimientoModulos.eliminarPantalla()}"
-                                     onclick="PF('deletePantaid').hide();"/>
-                    <p:commandButton value="No" 
-                                     icon="pi pi-times" 
-                                     onclick="PF('deletePantaid').hide();"
-                                     />
-                </h:form>
-            </p:confirmDialog> 
+        <p:confirmDialog  global="true" 
+                          showEffect="fade" 
+                          hideEffect="fade"
+                          id="deletePantaid"
+                          header="Confirmar eliminar pantalla" 
+                          widgetVar="deletePantaid"
+                          message="Esta seguro de eliminar la pantalla ?">
+            <h:form>
+                <p:commandButton value="Yes"  
+                                 icon="pi pi-check" 
+                                 ajax="false"
+                                 actionListener="#{mttenimientoModulos.eliminarPantalla()}"
+                                 onclick="PF('deletePantaid').hide();"/>
+                <p:commandButton value="No" 
+                                 icon="pi pi-times" 
+                                 onclick="PF('deletePantaid').hide();"
+                                 />
+            </h:form>
+        </p:confirmDialog> 
+
+        <!--dialogo para agregar modulo-->
+            <p:dialog header="Guardar pantalla" 
+                  widgetVar="addPantalla" 
+                  minHeight="40"
+                  width="30%"
+                  modal="true">
+            <h:form>
+                <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton  value="Agregar" icon="pi pi-plus" 
+                                          ajax="false"
+                                          action="#{mttenimientoModulos.guardarPantalla()}"/>
+                    </f:facet>
+                </p:toolbar>
+                <br></br>
+                <p:panelGrid columns="2" layout="grid" 
+                             styleClass="ui-panelgrid-blank ui-fluid"
+                             >
+                    <p:outputLabel for="lbNombrePan" value="Nombre :" 
+                                   styleClass="label-left" />
+                    <p:inputText id="lbNombrePan"
+                                 value="#{mttenimientoModulos.addPantalla.nompantalla}" 
+                                 styleClass="input-right"
+                                 onkeypress="return validarSoloLetras(event)"/>
+                    <p:outputLabel for="lbUrlPan" value="URL :" 
+                                   styleClass="label-left" />
+                    <p:inputText id="lbUrlPan"
+                                 value="#{mttenimientoModulos.addPantalla.urlpantalla}" 
+                                 styleClass="input-right"
+                                 />
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
     </h:body>
 </html>
 

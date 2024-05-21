@@ -4,6 +4,34 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
+    <!-- Agrega la configuración para el recurso CSS -->
+    <application>
+        <resource>
+            <library-name>css</library-name>
+            <resource-name>style.css</resource-name>
+            <resource-class>javax.faces.application.Resource</resource-class>
+            <url-pattern>/resources/css/*</url-pattern>
+        </resource>
+        <!-- Agrega la configuración para el archivo CSS de login -->
+        <resource>
+            <library-name>css</library-name>
+            <resource-name>login.css</resource-name>
+            <resource-class>javax.faces.application.Resource</resource-class>
+            <url-pattern>/resources/css/*</url-pattern>
+        </resource>
+    </application>
+    
+    <!-- Agrega la configuración para el archivo JavaScript -->
+    <application>
+        <resource>
+            <library-name>js</library-name>
+            <resource-name>script.js</resource-name>
+            <resource-class>javax.faces.application.Resource</resource-class>
+            <url-pattern>/resources/js/*</url-pattern>
+        </resource>
+    </application>
+    
+    <!-- Reglas de navegación-->
     <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
@@ -12,7 +40,7 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
             <from-outcome>login</from-outcome>
@@ -20,7 +48,7 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
             <from-outcome>clave</from-outcome>
