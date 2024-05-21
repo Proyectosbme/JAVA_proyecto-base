@@ -7,8 +7,8 @@
         <title>SysContable</title>
         <link rel="icon" type="image/jpg" href="./resources/imagenes/img.jpg"></link>
         <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
-        <link href="./resources/css/style.css" rel="stylesheet" type="text/css"/>
-
+         <h:outputStylesheet library="css" name="style.css" />
+        <h:outputScript library="js" name="script.js" />
         <script>
             var inactivityTimeout = null;
             var maxInactivityTime = 60000; // 1 minuto (en milisegundos)
@@ -50,7 +50,6 @@
             document.addEventListener('mousemove', resetInactivityTimer);
             document.addEventListener('keypress', resetInactivityTimer);
         </script>
-
     </h:head>
     <h:body>
         <ui:include src="menu.xhtml" />

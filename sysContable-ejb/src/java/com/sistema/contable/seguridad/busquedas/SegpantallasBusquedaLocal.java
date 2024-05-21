@@ -5,8 +5,8 @@
  */
 package com.sistema.contable.seguridad.busquedas;
 
-import com.sistema.contable.seguridad.entidades.Segpantallas;
-import java.util.List;
+import com.sistema.contable.general.validaciones.ValidacionesException;
+import java.math.BigInteger;
 import javax.ejb.Local;
 
 /**
@@ -15,5 +15,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface SegpantallasBusquedaLocal {
-    
+
+     public BigInteger maxCodPantalla(BigInteger codModulo)
+    throws ValidacionesException, NullPointerException, Exception;
 }

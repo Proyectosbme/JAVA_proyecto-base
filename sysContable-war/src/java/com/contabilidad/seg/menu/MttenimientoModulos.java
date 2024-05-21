@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ // Este archivo es la definición de la clase MttenimientoModulos,
+que se encarga de manejar el mantenimiento de módulos Y SUS PANTALLAS
+// y está ubicado en el paquete com.contabilidad.seg.menu
  */
 package com.contabilidad.seg.menu;
 
@@ -22,18 +22,25 @@ import java.util.logging.Logger;
 import com.sistema.contable.general.busquedas.GencorrelativosBusquedaLocal;
 import com.sistema.contable.general.procesos.GenProcesosLocal;
 import com.sistema.contable.general.validaciones.ValidacionesException;
+import com.sistema.contable.seguridad.busquedas.SegpantallasBusquedaLocal;
 import com.sistema.contable.seguridad.entidades.Segpantallas;
+import com.sistema.contable.seguridad.entidades.SegpantallasPK;
 import java.math.BigInteger;
 
 /**
  *
- * @author BME_PERSONAL
+ * @author BME_PERSONAL Clase que se encargara del mantenimiento del modulo y
+ * sus pantallas en la cual sera un crud para cada uno , con sus respectivas
+ * validaciones
  */
 @Named(value = "mttenimientoModulos")
 @SessionScoped
 public class MttenimientoModulos implements Serializable {
 
-//<editor-fold defaultstate="collapsed" desc="Declaración de variables">
+    @EJB
+    private SegpantallasBusquedaLocal segpantallasBusqueda;
+
+//<editor-fold defaultstate="collapsed" desc="DECLARACIÓN DE VARIABLES">
     @EJB
     private GenProcesosLocal genProcesos;
     @EJB
@@ -85,12 +92,18 @@ public class MttenimientoModulos implements Serializable {
      * Almacenara el valor de la pantalla a editart
      */
     private Segpantallas editPantalla = new Segpantallas();
+    /**
+     * Guardara la nueva pantalla que se almacenara
+     */
+    private Segpantallas addPantalla = new Segpantallas();
+//</editor-fold>
+//</editor-fold>
 
-//</editor-fold>
-//</editor-fold>
     public MttenimientoModulos() {
     }
+//<editor-fold defaultstate="collapsed" desc="DECLARACIÓN DE METODOS">
 
+//<editor-fold defaultstate="collapsed" desc="METODO DE INICIO">
     /**
      * Metodo que se cargara al inicio, cuando se manda a llamar la pantalla
      */
@@ -103,20 +116,9 @@ public class MttenimientoModulos implements Serializable {
         }
 
     }
+//</editor-fold>
 
-    /**
-     * Metodo que carga las pantallas que contiene el modulo y envia un msj en
-     * dado caso el modulo no tenga pantallas
-     */
-    public void cargarPantallas() {
-        if (this.selectecModulo.getSegpantallasList().isEmpty()) {
-            agregarMsj(1, "El modulo no contiene pantallas");
-            mostrarMsj();
-        } else {
-            this.setIndexTab(1);
-        }
-    }
-
+//<editor-fold defaultstate="collapsed" desc="METODO PARA EL MODULO">
     /**
      * Metodo que se utiliza para agregar modulo nuevo y persistirlos
      */
@@ -155,6 +157,11 @@ public class MttenimientoModulos implements Serializable {
         }
     }
 
+    /**
+     * Metodo que asigna el valor del modulo a eliminar
+     *
+     * @param modulo modulo que se envia para eliminar
+     */
     public void asigModEliminar(Segmodulo modulo) {
         if (modulo != null) {
             eliminarModulo = modulo;
@@ -166,6 +173,9 @@ public class MttenimientoModulos implements Serializable {
 
     }
 
+    /**
+     * Metodo que eliminar el modulo asignado
+     */
     public void eliminarModulo() {
         if (eliminarModulo != null) {
             genProcesos.remove(eliminarModulo);
@@ -178,6 +188,11 @@ public class MttenimientoModulos implements Serializable {
 
     }
 
+    /**
+     * Metod que asigna el modulo que se va editar
+     *
+     * @param modulo modulo que se envia para editar posteriormente
+     */
     public void asigEditarModulo(Segmodulo modulo) {
         if (modulo != null) {
             selectecModulo = modulo;
@@ -189,6 +204,9 @@ public class MttenimientoModulos implements Serializable {
 
     }
 
+    /**
+     * Metodo que guarda la edicion del modulo asignado
+     */
     public void editarModulo() {
         if (selectecModulo != null) {
             genProcesos.edit(selectecModulo);
@@ -200,7 +218,27 @@ public class MttenimientoModulos implements Serializable {
         }
         mostrarMsj();
     }
+//</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="METODOS PARA PANTALLAS">
+    /**
+     * Metodo que carga las pantallas que contiene el modulo y envia un msj en
+     * dado caso el modulo no tenga pantallas
+     */
+    public void cargarPantallas() {
+        if (this.selectecModulo.getSegpantallasList().isEmpty()) {
+            agregarMsj(1, "El modulo no contiene pantallas");
+            mostrarMsj();
+        } else {
+            this.setIndexTab(1);
+        }
+    }
+
+    /**
+     * Metodo que asigna la pantalla a eliminar
+     *
+     * @param pantalla pantalla que se envia para asignarla y luego eliminarla
+     */
     public void asigPanEliminar(Segpantallas pantalla) {
         if (pantalla != null) {
             eliminarPantalla = pantalla;
@@ -212,6 +250,9 @@ public class MttenimientoModulos implements Serializable {
 
     }
 
+    /**
+     * Metodo que elimina la pantalla asiganada
+     */
     public void eliminarPantalla() {
         if (eliminarPantalla != null) {
             genProcesos.remove(eliminarPantalla);
@@ -224,6 +265,11 @@ public class MttenimientoModulos implements Serializable {
 
     }
 
+    /**
+     * Metodo que asigna la pantalla que se va editar posteriormente
+     *
+     * @param pantalla pantalal que se envia para asignarla para su edicion
+     */
     public void asigEditarPantalla(Segpantallas pantalla) {
         if (pantalla != null) {
             editPantalla = pantalla;
@@ -235,6 +281,9 @@ public class MttenimientoModulos implements Serializable {
 
     }
 
+    /**
+     * Metodo que guarda la edición de la pantalla
+     */
     public void editarPantalla() {
         if (editPantalla != null) {
             genProcesos.edit(editPantalla);
@@ -249,6 +298,47 @@ public class MttenimientoModulos implements Serializable {
         mostrarMsj();
     }
 
+    public void guardarPantalla() {
+        try {
+
+            List<String> lstMsj = new ArrayList<>();
+            if (addPantalla.getNompantalla() == null || addPantalla.getNompantalla().isEmpty()) {
+                lstMsj.add("Ingrese el nombre de la pantalla");
+            }
+            if (addPantalla.getUrlpantalla() == null || addPantalla.getUrlpantalla().isEmpty()) {
+                lstMsj.add("Ingrese la url de la pantalla ");
+            }
+            if (lstMsj.isEmpty()) {
+                addPantalla.setSegmodulo(selectecModulo);
+                BigInteger corPantalla
+                        = segpantallasBusqueda.maxCodPantalla(selectecModulo.getCodmod());
+                SegpantallasPK pkPantalla = new SegpantallasPK(selectecModulo.getCodmod(),
+                        corPantalla.add(new BigInteger("5")));
+                addPantalla.setSegpantallasPK(pkPantalla);
+                selectecModulo.getSegpantallasList().add(addPantalla);
+                lstModulos.set(lstModulos.indexOf(selectecModulo), selectecModulo);
+                genProcesos.create(addPantalla);
+                agregarMsj(1, "Pantalla agregada correctamente");
+                mostrarMsj();
+            } else {
+                lstMsj.forEach((msj) -> {
+                    agregarMsj(4, msj);
+                });
+                mostrarMsj();
+            }
+        } catch (ValidacionesException ex) {
+            agregarMsj(4, ex.getMessage());
+            agregarMsj(4, ex.getMensaje());
+            mostrarMsj();
+        } catch (Exception ex) {
+            agregarMsj(4, "Error inesperado" + ex.toString());
+            mostrarMsj();
+        }
+
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="METODOS PARA MENSAJES">
     /**
      * Metodo que muestra el mensaje al usuario y abre un popup
      */
@@ -284,8 +374,11 @@ public class MttenimientoModulos implements Serializable {
 
         }
     }
+//</editor-fold>
+//</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="GET AND SET">
+//<editor-fold defaultstate="collapsed" desc="GET AND SET">
+//<editor-fold defaultstate="collapsed" desc="GENERALES">
     public List<FacesMessage> getMessages() {
         return messages;
     }
@@ -301,6 +394,8 @@ public class MttenimientoModulos implements Serializable {
     public void setIndexTab(int indexTab) {
         this.indexTab = indexTab;
     }
+//</editor-fold>
+//<editor-fold defaultstate="collapsed" desc="MODULOS">
 
     public List<Segmodulo> getLstModulos() {
         return lstModulos;
@@ -317,7 +412,26 @@ public class MttenimientoModulos implements Serializable {
     public void setSelectecModulo(Segmodulo selectecModulo) {
         this.selectecModulo = selectecModulo;
     }
+//</editor-fold>
+//<editor-fold defaultstate="collapsed" desc="AGREGAR PANTALLA">
 
+    public Segpantallas getEditPantalla() {
+        return editPantalla;
+    }
+
+    public void setEditPantalla(Segpantallas editPantalla) {
+        this.editPantalla = editPantalla;
+    }
+
+    public Segpantallas getAddPantalla() {
+        return addPantalla;
+    }
+
+    public void setAddPantalla(Segpantallas addPantalla) {
+        this.addPantalla = addPantalla;
+    }
+
+//</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="AGREGAR MODULO">
     public Segmodulo getModuloAgregar() {
         return moduloAgregar;
@@ -337,14 +451,4 @@ public class MttenimientoModulos implements Serializable {
 
 //</editor-fold>
 //</editor-fold>
-
-    public Segpantallas getEditPantalla() {
-        return editPantalla;
-    }
-
-    public void setEditPantalla(Segpantallas editPantalla) {
-        this.editPantalla = editPantalla;
-    }
-    
-    
 }
