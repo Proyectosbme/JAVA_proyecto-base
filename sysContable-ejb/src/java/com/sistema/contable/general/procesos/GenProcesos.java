@@ -21,8 +21,13 @@ public class GenProcesos<T> implements GenProcesosLocal<T> {
     private Class<T> entityClass;
 
     @Override
-    public void create(T entity) {
-        em.persist(entity);
+    public void create(T entity) throws Exception {
+        try {
+            em.persist(entity);
+        } catch (Exception ex) {
+            throw ex;
+        }
+
     }
 
     @Override
@@ -43,13 +48,18 @@ public class GenProcesos<T> implements GenProcesosLocal<T> {
         javax.persistence.Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
-     @Override
-     public void refreshAllEntities() {
-        em.getEntityManagerFactory().getMetamodel().getEntities().forEach(entityType -> {
-            em.createQuery("SELECT e FROM " + entityType.getName() + " e").getResultList().forEach(entity -> {
-                em.refresh(entity);
+
+    @Override
+    public void refreshAllEntities() throws Exception {
+        try {
+
+            em.getEntityManagerFactory().getMetamodel().getEntities().forEach(entityType -> {
+                em.createQuery("SELECT e FROM " + entityType.getName() + " e").getResultList().forEach(entity -> {
+                    em.refresh(entity);
+                });
             });
-        });
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 }

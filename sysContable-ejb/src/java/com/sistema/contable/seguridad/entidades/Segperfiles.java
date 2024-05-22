@@ -6,7 +6,6 @@
 package com.sistema.contable.seguridad.entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
@@ -48,7 +47,7 @@ public class Segperfiles implements Serializable {
     private String nombreperfil;
     @ManyToMany(mappedBy = "segperfilesList")
     private List<Segmenu> segmenuList;
-    @OneToMany(mappedBy = "codperfil")
+    @OneToMany(mappedBy = "SegPerfiles")
     private List<Segusuarios> segusuariosList;
 
     public Segperfiles() {

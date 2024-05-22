@@ -23,7 +23,7 @@ public class SegmenuBusqueda implements SegmenuBusquedaLocal {
     @PersistenceContext(unitName = "sysContable-ejbPU")
     private EntityManager em;
 
-     @Override
+    @Override
     public List<Segmenu> buscarMenu(BigInteger codPerfil) {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT m.* FROM SEGMENU m ")
@@ -33,6 +33,16 @@ public class SegmenuBusqueda implements SegmenuBusquedaLocal {
 
         Query result = em.createNativeQuery(sql.toString(), Segmenu.class);
         result.setParameter(1, codPerfil);
+
+        return result.getResultList();
+    }
+
+    @Override
+    public List<Segmenu> buscarTodosMenu() {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT m.* FROM SEGMENU m ")
+                .append("WHERE  m.JERARQUIA =0 ");
+        Query result = em.createNativeQuery(sql.toString(), Segmenu.class);
 
         return result.getResultList();
     }

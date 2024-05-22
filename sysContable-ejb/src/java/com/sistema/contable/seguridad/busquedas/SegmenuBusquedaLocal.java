@@ -17,9 +17,10 @@ import javax.ejb.Local;
 @Local
 public interface SegmenuBusquedaLocal {
 
-    
     public List<Segmenu> buscarMenu(BigInteger codPerfil);
-    
-     public List<Segmenu> buscarSubMenu(BigInteger codPerfil,BigInteger codmenu);
-    
+
+    public List<Segmenu> buscarTodosMenu();
+
+    public List<Segmenu> buscarSubMenu(BigInteger codPerfil, BigInteger codmenu);
+
 }

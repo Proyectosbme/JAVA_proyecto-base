@@ -7,6 +7,7 @@ package com.sistema.contable.seguridad.busquedas;
 
 import com.sistema.contable.seguridad.entidades.Segmodulo;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -16,7 +17,9 @@ import javax.ejb.Local;
 @Local
 public interface SegmoduloBusquedaLocal {
 
-   
-    public List<Segmodulo> buscarModulos() throws NullPointerException,Exception;
-    
+    public List<Segmodulo> buscarModulos() throws NullPointerException, Exception;
+
+    public List<Segmodulo> buscarModulo(Map parametros)
+            throws NullPointerException, Exception;
+
 }

@@ -11,8 +11,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.TreeNode;
@@ -57,10 +55,8 @@ public class ContextMenuView implements Serializable {
         if (selectedNode.getData() instanceof MenuStructura) {
             MenuStructura document = (MenuStructura) selectedNode.getData();
             String fileName = document.getType();
-            if (fileName.equals(new String("Pantalla"))) {
+            if (fileName.equals("Pantalla")) {
                 this.currentPage = document.getUrl();
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", "File Name: " + fileName);
-                FacesContext.getCurrentInstance().addMessage(null, message);
             }
 
         }

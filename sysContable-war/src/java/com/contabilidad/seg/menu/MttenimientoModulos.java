@@ -25,7 +25,10 @@ import com.sistema.contable.general.validaciones.ValidacionesException;
 import com.sistema.contable.seguridad.busquedas.SegpantallasBusquedaLocal;
 import com.sistema.contable.seguridad.entidades.Segpantallas;
 import com.sistema.contable.seguridad.entidades.SegpantallasPK;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -61,6 +64,10 @@ public class MttenimientoModulos implements Serializable {
      * Variable que se ocupara para alamacenar el nuevo modulo
      */
     private Segmodulo moduloAgregar;
+    /**
+     * Variable que alamacenara el codigo del modulo
+     */
+    private BigInteger codModulo;
     /**
      * Almacenara el nombre del modulo que se desea guardar
      */
@@ -119,26 +126,58 @@ public class MttenimientoModulos implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="METODO PARA EL MODULO">
+    public void buscarModulo() {
+        try {
+            Map parametros = new HashMap();
+            if (this.nomModulo != null && !this.nomModulo.isEmpty()) {
+                parametros.put("nonmodulo", this.nomModulo);
+            }
+            if (this.codModulo != null) {
+                parametros.put("codmod", this.codModulo);
+            }
+            lstModulos = busquedaModulo.buscarModulo(parametros);
+            if (lstModulos.isEmpty()) {
+                agregarMsj(2, "No se encontraron resultados");
+                mostrarMsj();
+            }
+        } catch (Exception ex) {
+            agregarMsj(4, "Ocurrio un error");
+            mostrarMsj();
+        }
+    }
+
+    public void limpiarBusqueda() {
+        this.nomModulo = "";
+        this.codModulo = null;
+        this.lstModulos.clear();
+    }
+
     /**
      * Metodo que se utiliza para agregar modulo nuevo y persistirlos
      */
+    public void iniciarModulo() {
+        
+        moduloAgregar = new Segmodulo();
+        PrimeFaces.current().executeScript("PF('addModulo').show();");
+    }
+
     public void agregarModulo() {
         try {
 
             /**
              * VALIDACION DE VARIABLES
              */
-            if (nomModulo == null || nomModulo.isEmpty()) {
+            if (moduloAgregar.getNommodulo() == null || moduloAgregar.getNommodulo().isEmpty()) {
                 agregarMsj(1, "Ingrese el nombre del modulo");
                 mostrarMsj();
                 return;
             }
             //PROCESOS
             BigInteger correlati;
-            correlati = busGenCors.obtenerCorrelativo("GENCORSMODULO2");
-            moduloAgregar = new Segmodulo();
+            correlati = busGenCors.obtenerCorrelativo("GENCORSMODULO");
+
             moduloAgregar.setCodmod(correlati);
-            moduloAgregar.setNommodulo(nomModulo.toUpperCase());
+            moduloAgregar.setNommodulo(moduloAgregar.getNommodulo().toUpperCase());
             moduloAgregar.setUrldirecc("LOCAL");
             genProcesos.create(moduloAgregar);
             lstModulos.add(moduloAgregar);
@@ -433,6 +472,14 @@ public class MttenimientoModulos implements Serializable {
 
 //</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="AGREGAR MODULO">
+    public BigInteger getCodModulo() {
+        return codModulo;
+    }
+
+    public void setCodModulo(BigInteger codModulo) {
+        this.codModulo = codModulo;
+    }
+
     public Segmodulo getModuloAgregar() {
         return moduloAgregar;
     }

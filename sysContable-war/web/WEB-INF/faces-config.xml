@@ -7,30 +7,27 @@
     <!-- Agrega la configuración para el recurso CSS -->
     <application>
         <resource>
-            <library-name>css</library-name>
-            <resource-name>style.css</resource-name>
-            <resource-class>javax.faces.application.Resource</resource-class>
-            <url-pattern>/resources/css/*</url-pattern>
-        </resource>
-        <!-- Agrega la configuración para el archivo CSS de login -->
-        <resource>
-            <library-name>css</library-name>
-            <resource-name>login.css</resource-name>
-            <resource-class>javax.faces.application.Resource</resource-class>
-            <url-pattern>/resources/css/*</url-pattern>
-        </resource>
-    </application>
-    
-    <!-- Agrega la configuración para el archivo JavaScript -->
-    <application>
-        <resource>
             <library-name>js</library-name>
             <resource-name>script.js</resource-name>
             <resource-class>javax.faces.application.Resource</resource-class>
             <url-pattern>/resources/js/*</url-pattern>
         </resource>
+        <resource>
+            <library-name>js</library-name>
+            <resource-name>menu.js</resource-name>
+            <resource-class>javax.faces.application.Resource</resource-class>
+            <url-pattern>/resources/js/*</url-pattern>
+        </resource>
+        <resource>
+            <library-name>js</library-name>
+            <resource-name>index.js</resource-name>
+            <resource-class>javax.faces.application.Resource</resource-class>
+            <url-pattern>/resources/js/*</url-pattern>
+        </resource>
     </application>
-    
+    <factory>
+        <exception-handler-factory>com.contabilidad.seg.exepciones.CustomExceptionHandlerFactory</exception-handler-factory>
+    </factory>
     <!-- Reglas de navegación-->
     <navigation-rule>
         <from-view-id>*</from-view-id>
