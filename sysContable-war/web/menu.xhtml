@@ -24,7 +24,8 @@
                                               multiple="true"
                                               activeIndex="null"> 
                                 <p:tab title="#{n.nombre}" >
-                                    <p:tree value="#{n.tree}" var="doc" selectionMode="single" selection="#{contextMenuView.selectedNode}"
+                                    <p:tree value="#{n.tree}" var="doc" selectionMode="single" 
+                                            selection="#{contextMenuView.selectedNode}"
                                             style="margin-left: -25px !important;
                                             margin-top: -10px !important;
                                             margin-bottom: -8px !important;
@@ -64,29 +65,7 @@
                         </p:panel>
                     </div>
                 </div>
-
             </div>
-            <script>
-                const mobileScreen = window.matchMedia("(max-width: 990px )");
-                $(document).ready(function () {
-                    $(".dashboard-nav-dropdown-toggle").click(function () {
-                        $(this).closest(".dashboard-nav-dropdown")
-                                .toggleClass("show")
-                                .find(".dashboard-nav-dropdown")
-                                .removeClass("show");
-                        $(this).parent()
-                                .siblings()
-                                .removeClass("show");
-                    });
-                    $(".menu-toggle").click(function () {
-                        if (mobileScreen.matches) {
-                            $(".dashboard-nav").toggleClass("mobile-show");
-                        } else {
-                            $(".dashboard").toggleClass("dashboard-compact");
-                        }
-                    });
-                });
-            </script>
         </ui:fragment>
     </h:body>
 </html>

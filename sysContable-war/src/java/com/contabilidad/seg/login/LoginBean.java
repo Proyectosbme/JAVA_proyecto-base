@@ -76,8 +76,9 @@ public class LoginBean implements Serializable {
         } catch (Exception e) {
             agregarMsj(1, "Ocurrio un error " + e.toString());
             mostrarMsj();
+            return "login";
         }
-        return null;
+        return "login";
     }
 
     /*
@@ -99,7 +100,7 @@ public class LoginBean implements Serializable {
             } else if (usuario.getEstado().compareTo(BigInteger.ONE) != 0) {
                 agregarMsj(1, "Usuario inactivo");
 
-            }else if(!usuario.getClave().equals(password)){
+            } else if (!usuario.getClave().equals(password)) {
                 agregarMsj(1, "La contraseña es incorrecta");
             }
         } catch (Exception ex) {

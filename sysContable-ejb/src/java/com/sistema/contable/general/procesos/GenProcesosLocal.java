@@ -12,15 +12,15 @@ import javax.ejb.Local;
  * @author BME_PERSONAL
  */
 @Local
-public interface GenProcesosLocal <T> {
-    
-    void create(T entity);
-    
+public interface GenProcesosLocal<T> {
+
+    void create(T entity) throws Exception;
+
     void edit(T entity);
 
     void remove(T entity);
-    
-     int count();
-     
-      public void refreshAllEntities();
+
+    int count();
+
+    public void refreshAllEntities() throws Exception;
 }

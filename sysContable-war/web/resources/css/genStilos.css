@@ -1,3 +1,61 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 05-21-2024, 02:23:38 PM
+    Author     : BME_PERSONAL
+*/
+/* Estilo para los elementos del menú */
+.ui-menubar {
+    background: #001F3F !important;
+}
+.ui-menubar .ui-menuitem-text {
+    color: white !important;
+
+}
+
+/* Estilo para el icono de los elementos del menú */
+.ui-menubar .ui-menuitem-icon {
+    color: white !important;
+
+}
+
+/* Estilo para el fondo de los elementos del menú */
+.ui-menubar .ui-menuitem {
+    background: #3760FF !important;
+    border-color: white !important;
+    border: red !important;
+    border-radius: 50px;
+}
+
+
+.ui-datatable.excel-style {
+    border-collapse: collapse !important;
+    width: 100% !important;
+}
+
+.ui-datatable.excel-style th, 
+.ui-datatable.excel-style td {
+    border: 1px solid #aaa !important;
+    padding: -8px !important;
+    height: 10px !important; /* Alto de las celdas */
+
+}
+
+.ui-datatable.excel-style th {
+    background-color: #3760FF !important; /* Azul marino */
+    color: #fff !important;
+}
+
+.ui-datatable.excel-style tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+.ui-datatable.excel-style tbody tr:hover {
+    background-color: #ddd !important;
+}
 :root {
     --font-family-sans-serif: "Open Sans", -apple-system, BlinkMacSystemFont,
         "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
@@ -41,34 +99,8 @@ body {
     text-align: center;
 }
 
-.ui-datatable.excel-style {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-.ui-datatable.excel-style th, 
-.ui-datatable.excel-style td {
-    border: 1px solid #aaa;
-    padding: -8px;
-    height: 10px !important; /* Alto de las celdas */
-
-}
-
-.ui-datatable.excel-style th {
-    background-color: #001F3F; /* Azul marino */
-    color: #fff;
-}
-
-.ui-datatable.excel-style tbody tr:nth-child(odd) {
-    background-color: #f2f2f2;
-}
-
-.ui-datatable.excel-style tbody tr:hover {
-    background-color: #ddd;
-}
-
 .ui-paginator-bottom.excel-style .ui-paginator-pages {
-    float: right;
+    float: right !important;
 }
 
 .ui-paginator-bottom.excel-style .ui-paginator-rpp-options {
@@ -251,15 +283,12 @@ body {
     background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.5)) !important;
 }
 
-.panel-pantalla .ui-panel-titlebar {
-    background: #001F3F !important; /* Cambia "tuColor" por el color que desees */
-    border-color: transparent !important; /* Hace transparentes todos los bordes */
-    color: white !important;
-}
 .sin-bordes {
     border: none !important;
+    margin: -10px !important;
+    padding: 0 !important;
+    border-color: white !important;
 }
-
 
 .ui-accordion-header.ui-state-active {
     background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.5)) !important;
@@ -317,3 +346,5 @@ body {
 .input-right {
     flex: 1 !important;
 }
+
+

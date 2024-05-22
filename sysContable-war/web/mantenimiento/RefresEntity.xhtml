@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:h="http://xmlns.jcp.org/jsf/html"
+       xmlns:p="http://primefaces.org/ui"
+       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:tabView dynamic="true">
+                <p:tab title="Mantenimiento" >
+                    <p:panelGrid>
+                        <p:menubar>
+                            <p:menuitem value="Refrescar" 
+                                        icon="pi pi-briefcase" 
+                                        action="#{refresEntity.refresEntity()}" />
+                        </p:menubar>
+                    </p:panelGrid>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+        
+         <!--dialogo para los msj-->
+        <p:dialog id="busc" 
+                  header="Informacion" 
+                  widgetVar="dlg1"
+                  width="70%" height="40%"
+                  modal="true"
+                  >
+            <p:messages 
+                id="msj"
+                showDetail="true" 
+                closable="false"
+                >
+                <p:autoUpdate />
+            </p:messages>
+        </p:dialog>
+    </h:body>
+</html>
+

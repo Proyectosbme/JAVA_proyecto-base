@@ -57,7 +57,7 @@ public class Segusuarios implements Serializable {
     private Short tipo;
     @JoinColumn(name = "CODPERFIL", referencedColumnName = "CODPERFIL")
     @ManyToOne
-    private Segperfiles codperfil;
+    private Segperfiles SegPerfiles;
 
     public Segusuarios() {
     }
@@ -114,12 +114,12 @@ public class Segusuarios implements Serializable {
         this.tipo = tipo;
     }
 
-    public Segperfiles getCodperfil() {
-        return codperfil;
+    public Segperfiles getSegPerfiles() {
+        return SegPerfiles;
     }
 
-    public void setCodperfil(Segperfiles codperfil) {
-        this.codperfil = codperfil;
+    public void setSegPerfiles(Segperfiles SegPerfiles) {
+        this.SegPerfiles = SegPerfiles;
     }
 
     @Override

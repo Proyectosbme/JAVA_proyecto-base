@@ -7,69 +7,76 @@
        xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
-        <style type="text/css">
-            .ui-panelgrid.showcase-text-align-center .ui-grid-responsive .ui-panelgrid-cell {
-                text-align: center;
-            }
-
-            .customPanelGrid .ui-panelgrid-content {
-                align-items: center;
-            }
-
+        <style>
+         
         </style>
     </h:head>
     <h:body>
         <h:form id="form">
-            <p:tabView dynamic="true" activeIndex="#{mttenimientoModulos.indexTab}">
+            <p:tabView dynamic="true"   style="border: none;" 
+                       activeIndex="#{mttenimientoModulos.indexTab}">
                 <p:tab title="Busqueda" >
-                    <p:toolbar>
-                        <f:facet name="left">
-                            <p:commandButton type="button" value="Agregar" icon="pi pi-plus" onclick="PF('addModulo').show();" />
-                            <p:commandButton type="button" value="Limpiar" icon="pi pi-folder-open"/>
+                    <p:menubar>
+                        <p:menuitem value="Nuevo" 
+                                    icon="pi pi-plus" 
+                                    action="#{mttenimientoModulos.iniciarModulo()}"/>
+                        <p:menuitem value="Buscar"
+                                    update="form"
+                                    icon="pi pi-search-plus" 
+                                    action="#{mttenimientoModulos.buscarModulo()}" />
+                        <p:menuitem value="Limpiar" 
+                                    icon="pi pi-trash"
+                                    update="form" 
+                                    action="#{mttenimientoModulos.limpiarBusqueda()}" />
+                    </p:menubar>
+
+                    <p:panelGrid  id="pnModulos" columns="4" layout="grid" styleClass="showcase-text-align-center">
+                        <p:outputLabel for="txtNomMod" value="Nombre" />
+                        <p:inputText id="txtNomMod" value="#{mttenimientoModulos.nomModulo}"
+                                     onkeypress="return validarSoloLetras(event)"/>
+
+                        <p:outputLabel for="txtCodmod" value="Codigo" />
+                        <p:inputText id="txtCodmod" value="#{mttenimientoModulos.codModulo}"
+                                     onkeypress="soloNumeros(event)"/>
+                    </p:panelGrid>
+                    <p:dataTable id="singleDT" var="m" value="#{mttenimientoModulos.lstModulos}" 
+                                 rowKey="#{m.codmod}"
+                                 paginator="true" 
+                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rows="10"
+                                 paginatorPosition="bottom"
+                                 styleClass="excel-style"
+                                 selectionMode="single" 
+                                 selection="#{mttenimientoModulos.selectecModulo}">
+                        <p:ajax event="rowSelect"  listener="#{mttenimientoModulos.cargarPantallas}" 
+                                update="form"/>
+                        <f:facet name="header" >
+                            MODULOS 
                         </f:facet>
-                    </p:toolbar>
-                    <p:panel style="margin: none">
-                        <p:dataTable id="singleDT" var="m" value="#{mttenimientoModulos.lstModulos}" 
-                                     rowKey="#{m.codmod}"
-                                     paginator="true" 
-                                     paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rows="10"
-                                     paginatorPosition="bottom"
-                                     styleClass="excel-style"
-                                     selectionMode="single" 
-                                     selection="#{mttenimientoModulos.selectecModulo}">
-                            <p:ajax event="rowSelect"  listener="#{mttenimientoModulos.cargarPantallas}" 
-                                    update="form"/>
-                            <f:facet name="header">
-                                MODULOS
-                            </f:facet>
 
-                            <p:column headerText="Codigo">
-                                <h:outputText value="#{m.codmod}" />
-                            </p:column>
-                            <p:column headerText="Nombre">
-                                <h:outputText value="#{m.nommodulo}" />
-                            </p:column>
-                            <p:column  headerText="EDITAR" 
-                                       style="width:47px;text-align: center">
-                                <p:commandButton  icon="pi pi-pencil" 
-                                                  update="editmodA"
-                                                  title="Icon Only" 
-                                                  action="#{mttenimientoModulos.asigEditarModulo(m)}" >
-                                </p:commandButton>
-                            </p:column>
-                            <p:column headerText="ELIMINAR" 
-                                      style="width:67px; text-align: center">
-                                <p:commandButton  icon="pi pi-trash" 
-                                                  update="deleteModid"
-                                                  title="Icon Only" 
-                                                  action="#{mttenimientoModulos.asigModEliminar(m)}" >
-                                </p:commandButton>
-                            </p:column>
-                        </p:dataTable>
-
-                    </p:panel>
-
+                        <p:column headerText="Codigo">
+                            <h:outputText value="#{m.codmod}" />
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{m.nommodulo}" />
+                        </p:column>
+                        <p:column  headerText="EDITAR" 
+                                   style="width:47px;text-align: center">
+                            <p:commandButton  icon="pi pi-pencil" 
+                                              update="editmodA"
+                                              title="Icon Only" 
+                                              action="#{mttenimientoModulos.asigEditarModulo(m)}" >
+                            </p:commandButton>
+                        </p:column>
+                        <p:column headerText="ELIMINAR" 
+                                  style="width:67px; text-align: center">
+                            <p:commandButton  icon="pi pi-trash" 
+                                              update="deleteModid"
+                                              title="Icon Only" 
+                                              action="#{mttenimientoModulos.asigModEliminar(m)}" >
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
                 </p:tab>
                 <p:tab title="Detalle">
                     <p:panel  styleClass="panel-pantalla">
@@ -150,7 +157,8 @@
         </p:dialog>
 
         <!--dialogo para agregar modulo-->
-        <p:dialog header="Agregar Modulo" 
+        <p:dialog id="addModulo" 
+                  header="Agregar Modulo" 
                   widgetVar="addModulo" 
                   minHeight="40"
                   width="30%"
@@ -171,7 +179,7 @@
                         <div class="responsive-label-input">
                             <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />
                             <p:inputText id="lbNombre" 
-                                         value="#{mttenimientoModulos.nomModulo}" 
+                                         value="#{mttenimientoModulos.moduloAgregar.nommodulo}" 
                                          styleClass="input-right" 
                                          onkeypress="return validarSoloLetras(event)"/>
                         </div>
@@ -255,7 +263,7 @@
         </p:confirmDialog> 
 
         <!--dialogo para agregar modulo-->
-            <p:dialog header="Guardar pantalla" 
+        <p:dialog header="Guardar pantalla" 
                   widgetVar="addPantalla" 
                   minHeight="40"
                   width="30%"
