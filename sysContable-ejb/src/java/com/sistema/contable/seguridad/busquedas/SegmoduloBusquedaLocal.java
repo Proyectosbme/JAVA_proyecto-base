@@ -5,6 +5,7 @@
  */
 package com.sistema.contable.seguridad.busquedas;
 
+import com.sistema.contable.general.validaciones.ValidacionesException;
 import com.sistema.contable.seguridad.entidades.Segmodulo;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,15 @@ import javax.ejb.Local;
 @Local
 public interface SegmoduloBusquedaLocal {
 
-
+    /**
+     * Metodo que busca los modulos por tipo de datos que se le encia
+     * @param parametros objeto llave valor con los campos necesarios
+     * @return una lista de segmodulo
+     * @throws com.sistema.contable.general.validaciones.ValidacionesException
+     * @throws NullPointerException validaciones nulas
+     * @throws Exception errores generales
+     */
     public List<Segmodulo> buscarModulo(Map parametros)
-            throws NullPointerException, Exception;
+           throws ValidacionesException, NullPointerException, Exception ;
 
 }

@@ -28,6 +28,15 @@ public class SegmoduloBusqueda implements SegmoduloBusquedaLocal {
     private EntityManager em;
     private static final Logger LOGGER = Logger.getLogger(SegmoduloBusqueda.class.getName());
 
+   
+     /**
+     * Metodo que busca los modulos por tipo de datos que se le encia
+     * @param parametros objeto llave valor con los campos necesarios
+     * @return una lista de segmodulo
+     * @throws com.sistema.contable.general.validaciones.ValidacionesException
+     * @throws NullPointerException validaciones nulas
+     * @throws Exception errores generales
+     */
     @Override
     public List<Segmodulo> buscarModulo(Map parametros)
             throws NullPointerException, Exception {

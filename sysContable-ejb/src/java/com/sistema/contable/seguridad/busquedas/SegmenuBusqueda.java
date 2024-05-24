@@ -24,6 +24,13 @@ public class SegmenuBusqueda implements SegmenuBusquedaLocal {
     @PersistenceContext(unitName = "sysContable-ejbPU")
     private EntityManager em;
 
+   /**
+     * Método para buscar menús por perfil.
+     * @param codPerfil El código del perfil del usuario.
+     * @return Una lista de menús asociados al perfil.
+     * @throws NullPointerException Si se produce una excepción de tipo NullPointerException.
+     * @throws Exception Si se produce una excepción de tipo Exception.
+     */
     @Override
     public List<Segmenu> buscarMenuXPerfil(BigInteger codPerfil)
             throws NullPointerException, Exception {
@@ -45,6 +52,13 @@ public class SegmenuBusqueda implements SegmenuBusquedaLocal {
         }
     }
 
+      /**
+     * Método para buscar todos los menús según los parámetros especificados.
+     * @param parametros Mapa de parámetros para filtrar la búsqueda.
+     * @return Una lista de menús que cumplen con los criterios de búsqueda.
+     * @throws NullPointerException Si se produce una excepción de tipo NullPointerException.
+     * @throws Exception Si se produce una excepción de tipo Exception.
+     */
     @Override
     public List<Segmenu> buscarTodosMenu(Map parametros)
             throws NullPointerException, Exception {
@@ -91,6 +105,13 @@ public class SegmenuBusqueda implements SegmenuBusquedaLocal {
         }
     }
 
+     /**
+     * Método para buscar menús raíz según el código de módulo.
+     * @param codmod El código del módulo.
+     * @return Una lista de menús raíz asociados al módulo.
+     * @throws NullPointerException Si se produce una excepción de tipo NullPointerException.
+     * @throws Exception Si se produce una excepción de tipo Exception.
+     */
     @Override
     public List<Segmenu> busMenuRaiz(BigInteger codmod)
             throws NullPointerException, Exception {
@@ -110,6 +131,14 @@ public class SegmenuBusqueda implements SegmenuBusquedaLocal {
         }
     }
 
+      /**
+     * Método para buscar menús por perfil y código de menú padre.
+     * @param codPerfil El código del perfil del usuario.
+     * @param codMenuPadre El código del menú padre.
+     * @return Una lista de menús asociados al perfil y al código del menú padre.
+     * @throws NullPointerException Si se produce una excepción de tipo NullPointerException.
+     * @throws Exception Si se produce una excepción de tipo Exception.
+     */
     @Override
     public List<Segmenu> busMenuXPerfilXCodPadre(BigInteger codPerfil, BigInteger codMenuPadre)
             throws NullPointerException, Exception {
@@ -132,6 +161,13 @@ public class SegmenuBusqueda implements SegmenuBusquedaLocal {
         }
     }
 
+       /**
+     * Método para buscar submenús según el código de menú padre.
+     * @param codmenu El código del menú padre.
+     * @return Una lista de submenús asociados al código del menú padre.
+     * @throws NullPointerException Si se produce una excepción de tipo NullPointerException.
+     * @throws Exception Si se produce una excepción de tipo Exception.
+     */
     @Override
     public List<Segmenu> buscarSubMenu(BigInteger codmenu)
             throws NullPointerException, Exception {
