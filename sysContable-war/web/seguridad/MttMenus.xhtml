@@ -9,7 +9,97 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        
+        <h:form id="miform">
+            <div class="ui-g">
+                <div class="ui-g-12">
+
+                    <p:menubar>
+                        <p:menuitem value="Nuevo" 
+                                    icon="pi pi-plus" 
+                                    update="miform"
+                                    action="#{mttMenu.nuevo()}"/>
+                        <p:menuitem value="Guardar" 
+                                    icon="pi pi-plus" 
+                                    update="miform:menuTree"
+                                    action="#{mttMenu.guardarMenu()}"/>
+                    </p:menubar>
+
+
+                </div>
+                <div class="ui-g-4">
+                    <p:tree id="menuTree"  value="#{mttMenu.root}" var="mt" selectionMode="single"  
+                            dynamic="false" highlight="true">
+                        <p:ajax event="select" update="miform:detalleMttMenu"  
+                                listener="#{mttMenu.onNodeSelect}" />
+                        <p:treeNode  expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder" >
+                            <h:outputText value="#{mt.name}" />
+                        </p:treeNode>
+                        <p:treeNode type="Submenu" icon="pi pi-file" >
+                            <h:outputText value="#{mt.name}" />
+                        </p:treeNode>
+                        <p:treeNode type="pantalla" icon="pi pi-th-large">
+                            <h:outputText value="#{mt.name}" />
+                        </p:treeNode>
+                    </p:tree>
+                </div>
+                <div class="ui-g-8 ui-g-nopad">
+                    <p:panel id="detalleMttMenu">
+                        <p:panelGrid columns="2" layout="grid" 
+                                     styleClass="showcase-text-align-left" 
+                                     columnClasses="ui-g-12 ui-md-6 ui-lg-3, 
+                                     ui-g-12 ui-md-6 ui-lg-3" >
+
+
+                            <p:outputLabel for="textNomModulo" value="Modulo" />
+                            <p:selectOneMenu id="textNomModulo" value="#{mttMenu.itemCodModulo}" >
+                                <p:ajax listener="#{mttMenu.obtenerPantallas()}" update="textNomPantalla textNombrePadre" />
+                                <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                                <f:selectItems value="#{mttMenu.itemModulo}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="textNombre" value="Nombre del menu" />
+                            <p:inputText id="textNombre" value="#{mttMenu.menuSelect.nommenu}" />
+
+
+                            <p:outputLabel for="textNomPantalla" value="Pantalla" />
+                            <p:selectOneMenu id="textNomPantalla" value="#{mttMenu.itemCodPantalla}">
+                                <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                                <f:selectItems value="#{mttMenu.itemPantalla}" />
+                            </p:selectOneMenu>
+
+
+                            <p:outputLabel for="textNombrePadre" value="Menu padre" />
+                            <p:selectOneMenu id="textNombrePadre" value="#{mttMenu.itemCodMenu}">
+                                <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                                <f:selectItems value="#{mttMenu.itmPadre}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="textOrden" value="Orden" />
+                            <p:inputText id="textOrden" value="#{mttMenu.menuSelect.ordenes}" />
+
+                            <p:outputLabel for="textIcono" value="Icono" />
+                            <p:inputText id="textIcono" value="#{mttMenu.menuSelect.urlicono}" />
+                        </p:panelGrid>
+                    </p:panel>
+                </div>
+            </div>
+        </h:form>
+        <!--dialogo para los msj-->
+        <p:dialog id="busc" 
+                  header="Informacion" 
+                  widgetVar="dlgMensajes"
+                  width="70%" height="40%"
+                  modal="true"
+                  >
+            <p:messages 
+                id="msj"
+                showDetail="true" 
+                closable="false"
+                >
+                <p:autoUpdate />
+            </p:messages>
+        </p:dialog>
     </h:body>
+
 </html>
 

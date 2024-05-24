@@ -134,7 +134,7 @@ public class LoginBean implements Serializable {
      * Metodo que Muestra los msj al usuario
      */
     public void mostrarMsj() {
-        PrimeFaces.current().executeScript("PF('dlg1').show();");
+        PrimeFaces.current().executeScript("PF('dlgMensajes').show();");
         FacesContext context = FacesContext.getCurrentInstance();
         for (FacesMessage message : messages) {
             context.addMessage(null, message);

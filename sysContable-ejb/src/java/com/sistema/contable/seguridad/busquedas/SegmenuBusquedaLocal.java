@@ -8,6 +8,7 @@ package com.sistema.contable.seguridad.busquedas;
 import com.sistema.contable.seguridad.entidades.Segmenu;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -17,10 +18,18 @@ import javax.ejb.Local;
 @Local
 public interface SegmenuBusquedaLocal {
 
-    public List<Segmenu> buscarMenu(BigInteger codPerfil);
+    public List<Segmenu> buscarMenuXPerfil(BigInteger codPerfil)
+            throws NullPointerException, Exception;
 
-    public List<Segmenu> buscarTodosMenu();
+    public List<Segmenu> buscarTodosMenu(Map parametros)
+            throws NullPointerException, Exception;
 
-    public List<Segmenu> buscarSubMenu(BigInteger codPerfil, BigInteger codmenu);
+    public List<Segmenu> busMenuXPerfilXCodPadre(BigInteger codPerfil, BigInteger codMenuPadre)
+            throws NullPointerException, Exception;
 
+    public List<Segmenu> buscarSubMenu(BigInteger codmenu)
+            throws NullPointerException, Exception;
+
+    public List<Segmenu> busMenuRaiz(BigInteger codmod)
+            throws NullPointerException, Exception;
 }

@@ -30,7 +30,8 @@
                                             margin-top: -10px !important;
                                             margin-bottom: -8px !important;
                                             border: none; background: transparent !important">
-                                        <p:ajax event="select" update="includePanel" listener="#{contextMenuView.onNodeSelect}"  />
+                                        <p:ajax event="select" update="includePanel" 
+                                                listener="#{contextMenuView.onNodeSelect}"  />
                                         <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">
                                             <h:outputText value="#{doc.name}"/>
                                         </p:treeNode>

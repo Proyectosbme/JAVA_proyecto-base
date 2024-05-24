@@ -36,42 +36,57 @@ public class MenuService implements Serializable {
     private List<Menu> lstMenu = new ArrayList();
 
     public List<Menu> crearMenuPadre() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
-        Segusuarios usuario = new Segusuarios();
-        if (session != null) {
-            usuario = (Segusuarios) session.getAttribute("usuario");
+        try {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+            Segusuarios usuario = new Segusuarios();
+            if (session != null) {
+                usuario = (Segusuarios) session.getAttribute("usuario");
 
-            lstSegmenu = segmenuFacade.buscarMenu(usuario.getSegPerfiles().getCodperfil());
-            // lstSegmenu = segmenuFacade.buscarSubMenu(new BigInteger("10"), new BigInteger("10"));
-            for (Segmenu m : lstSegmenu) {
-                root = new DefaultTreeNode(new MenuStructura("Menus", "-", "Modulos", "-"), null);
-                Menu m1 = new Menu();
-                if (m.getCodmenupadre() == null) {
-                    m1.setNombre(m.getNommenu());
-                    crearSubMenu(root, usuario.getSegPerfiles().getCodperfil(), m);
+                lstSegmenu = segmenuFacade.buscarMenuXPerfil(usuario.getSegPerfiles().getCodperfil());
+                // lstSegmenu = segmenuFacade.buscarSubMenu(new BigInteger("10"), new BigInteger("10"));
+                for (Segmenu m : lstSegmenu) {
+                    root = new DefaultTreeNode(new MenuStructura("Menus", "-", "Modulos", "-", m), null);
+                    Menu m1 = new Menu();
+                    if (m.getCodmenupadre() == null) {
+                        m1.setNombre(m.getNommenu());
+                        crearSubMenu(root, usuario.getSegPerfiles().getCodperfil(), m);
+                    }
+                    m1.setTree(root);
+                    lstMenu.add(m1);
+
                 }
-                m1.setTree(root);
-                lstMenu.add(m1);
-
             }
+        } catch (NullPointerException ne) {
+            ne.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            return lstMenu;
         }
-        return lstMenu;
+
     }
 
     public void crearSubMenu(TreeNode node, BigInteger codPerfil, Segmenu menu) {
-        lstSegmenuSub = segmenuFacade.buscarSubMenu(codPerfil, menu.getCodmenu());
-        if (!lstSegmenuSub.isEmpty()) {
-            for (Segmenu sm : lstSegmenuSub) {
-                if (sm.getSegpantallas() == null) {
-                    TreeNode menusp = new DefaultTreeNode(new MenuStructura(sm.getNommenu(), "-", "Submenu", "-"), node);
-                    this.crearSubMenu(menusp, codPerfil, sm);
-                } else {
-                    //     TreeNode expenses = new DefaultTreeNode("document", new Document("Expenses.doc", "30 KB", "Word Document"), work);
-                    TreeNode pantall = new DefaultTreeNode("pantalla", new MenuStructura(sm.getSegpantallas().getNompantalla(), "-", "Pantalla",
-                            sm.getSegpantallas().getUrlpantalla()), node);
+        try {
+
+            lstSegmenuSub = segmenuFacade.busMenuXPerfilXCodPadre(codPerfil, menu.getCodmenu());
+            if (!lstSegmenuSub.isEmpty()) {
+                for (Segmenu sm : lstSegmenuSub) {
+                    if (sm.getSegpantallas().getSegpantallasPK().getCodpantalla().compareTo(BigInteger.ZERO) == 0) {
+                        TreeNode menusp = new DefaultTreeNode(new MenuStructura(sm.getNommenu(), "-", "Submenu", "-", sm), node);
+                        this.crearSubMenu(menusp, codPerfil, sm);
+                    } else {
+                        //     TreeNode expenses = new DefaultTreeNode("document", new Document("Expenses.doc", "30 KB", "Word Document"), work);
+                        TreeNode pantall = new DefaultTreeNode("pantalla", new MenuStructura(sm.getSegpantallas().getNompantalla(), "-", "Pantalla",
+                                sm.getSegpantallas().getUrlpantalla(), sm), node);
+                    }
                 }
             }
+        } catch (NullPointerException ne) {
+            ne.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

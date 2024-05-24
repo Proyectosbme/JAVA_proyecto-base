@@ -9,6 +9,8 @@ import com.sistema.contable.seguridad.entidades.Segmodulo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.CacheRetrieveMode;
 import javax.persistence.EntityManager;
@@ -24,27 +26,7 @@ public class SegmoduloBusqueda implements SegmoduloBusquedaLocal {
 
     @PersistenceContext(unitName = "sysContable-ejbPU")
     private EntityManager em;
-
-    @Override
-    public List<Segmodulo> buscarModulos() throws NullPointerException, Exception {
-        try {
-            List<Segmodulo> lstModulos = new ArrayList<>();
-            StringBuilder sql = new StringBuilder();
-            sql.append("SELECT M FROM Segmodulo M ");
-            sql.append("ORDER BY m.codmod");
-            Query result = em.createQuery(sql.toString());
-            result.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
-            lstModulos = result.getResultList();
-            return lstModulos;
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
+    private static final Logger LOGGER = Logger.getLogger(SegmoduloBusqueda.class.getName());
 
     @Override
     public List<Segmodulo> buscarModulo(Map parametros)
@@ -81,11 +63,13 @@ public class SegmoduloBusqueda implements SegmoduloBusquedaLocal {
             if (parametros.containsKey("catalogo")) {
                 result.setParameter("catalogo", parametros.get("catalogo"));
             }
-
+            result.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
             lstModulos = result.getResultList();
         } catch (NullPointerException ne) {
+            LOGGER.log(Level.SEVERE, "Error al buscar módulos", ne);
             throw ne;
         } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error al buscar módulos", ex);
             throw ex;
         }
         return lstModulos;

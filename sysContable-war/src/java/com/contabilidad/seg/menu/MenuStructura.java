@@ -1,6 +1,7 @@
 package com.contabilidad.seg.menu;
 
 
+import com.sistema.contable.seguridad.entidades.Segmenu;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -10,12 +11,14 @@ public class MenuStructura implements Serializable, Comparable<MenuStructura> {
     private String size;     
     private String type;    
     private String url;
+    private Segmenu segMenu;
      
-    public MenuStructura(String name, String size, String type, String url) {
+    public MenuStructura(String name, String size, String type, String url, Segmenu segMenu) {
         this.name = name;
         this.size = size;
         this.type = type;
         this.url = url;
+        this.segMenu = segMenu;
     }
  
     public String getName() {
@@ -49,6 +52,15 @@ public class MenuStructura implements Serializable, Comparable<MenuStructura> {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public Segmenu getSegMenu() {
+        return segMenu;
+    }
+
+    public void setSegMenu(Segmenu segMenu) {
+        this.segMenu = segMenu;
+    }
+    
  
     //Eclipse Generated hashCode and equals
 
