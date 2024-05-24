@@ -55,7 +55,7 @@ public class RefresEntity implements Serializable{
      * Metodo que muestra el mensaje al usuario y abre un popup
      */
     public void mostrarMsj() {
-        PrimeFaces.current().executeScript("PF('dlg1').show();");
+        PrimeFaces.current().executeScript("PF('dlgMensajes').show();");
         FacesContext context = FacesContext.getCurrentInstance();
         for (FacesMessage message : messages) {
             context.addMessage(null, message);

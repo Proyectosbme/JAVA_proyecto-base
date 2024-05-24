@@ -17,7 +17,6 @@ import javax.ejb.Local;
 @Local
 public interface SegmoduloBusquedaLocal {
 
-    public List<Segmodulo> buscarModulos() throws NullPointerException, Exception;
 
     public List<Segmodulo> buscarModulo(Map parametros)
             throws NullPointerException, Exception;

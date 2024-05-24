@@ -117,7 +117,7 @@ public class MttenimientoModulos implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            lstModulos = busquedaModulo.buscarModulos();
+            lstModulos = busquedaModulo.buscarModulo(new HashMap());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error al buscar módulos", e);
         }
@@ -156,7 +156,7 @@ public class MttenimientoModulos implements Serializable {
      * Metodo que se utiliza para agregar modulo nuevo y persistirlos
      */
     public void iniciarModulo() {
-        
+
         moduloAgregar = new Segmodulo();
         PrimeFaces.current().executeScript("PF('addModulo').show();");
     }
@@ -216,15 +216,18 @@ public class MttenimientoModulos implements Serializable {
      * Metodo que eliminar el modulo asignado
      */
     public void eliminarModulo() {
-        if (eliminarModulo != null) {
-            genProcesos.remove(eliminarModulo);
-            lstModulos.remove(eliminarModulo);
-            agregarMsj(1, "Modulo eliminado con exito");
-        } else {
-            agregarMsj(4, "Seleccione un modulo");
-        }
-        mostrarMsj();
+        try {
 
+            if (eliminarModulo != null) {
+                genProcesos.remove(eliminarModulo);
+                lstModulos.remove(eliminarModulo);
+                agregarMsj(1, "Modulo eliminado con exito");
+            } else {
+                agregarMsj(4, "Seleccione un modulo");
+            }
+            mostrarMsj();
+        } catch (Exception e) {
+        }
     }
 
     /**
@@ -247,15 +250,19 @@ public class MttenimientoModulos implements Serializable {
      * Metodo que guarda la edicion del modulo asignado
      */
     public void editarModulo() {
-        if (selectecModulo != null) {
-            genProcesos.edit(selectecModulo);
-            lstModulos.set(lstModulos.indexOf(selectecModulo), selectecModulo);
-            PrimeFaces.current().executeScript("PF('editModulo').hide();");
-            agregarMsj(1, "Modulo editado con exito");
-        } else {
-            agregarMsj(4, "Seleccione u nmodulo");
+        try {
+            if (selectecModulo != null) {
+
+                genProcesos.edit(selectecModulo);
+                lstModulos.set(lstModulos.indexOf(selectecModulo), selectecModulo);
+                PrimeFaces.current().executeScript("PF('editModulo').hide();");
+                agregarMsj(1, "Modulo editado con exito");
+            } else {
+                agregarMsj(4, "Seleccione u nmodulo");
+            }
+            mostrarMsj();
+        } catch (Exception e) {
         }
-        mostrarMsj();
     }
 //</editor-fold>
 
@@ -293,14 +300,18 @@ public class MttenimientoModulos implements Serializable {
      * Metodo que elimina la pantalla asiganada
      */
     public void eliminarPantalla() {
-        if (eliminarPantalla != null) {
-            genProcesos.remove(eliminarPantalla);
-            selectecModulo.getSegpantallasList().remove(eliminarPantalla);
-            agregarMsj(1, "Pantalla eliminada con exito");
-        } else {
-            agregarMsj(4, "Seleccione una pantalla");
+        try {
+
+            if (eliminarPantalla != null) {
+                genProcesos.remove(eliminarPantalla);
+                selectecModulo.getSegpantallasList().remove(eliminarPantalla);
+                agregarMsj(1, "Pantalla eliminada con exito");
+            } else {
+                agregarMsj(4, "Seleccione una pantalla");
+            }
+            mostrarMsj();
+        } catch (Exception e) {
         }
-        mostrarMsj();
 
     }
 
@@ -324,17 +335,20 @@ public class MttenimientoModulos implements Serializable {
      * Metodo que guarda la edición de la pantalla
      */
     public void editarPantalla() {
-        if (editPantalla != null) {
-            genProcesos.edit(editPantalla);
-            selectecModulo.getSegpantallasList()
-                    .set(selectecModulo.getSegpantallasList().indexOf(editPantalla),
-                            editPantalla);
-            PrimeFaces.current().executeScript("PF('editPantalla').hide();");
-            agregarMsj(1, "Pantalla editado con exito");
-        } else {
-            agregarMsj(4, "Seleccione una pantalla");
+        try {
+            if (editPantalla != null) {
+                genProcesos.edit(editPantalla);
+                selectecModulo.getSegpantallasList()
+                        .set(selectecModulo.getSegpantallasList().indexOf(editPantalla),
+                                editPantalla);
+                PrimeFaces.current().executeScript("PF('editPantalla').hide();");
+                agregarMsj(1, "Pantalla editado con exito");
+            } else {
+                agregarMsj(4, "Seleccione una pantalla");
+            }
+            mostrarMsj();
+        } catch (Exception e) {
         }
-        mostrarMsj();
     }
 
     public void guardarPantalla() {
@@ -382,7 +396,7 @@ public class MttenimientoModulos implements Serializable {
      * Metodo que muestra el mensaje al usuario y abre un popup
      */
     public void mostrarMsj() {
-        PrimeFaces.current().executeScript("PF('dlg1').show();");
+        PrimeFaces.current().executeScript("PF('dlgMensajes').show();");
         FacesContext context = FacesContext.getCurrentInstance();
         for (FacesMessage message : messages) {
             context.addMessage(null, message);
