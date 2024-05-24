@@ -123,7 +123,7 @@ public class MttMenu implements Serializable {
                         this.crearSubMenu(menusp, sm);
                     } else {
                         //     TreeNode expenses = new DefaultTreeNode("document", new Document("Expenses.doc", "30 KB", "Word Document"), work);
-                        TreeNode pantall = new DefaultTreeNode("pantalla", new MenuStructura(sm.getSegpantallas().getNompantalla(), "-", "Pantalla",
+                        TreeNode pantall = new DefaultTreeNode("pantalla", new MenuStructura(sm.getNommenu(), "-", "Pantalla",
                                 sm.getSegpantallas().getUrlpantalla(), sm), node);
                     }
                 }

@@ -6,12 +6,11 @@
 package com.sistema.contable.seguridad.busquedas;
 
 import com.sistema.contable.general.validaciones.ValidacionesException;
-import com.sistema.contable.seguridad.entidades.Segpantallas;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.ejb.Stateless;
-import javax.persistence.CacheRetrieveMode;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -25,31 +24,31 @@ public class SegpantallasBusqueda implements SegpantallasBusquedaLocal {
     @PersistenceContext(unitName = "sysContable-ejbPU")
     private EntityManager em;
 
+    /**
+     * Metodo que obtiene el valor maximo de la pantallas por modulo
+     *
+     * @param codModulo modulo al que pertencen las pantallas
+     * @return un numero que es el valor maximo de las pantallas
+     * @throws ValidacionesException validacion personalizada
+     * @throws NullPointerException retorna zero en
+     * @throws Exception
+     */
     @Override
-    public BigInteger maxCodPantalla(BigInteger codModulo)
-            throws ValidacionesException, NullPointerException, Exception {
+    public BigInteger maxCodPantalla(BigInteger codModulo) throws ValidacionesException, Exception {
+        if (codModulo == null) {
+            throw new ValidacionesException("El código del módulo está vacío", "Seleccione un módulo");
+        }
         try {
-            if (codModulo == null) {
-                throw new ValidacionesException("El codigo del modulo esta vacio",
-                        "Seleccione un modulo");
-            } else {
-                BigDecimal result2 = BigDecimal.ONE;
-                StringBuilder sql = new StringBuilder();
-                sql.append("SELECT NVL(MAX(s.CODPANTALLA),0) ");
-                sql.append(" FROM SEGPANTALLAS s ");
-                sql.append(" WHERE s.CODMOD = ?1 ");
-                Query result = em.createNativeQuery(sql.toString());
-                result.setParameter(1, codModulo);
-                result2 = (BigDecimal) result.getSingleResult();
-                BigInteger resp = result2.toBigInteger();
-                return resp;
-            }
-        } catch (ValidacionesException ve) {
-            throw ve;
-        } catch (NullPointerException ne) {
-            throw ne;
-        } catch (Exception ex) {
-            throw ex;
+            String queryString = "SELECT NVL(MAX(s.CODPANTALLA), 0) FROM SEGPANTALLAS s WHERE s.CODMOD = :codModulo";
+            Query query = em.createNativeQuery(queryString);
+            query.setParameter("codModulo", codModulo);
+
+            BigDecimal result = (BigDecimal) query.getSingleResult();
+            return result.toBigInteger();
+        } catch (NoResultException e) {
+            return BigInteger.ZERO;
+        } catch (Exception e) {
+            throw new Exception("Error al obtener el código máximo de pantalla", e);
         }
     }
 }

@@ -5,8 +5,6 @@
  */
 package com.sistema.contable.seguridad.busquedas;
 
-import com.sistema.contable.seguridad.entidades.Segperfiles;
-import java.util.List;
 import javax.ejb.Local;
 
 /**

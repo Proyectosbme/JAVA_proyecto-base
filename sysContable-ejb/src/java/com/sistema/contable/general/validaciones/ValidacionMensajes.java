@@ -1,12 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Clase ValidacionMensajes
+ * Esta clase proporciona métodos para manejar y mostrar mensajes de error en un contexto de aplicación web.
  */
 package com.sistema.contable.general.validaciones;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -14,24 +12,41 @@ import org.primefaces.PrimeFaces;
 
 public class ValidacionMensajes {
 
+    // Lista para almacenar los mensajes a mostrar
     private List<FacesMessage> messages = new ArrayList<>();
 
+    /*
+     * Enumeración Severidad
+     * Enumera los distintos niveles de severidad para los mensajes.
+     */
     public enum Severidad {
-        INFO,
-        WARN,
-        FATAL,
-        ERROR
+        INFO, // Mensaje informativo
+        WARN, // Advertencia
+        FATAL, // Error fatal
+        ERROR   // Error
     }
 
-    public void mostrarMsj() {//dlg1
-        PrimeFaces.current().executeScript("PF('dlgMensajes').show();");
+    /**
+     *  * Método mostrarMsj Muestra los mensajes almacenados en la lista
+     * messages.
+     */
+    public void mostrarMsj() {
+        PrimeFaces.current().executeScript("PF('dlgMensajes').show();"); // Muestra el diálogo de mensajes
         FacesContext context = FacesContext.getCurrentInstance();
         messages.forEach((message) -> {
-            context.addMessage(null, message);
+            context.addMessage(null, message); // Agrega los mensajes al contexto de Faces
         });
-        messages.clear();
+        messages.clear(); // Limpia la lista de mensajes después de mostrarlos
     }
 
+    /**
+     *  *
+     * Método agregarMsj Agrega un nuevo mensaje a la lista messages con la
+     * severidad y el mensaje especificados.
+     *
+     * @param severidad severidad del mensaje
+     * @param msj mensaje a mostrar
+     */
     public void agregarMsj(Severidad severidad, String msj) {
         FacesMessage facesMessage = null;
         switch (severidad) {
@@ -49,38 +64,39 @@ public class ValidacionMensajes {
                 break;
         }
         if (facesMessage != null) {
-            messages.add(facesMessage);
+            messages.add(facesMessage); // Agrega el mensaje a la lista de mensajes
         }
-        mostrarMsj();
+        mostrarMsj(); // Muestra los mensajes después de agregarlos
     }
 
+   /**
+     * Método mostrarErrorDetallado
+     * Muestra un mensaje de error detallado con la información, el tipo de error y el mensaje especificados.
+    * @param informacion informacion a mostrar
+    * @param tipoError tipo de error 
+    * @param mesjError  mensaje para descripcion del error
+    */
     public void mostrarErrorDetallado(String informacion, String tipoError, String mesjError) {
         String mensajeDetallado;
         if (mesjError != null && !mesjError.isEmpty()) {
-            mensajeDetallado = String.format("[%s] %s: %s",tipoError,informacion, mesjError);
+            mensajeDetallado = String.format("[%s] %s: %s", tipoError, informacion, mesjError);
         } else {
-            mensajeDetallado = String.format("[%s] %s", tipoError,informacion);
+            mensajeDetallado = String.format("[%s] %s", tipoError, informacion);
         }
-        agregarMsj(Severidad.ERROR, mensajeDetallado);
-        mostrarMsj();
+        agregarMsj(Severidad.ERROR, mensajeDetallado); // Agrega y muestra el mensaje de error detallado
+        mostrarMsj(); // Muestra los mensajes después de agregarlos
     }
 
+
+    /**
+     * Método manejarExcepcion
+     * Maneja una excepción proporcionada, obteniendo su tipo de error y mensaje, y mostrando un mensaje de error detallado.
+     * @param ex error enviado
+     * @param informacion informacion para mostrar con el error
+     */
     public void manejarExcepcion(Throwable ex, String informacion) {
-        String tipoError = ex.getClass().getSimpleName();
-        String mensajeError = ex.getMessage();
-//        StackTraceElement[] stackTrace = ex.getStackTrace();
-//        if (stackTrace.length > 0) {
-//            StackTraceElement elemento = stackTrace[0];
-//            String clase = elemento.getClassName();
-//            String metodo = elemento.getMethodName();
-//          //  String archivo = elemento.getFileName();
-//            int linea = elemento.getLineNumber();
-//
-//            agregarMsj(Severidad.INFO, "Clase: " + clase);
-//            agregarMsj(Severidad.INFO, "Método: " + metodo);
-//         //   agregarMsj(Severidad.FATAL, "Archivo: " + archivo);
-//            agregarMsj(Severidad.INFO, "Línea: " + linea);
-//        }
-        mostrarErrorDetallado(informacion, tipoError, mensajeError);
+        String tipoError = ex.getClass().getSimpleName(); // Obtiene el tipo de error de la excepción
+        String mensajeError = ex.getMessage(); // Obtiene el mensaje de error de la excepción
+        mostrarErrorDetallado(informacion, tipoError, mensajeError); // Muestra un mensaje de error detallado
     }
 }

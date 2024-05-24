@@ -25,14 +25,11 @@
             </div>
             <div class="ui-g-3 " style=" margin-top: 40px; border-radius: 10px;" >
                 <h:form id="menu">
-                    <p:panel id="menu" styleClass="custom-panel" style="border: black">
-                        <f:facet name="header">
-                            <div >Menu</div>
-                        </f:facet>
+                    <p:panel id="menu" header="menu" styleClass="custom-panel" style="border: black">
                         <p:accordionPanel value="#{contextMenuView.lstMenu}" var="n" 
                                           style="margin-left: -10px !important; margin-right: -10px !important;" 
-                                          styleClass="custom-accordion"
-                                          multiple="true"
+                                          styleClass="custom-accordion" 
+                                          multiple="false"
                                           activeIndex="null"> 
                             <p:tab title="#{n.nombre}" >
                                 <p:tree value="#{n.tree}" var="doc" selectionMode="single" 

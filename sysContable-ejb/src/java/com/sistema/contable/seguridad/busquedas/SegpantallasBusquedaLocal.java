@@ -16,6 +16,14 @@ import javax.ejb.Local;
 @Local
 public interface SegpantallasBusquedaLocal {
 
-     public BigInteger maxCodPantalla(BigInteger codModulo)
-    throws ValidacionesException, NullPointerException, Exception;
+    /**
+     * Metodo que obtiene el valor maximo de la pantallas por modulo
+     * @param codModulo modulo al que pertencen las pantallas
+     * @return un numero que es el valor maximo de las pantallas
+     * @throws ValidacionesException validacion personalizada
+     * @throws NullPointerException retorna zero en
+     * @throws Exception 
+     */
+    public BigInteger maxCodPantalla(BigInteger codModulo)
+            throws ValidacionesException, Exception;
 }

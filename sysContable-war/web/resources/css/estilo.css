@@ -8,29 +8,52 @@ and open the template in the editor.
     Author     : BME_PERSONAL
 */
 /* Estilo para los elementos del menú */
+/* Estilo para la barra de menú */
 .ui-menubar {
-    background: #001F3F !important;
+    background: grey !important
 }
+
+/* Estilo para el texto de los elementos del menú */
 .ui-menubar .ui-menuitem-text {
     color: white !important;
-
 }
 
 /* Estilo para el icono de los elementos del menú */
 .ui-menubar .ui-menuitem-icon {
     color: white !important;
-
 }
 
 /* Estilo para el fondo de los elementos del menú */
 .ui-menubar .ui-menuitem {
-    background: #3760FF !important;
-    border-color: white !important;
-    border: red !important;
-    border-radius: 50px;
+    border: 1px solid white !important; /* Cambia el color y el estilo según sea necesario */
+    border-radius: 10px !important; /* Ajusta el valor para controlar el redondeo */
+    margin: 2px !important;
+    background: #001F3F  !important;
 }
 
+/* Estilo para el hover de los elementos del menú */
+.ui-menubar .ui-menuitem:hover {
+    border: 1px solid #ccc !important; /* Cambia el color y el estilo según sea necesario */
+    border-radius: 10px !important; /* Ajusta el valor para controlar el redondeo */
+    margin: 2px !important;
+    background: #88bde6 !important; /* Fondo celeste pálido */
+}
 
+/* Estilo para el texto de los elementos del menú al hacer hover */
+.ui-menubar .ui-menuitem:hover .ui-menuitem-text {
+    color: black !important; /* Texto en negro */
+}
+
+/* Estilo para el icono de los elementos del menú al hacer hover */
+.ui-menubar .ui-menuitem:hover .ui-menuitem-icon {
+    color: black !important; /* Icono en negro */
+}
+.ui-menubar .ui-menuitem.ui-widget.ui-corner-all:hover {
+    border: 1px solid #ccc !important; /* Cambia el color y el estilo según sea necesario */
+    border-radius: 10px !important; /* Ajusta el valor para controlar el redondeo */
+    margin: 2px !important;
+    background: #88bde6 !important; /* Fondo celeste pálido */
+}
 .ui-datatable.excel-style {
     border-collapse: collapse !important;
     width: 100% !important;
@@ -188,6 +211,11 @@ body {
     color: white;
 }
 
+.hidden {
+    display: none;
+}
+
+
 .dashboard-toolbar {
     display: flex;
     position: absolute;
@@ -226,23 +254,23 @@ body {
 }
 
 .ui-messages-warn {
-    background-color: #fffae6 !important;
+    background-color: yellow !important;
     border-color: #ffd700 !important;
-    color: #ff9900 !important;
+    color: black !important;
     font-weight: bold !important;
 }
 
 .ui-messages-error {
-    background-color: #ffdddd !important;
+    background-color: tomato !important;
     border-color: #ff3333 !important;
-    color: #cc0000 !important;
+    color: black !important;
     font-weight: bold !important;
 }
 
 .ui-messages-fatal {
-    background-color: #ffcccc !important;
+    background-color: red !important;
     border-color: #ff0000 !important;
-    color: #990000 !important;
+    color: black !important;
     font-weight: bold !important;
 }
 
@@ -251,7 +279,7 @@ body {
 }
 
 .custom-panel .ui-panel-titlebar {
-    background-color: #3760FF !important;
+    background-color: #001F3F !important;
     color: white !important;
     text-align: center !important;
     height: 40px;
@@ -259,17 +287,26 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 19px;
+    border: 1px solid white !important; /* Cambia el color y el estilo según sea necesario */
+    border-radius: 10px !important;
     padding-top: 20px !important;
 }
 
 .custom-accordion .ui-accordion-header {
-    background: #D6DBDF  !important;
-    color: black !important;
+    background: gray  !important;
+    color: white !important;
     border-radius: 10px !important;
 }
 
+.custom-accordion .ui-accordion-header .ui-icon {
+    /* Oculta la flecha predeterminada */
+    color: white !important; /* Por ejemplo, blanco */
+}
+
+
 .custom-accordion .ui-accordion-content {
-    background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.5)) !important;
+    /*  background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.5)) !important;*/
+    background: #D6DBDF !important;;
     transition: background-color 0.3s ease;
     border-right: 1px solid black !important;
     border-left: 1px solid black !important;
@@ -290,7 +327,7 @@ body {
     border-color: white !important;
 }
 
-.ui-accordion-header.ui-state-active {
+.custom-accordion .ui-accordion-header.ui-state-active {
     background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.5)) !important;
     border-radius: 1px !important;
     border-right: 1px solid black !important;
@@ -299,6 +336,12 @@ body {
     border-top-left-radius: 10px !important;
     border-top-right-radius: 10px !important;
     border-bottom: transparent !important;
+    color: black !important;
+}
+
+.custom-accordion .ui-accordion-header.ui-state-active .ui-icon {
+    /* Cambia el color de la flecha aquí */
+    color: black !important; /* Por ejemplo, blanco */
 }
 
 .ui-tree .ui-treenode-content {
@@ -346,5 +389,47 @@ body {
 .input-right {
     flex: 1 !important;
 }
+
+.showcase-text-align-left .ui-inputtext {
+    border-radius: 8px; /* Define el radio de los bordes */
+    border: 1px solid #336699; /* Define el borde y su color */
+    background-color: #e6f2ff; /* Define el color de fondo */
+    padding: 8px; /* Añade espacio interno para el contenido */
+    color: #333; /* Define el color del texto */
+}
+
+/* Estilo para cuando el input está enfocado */
+.showcase-text-align-left .ui-inputtext:focus {
+    outline: none; /* Quita el contorno predeterminado del foco */
+    border-color: #6699cc; /* Cambia el color del borde cuando está enfocado */
+}
+
+.showcase-text-align-left .ui-selectonemenu {
+    border-radius: 8px; /* Define el radio de los bordes */
+    border: 1px solid #336699; /* Define el borde y su color */
+    background-color: #e6f2ff !important; /* Define el color de fondo */
+    color: #333; /* Define el color del texto */
+}
+
+/* Estilo para cuando el selectOneMenu está desplegado */
+.showcase-text-align-left .ui-selectonemenu-trigger {
+    background-color: #336699; /* Cambia el color de fondo del botón desplegable */
+    color: #fff; /* Cambia el color del texto del botón desplegable */
+    border-radius: 8px; /* Define el radio de los bordes */
+    border: 1px solid #336699; /* Define el borde y su color */
+}
+
+/* Estilo para cuando el selectOneMenu está enfocado */
+.showcase-text-align-left .ui-selectonemenu-focus {
+    border-color: #6699cc; /* Cambia el color del borde cuando está enfocado */
+}
+
+.showcase-text-align-left .ui-outputlabel {
+    font-weight: bold; /* Establece el texto en negrita */
+    vertical-align: top; /* Alinea verticalmente con el inputText correspondiente */
+}
+
+
+
 
 
