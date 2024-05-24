@@ -2,6 +2,8 @@ package com.sistema.contable.general.busquedas;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,8 +21,18 @@ import javax.persistence.criteria.Root;
 public class Genbusqueda<T> implements GenBusquedadLocal<T> {
 
     @PersistenceContext(unitName = "sysContable-ejbPU")
+    /**
+     * Objeto de la entidas
+     */
     private EntityManager em;
+    /**
+     * Objeto generico
+     */
     private Class<T> entityClass;
+    /**
+     * Maneja los errores
+     */
+    private static final Logger LOGGER = Logger.getLogger(Genbusqueda.class.getName());
 
     /**
      * Busca una entidad por su clave primaria.
@@ -39,11 +51,11 @@ public class Genbusqueda<T> implements GenBusquedadLocal<T> {
             return em.find(entityClass, id);
         } catch (NullPointerException ne) {
             // Si no se encuentra la entidad, se devuelve null
-            ne.printStackTrace();
+            LOGGER.log(Level.SEVERE, "NullPointerException", ne);
             return null;
         } catch (Exception ex) {
             // Si ocurre cualquier otra excepción, se relanza
-            ex.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error general", ex);
             throw ex;
         }
     }
@@ -68,11 +80,11 @@ public class Genbusqueda<T> implements GenBusquedadLocal<T> {
             return em.createQuery(criteriaQuery).getResultList();
         } catch (NullPointerException ne) {
             // Si no se encuentra la entidad, se devuelve null
-            ne.printStackTrace();
+            LOGGER.log(Level.SEVERE, "NullPointerException", ne);
             return null;
         } catch (Exception ex) {
             // Si ocurre cualquier otra excepción, se relanza
-            ex.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error general", ex);
             throw ex;
         }
     }
@@ -96,11 +108,11 @@ public class Genbusqueda<T> implements GenBusquedadLocal<T> {
             return (BigInteger) query.getSingleResult();
         } catch (NullPointerException ne) {
             // Si no se encuentra la entidad, se devuelve null
-            ne.printStackTrace();
+            LOGGER.log(Level.SEVERE, "NullPointerException", ne);
             return null;
         } catch (Exception ex) {
             // Si ocurre cualquier otra excepción, se relanza
-            ex.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error general", ex);
             throw ex;
         }
     }

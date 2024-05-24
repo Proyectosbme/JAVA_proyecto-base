@@ -18,6 +18,9 @@ import java.util.logging.Level;
 /**
  *
  * @author BME_PERSONAL
+ * 
+ * Bean de sesión sin estado para realizar búsquedas relacionadas con los
+ * correlativos generales.
  */
 @Stateless
 public class GencorrelativosBusqueda implements GencorrelativosBusquedaLocal {
@@ -26,6 +29,14 @@ public class GencorrelativosBusqueda implements GencorrelativosBusquedaLocal {
     private EntityManager em;
     private static final Logger LOGGER = Logger.getLogger(GencorrelativosBusqueda.class.getName());
 
+    /**
+     * Obtiene el siguiente valor de correlativo para una entidad especificada.
+     * @param nombreEntidad el nombre de la entidad para la cual se desea obtener el correlativo
+     * @return el siguiente valor de correlativo
+     * @throws ValidacionesException si no se encuentra la entidad en la base de datos
+     * @throws NullPointerException si se produce una excepción de puntero nulo
+     * @throws Exception si se produce una excepción no controlada
+     */
     @Override
     public BigInteger obtenerCorrelativo(String nombreEntidad)
             throws NullPointerException, Exception {
