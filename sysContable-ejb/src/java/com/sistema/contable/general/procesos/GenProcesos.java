@@ -10,16 +10,27 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * Clase genérica para procesos de gestión de entidades.
  *
+ * @param <T> El tipo de entidad manejada.
  * @author BME_PERSONAL
  */
 @Stateless
 public class GenProcesos<T> implements GenProcesosLocal<T> {
 
     @PersistenceContext(unitName = "sysContable-ejbPU")
+    /**
+     * comenta las variables con este formato
+     */
     private EntityManager em;
     private Class<T> entityClass;
 
+    /**
+     * Crea una nueva entidad en la base de datos.
+     *
+     * @param entity La entidad a crear.
+     * @throws Exception Si ocurre un error durante la creación.
+     */
     @Override
     public void create(T entity) throws Exception {
         try {
@@ -30,34 +41,52 @@ public class GenProcesos<T> implements GenProcesosLocal<T> {
 
     }
 
+    /**
+     * Actualiza una entidad existente en la base de datos.
+     *
+     * @param entity La entidad a actualizar.
+     * @throws java.lang.Exception
+     */
     @Override
-    public void edit(T entity) {
-        em.merge(entity);
+    public void edit(T entity) throws Exception {
+        try {
+            em.merge(entity);
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
+    /**
+     * Elimina una entidad existente de la base de datos.
+     *
+     * @param entity La entidad a eliminar.
+     * @throws java.lang.Exception
+     */
     @Override
-    public void remove(T entity) {
-        em.remove(em.merge(entity));
+    public void remove(T entity) throws Exception {
+        try {
+            em.remove(em.merge(entity));
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
-    @Override
-    public int count() {
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
-        cq.select(em.getCriteriaBuilder().count(rt));
-        javax.persistence.Query q = em.createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
-    }
-
+    /**
+     * Refresca todas las entidades gestionadas en el contexto de persistencia.
+     *
+     * @throws Exception Si ocurre un error durante la actualización.
+     */
     @Override
     public void refreshAllEntities() throws Exception {
         try {
-
-            em.getEntityManagerFactory().getMetamodel().getEntities().forEach(entityType -> {
-                em.createQuery("SELECT e FROM " + entityType.getName() + " e").getResultList().forEach(entity -> {
-                    em.refresh(entity);
-                });
-            });
+            em.getEntityManagerFactory()
+                    .getMetamodel().getEntities()
+                    .forEach(entityType -> {
+                        em.createQuery("SELECT e FROM " + entityType.getName() + " e")
+                                .getResultList().forEach(entity -> {
+                                    em.refresh(entity);
+                                });
+                    });
         } catch (Exception ex) {
             throw ex;
         }

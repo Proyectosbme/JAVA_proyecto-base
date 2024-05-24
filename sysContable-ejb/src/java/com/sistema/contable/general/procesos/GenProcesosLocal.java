@@ -16,11 +16,9 @@ public interface GenProcesosLocal<T> {
 
     void create(T entity) throws Exception;
 
-    void edit(T entity);
+    void edit(T entity) throws Exception;
 
-    void remove(T entity);
-
-    int count();
+    void remove(T entity) throws Exception;
 
     public void refreshAllEntities() throws Exception;
 }
