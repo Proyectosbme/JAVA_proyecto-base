@@ -4,27 +4,7 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
-    <!-- Agrega la configuración para el recurso CSS -->
-    <application>
-        <resource>
-            <library-name>js</library-name>
-            <resource-name>script.js</resource-name>
-            <resource-class>javax.faces.application.Resource</resource-class>
-            <url-pattern>/resources/js/*</url-pattern>
-        </resource>
-        <resource>
-            <library-name>js</library-name>
-            <resource-name>menu.js</resource-name>
-            <resource-class>javax.faces.application.Resource</resource-class>
-            <url-pattern>/resources/js/*</url-pattern>
-        </resource>
-        <resource>
-            <library-name>js</library-name>
-            <resource-name>index.js</resource-name>
-            <resource-class>javax.faces.application.Resource</resource-class>
-            <url-pattern>/resources/js/*</url-pattern>
-        </resource>
-    </application>
+ 
     <factory>
         <exception-handler-factory>com.contabilidad.seg.exepciones.CustomExceptionHandlerFactory</exception-handler-factory>
     </factory>
