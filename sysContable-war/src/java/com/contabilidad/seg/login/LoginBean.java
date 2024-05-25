@@ -108,14 +108,14 @@ public class LoginBean implements Serializable {
         }
     }
 
-    private void guardarSession() {
+   private void guardarSession() {
         // Obtener la sesión actual
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         // Establecer un atributo en la sesión para indicar que el usuario está autenticado
         session.setAttribute("loggedIn", true);
         session.setAttribute("usuario", usuario);
 
-    }
+                }
 
     /**
      * Metodo que invalida la session del usuario

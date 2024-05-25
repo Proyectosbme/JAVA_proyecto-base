@@ -38,23 +38,23 @@ public class ContextMenuView implements Serializable {
      * Lista de objetos Menu que representa el menú en la interfaz de usuario.
      */
     private List<Menu> lstMenu = new ArrayList<>();
-    
+
     /**
      * Nodo seleccionado en el árbol de menú.
      */
     private TreeNode selectedNode;
-    
+
     /**
      * Página actual que se está mostrando en la interfaz de usuario.
      */
     private String currentPage = "bienvenido.xhtml";
-    
+
     /**
      * Servicio para manejar la lógica relacionada con el menú. Se inyecta
      * automáticamente mediante CDI.
      */
     @Inject
-            MenuService menuService;
+    MenuService menuService;
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="METODOS IMPLEMENTADOS">
@@ -64,13 +64,13 @@ public class ContextMenuView implements Serializable {
      */
     @PostConstruct
     public void init() {
-        try {
+            try {
             lstMenu = menuService.crearMenuPadre();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Maneja el evento de selección de nodo en el árbol de menú.
      *
@@ -79,7 +79,7 @@ public class ContextMenuView implements Serializable {
     public void onNodeSelect(NodeSelectEvent event) {
         try {
             TreeNode selectedNode = event.getTreeNode();
-            
+
             if (selectedNode.getData() instanceof MenuStructura) {
                 MenuStructura document = (MenuStructura) selectedNode.getData();
                 String fileName = document.getType();
