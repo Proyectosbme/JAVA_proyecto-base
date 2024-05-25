@@ -30,22 +30,22 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Segpantallas.findAll", query = "SELECT s FROM Segpantallas s")
-    , @NamedQuery(name = "Segpantallas.findByCodmod", query = "SELECT s FROM Segpantallas s WHERE s.segpantallasPK.codmod = :codmod")
-    , @NamedQuery(name = "Segpantallas.findByCodpantalla", query = "SELECT s FROM Segpantallas s WHERE s.segpantallasPK.codpantalla = :codpantalla")
+    , @NamedQuery(name = "Segpantallas.findByCodmod", query = "SELECT s FROM Segpantallas s WHERE s.pantallasPK.codmod = :codmod")
+    , @NamedQuery(name = "Segpantallas.findByCodpantalla", query = "SELECT s FROM Segpantallas s WHERE s.pantallasPK.codpantalla = :codpantalla")
     , @NamedQuery(name = "Segpantallas.findByNompantalla", query = "SELECT s FROM Segpantallas s WHERE s.nompantalla = :nompantalla")
     , @NamedQuery(name = "Segpantallas.findByUrlpantalla", query = "SELECT s FROM Segpantallas s WHERE s.urlpantalla = :urlpantalla")})
 public class Segpantallas implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected SegpantallasPK segpantallasPK;
+    protected SegpantallasPK pantallasPK;
     @Size(max = 100)
     @Column(name = "NOMPANTALLA")
     private String nompantalla;
     @Size(max = 100)
     @Column(name = "URLPANTALLA")
     private String urlpantalla;
-    @OneToMany(mappedBy = "segpantallas")
+    @OneToMany(mappedBy = "pantalla")
     private List<Segmenu> segmenuList;
     @JoinColumn(name = "CODMOD", referencedColumnName = "CODMOD", insertable = false, updatable = false)
     @ManyToOne(optional = false)
@@ -55,19 +55,19 @@ public class Segpantallas implements Serializable {
     }
 
     public Segpantallas(SegpantallasPK segpantallasPK) {
-        this.segpantallasPK = segpantallasPK;
+        this.pantallasPK = segpantallasPK;
     }
 
     public Segpantallas(BigInteger codmod, BigInteger codpantalla) {
-        this.segpantallasPK = new SegpantallasPK(codmod, codpantalla);
+        this.pantallasPK = new SegpantallasPK(codmod, codpantalla);
     }
 
-    public SegpantallasPK getSegpantallasPK() {
-        return segpantallasPK;
+    public SegpantallasPK getPantallasPK() {
+        return pantallasPK;
     }
 
-    public void setSegpantallasPK(SegpantallasPK segpantallasPK) {
-        this.segpantallasPK = segpantallasPK;
+    public void setPantallasPK(SegpantallasPK pantallasPK) {
+        this.pantallasPK = pantallasPK;
     }
 
     public String getNompantalla() {
@@ -106,7 +106,7 @@ public class Segpantallas implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (segpantallasPK != null ? segpantallasPK.hashCode() : 0);
+        hash += (pantallasPK != null ? pantallasPK.hashCode() : 0);
         return hash;
     }
 
@@ -117,7 +117,7 @@ public class Segpantallas implements Serializable {
             return false;
         }
         Segpantallas other = (Segpantallas) object;
-        if ((this.segpantallasPK == null && other.segpantallasPK != null) || (this.segpantallasPK != null && !this.segpantallasPK.equals(other.segpantallasPK))) {
+        if ((this.pantallasPK == null && other.pantallasPK != null) || (this.pantallasPK != null && !this.pantallasPK.equals(other.pantallasPK))) {
             return false;
         }
         return true;
@@ -125,7 +125,7 @@ public class Segpantallas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.sistema.comtable.seguridad.entidades.Segpantallas[ segpantallasPK=" + segpantallasPK + " ]";
+        return "com.sistema.comtable.seguridad.entidades.Segpantallas[ segpantallasPK=" + pantallasPK + " ]";
     }
     
 }

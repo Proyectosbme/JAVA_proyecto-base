@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * 
  */
 package com.contabilidad.seg.exepciones;
 import javax.faces.FacesException;
@@ -12,19 +10,38 @@ import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
 import java.util.Iterator;
 
+/**
+ * 
+ * @author BME_PERSONAL
+ */
 public class CustomExceptionHandler extends ExceptionHandlerWrapper {
 
+    /**
+     * 
+     */
     private ExceptionHandler wrapped;
 
+    /**
+     * 
+     * @param wrapped 
+     */
     public CustomExceptionHandler(ExceptionHandler wrapped) {
         this.wrapped = wrapped;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public ExceptionHandler getWrapped() {
         return wrapped;
     }
 
+    /**
+     * 
+     * @throws FacesException 
+     */
     @Override
     public void handle() throws FacesException {
         FacesContext context = FacesContext.getCurrentInstance();

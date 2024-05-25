@@ -8,14 +8,29 @@ package com.contabilidad.seg.exepciones;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerFactory;
 
+/**
+ * 
+ * @author BME_PERSONAL
+ */
 public class CustomExceptionHandlerFactory extends ExceptionHandlerFactory {
 
+    /**
+     * 
+     */
     private ExceptionHandlerFactory parent;
 
+    /**
+     * 
+     * @param parent 
+     */
     public CustomExceptionHandlerFactory(ExceptionHandlerFactory parent) {
         this.parent = parent;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public ExceptionHandler getExceptionHandler() {
         return new CustomExceptionHandler(parent.getExceptionHandler());

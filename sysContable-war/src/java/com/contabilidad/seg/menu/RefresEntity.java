@@ -6,6 +6,7 @@
 package com.contabilidad.seg.menu;
 
 import com.sistema.contable.general.procesos.GenProcesosLocal;
+import com.sistema.contable.general.validaciones.ValidacionMensajes;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,69 +23,34 @@ import org.primefaces.PrimeFaces;
  */
 @Named(value = "refresEntity")
 @SessionScoped
-public class RefresEntity implements Serializable{
+public class RefresEntity implements Serializable {
 
     @EJB
     private GenProcesosLocal genProcesos;
-      /**
+    /**
      * Mensjae que se mostraran al usuario
      */
     private List<FacesMessage> messages = new ArrayList<>();
-    
+    /**
+     *
+     */
+    ValidacionMensajes validar = new ValidacionMensajes();
 
     /**
      * Creates a new instance of RefresEntity
      */
     public RefresEntity() {
     }
-    
-    public void refresEntity(){
-        try{
+
+    public void refresEntity() {
+        try {
             genProcesos.refreshAllEntities();
-            agregarMsj(1, "Se refrecaron las entidades");
-        }catch(Exception ex ){
-            agregarMsj(1, "Ocurrio un error" + ex.toString());
-        }finally{
-            mostrarMsj();
+            validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Se refrecaron las entidades");
+        } catch (Exception ex) {
+            validar.manejarExcepcion(ex, "Error inesperado , comuniquese con informatica");
         }
-        
-    }
-    
-     //<editor-fold defaultstate="collapsed" desc="METODOS PARA MENSAJES">
-    /**
-     * Metodo que muestra el mensaje al usuario y abre un popup
-     */
-    public void mostrarMsj() {
-        PrimeFaces.current().executeScript("PF('dlgMensajes').show();");
-        FacesContext context = FacesContext.getCurrentInstance();
-        for (FacesMessage message : messages) {
-            context.addMessage(null, message);
-        }
-        messages.clear();
+
     }
 
-    /**
-     * Metodo que agrega el mensaje a una lista
-     *
-     * @param numero
-     * @param msj
-     */
-    public void agregarMsj(int numero, String msj) {
-        switch (numero) {
-            case 1:
-                messages.add(new FacesMessage(FacesMessage.SEVERITY_INFO, null, msj));
-                break;
-            case 2:
-                messages.add(new FacesMessage(FacesMessage.SEVERITY_WARN, null, msj));
-                break;
-            case 3:
-                messages.add(new FacesMessage(FacesMessage.SEVERITY_FATAL, null, msj));
-                break;
-            case 4:
-                messages.add(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, msj));
-                break;
-
-        }
-    }
 //</editor-fold>
 }
