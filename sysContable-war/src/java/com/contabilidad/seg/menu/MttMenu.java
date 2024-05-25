@@ -54,7 +54,7 @@ public class MttMenu implements Serializable {
     @EJB
     private SegmenuBusquedaLocal segmenuBusqueda;
 
-    private ValidacionMensajes validacionMensajes = new ValidacionMensajes();
+    private final ValidacionMensajes validacionMensajes = new ValidacionMensajes();
     private List<Segmenu> lstSegmenu = new ArrayList();
     private List<Segmenu> lstSegmenuSub = new ArrayList();
     private TreeNode root;
@@ -95,7 +95,7 @@ public class MttMenu implements Serializable {
             root = new DefaultTreeNode(new MenuStructura("Menus", "-", "Modulos", "-", null), null);
             root.setExpanded(true);
             for (Segmenu m : lstSegmenu) {
-                if (m.getCodmenupadre() == null) {
+                if (m.getMenuPadre() == null) {
                     TreeNode menu = new DefaultTreeNode(new MenuStructura(m.getNommenu(), "-", "Submenu", "-", m), root);
                     menu.setExpanded(true);
                     crearSubMenu(menu, m);
@@ -115,8 +115,8 @@ public class MttMenu implements Serializable {
             lstSegmenuSub = segmenuBusqueda.buscarSubMenu(menu.getCodmenu());
             if (!lstSegmenuSub.isEmpty()) {
                 for (Segmenu sm : lstSegmenuSub) {
-                    if (sm.getSegpantallas() == null
-                            || sm.getSegpantallas().getSegpantallasPK().getCodpantalla().compareTo(BigInteger.ZERO) == 0) {
+                    if (sm.getPantalla() == null
+                            || sm.getPantalla().getPantallasPK().getCodpantalla().compareTo(BigInteger.ZERO) == 0) {
                         TreeNode menusp = new DefaultTreeNode(
                                 new MenuStructura(sm.getNommenu(), "-", "Submenu", "-", sm), node);
                         menusp.setExpanded(true);
@@ -124,7 +124,7 @@ public class MttMenu implements Serializable {
                     } else {
                         //     TreeNode expenses = new DefaultTreeNode("document", new Document("Expenses.doc", "30 KB", "Word Document"), work);
                         TreeNode pantall = new DefaultTreeNode("pantalla", new MenuStructura(sm.getNommenu(), "-", "Pantalla",
-                                sm.getSegpantallas().getUrlpantalla(), sm), node);
+                                sm.getPantalla().getUrlpantalla(), sm), node);
                     }
                 }
             }
@@ -192,7 +192,7 @@ public class MttMenu implements Serializable {
                     List<Segmenu> lstMenu = segmenuBusqueda.buscarTodosMenu(parametros);
                     if (lstMenu != null && !lstMenu.isEmpty()) {
                         for (Segmenu segm : lstMenu) {
-                            menuSelect.setCodmenupadre(segm);
+                            menuSelect.setMenuPadre(segm);
                             menuSelect.setJerarquia(segm.getJerarquia().add(BigInteger.ONE));
                         }
                     } else {
@@ -200,7 +200,7 @@ public class MttMenu implements Serializable {
                     }
 
                 }
-                menuSelect.setSegpantallas(pantalla);
+                menuSelect.setPantalla(pantalla);
                 menuSelect.setTipo("WEB");
                 if (esNuevo) {
                     genProcesos.create(menuSelect);
@@ -232,7 +232,7 @@ public class MttMenu implements Serializable {
             List<Segmodulo> lstmodulos = segmoduloBusqueda.buscarModulo(parametros);
             for (Segmodulo md : lstmodulos) {
                 for (Segpantallas pt : md.getSegpantallasList()) {
-                    itemPantalla.add(new SelectItem(pt.getSegpantallasPK().getCodpantalla(),
+                    itemPantalla.add(new SelectItem(pt.getPantallasPK().getCodpantalla(),
                             pt.getNompantalla()));
                 }
             }
@@ -259,8 +259,8 @@ public class MttMenu implements Serializable {
                         mPadre = menuRecorrido.getNommenu();
                     }
                     contador++;
-                    if (menuRecorrido.getCodmenupadre() != null) {
-                        menuRecorrido = menuRecorrido.getCodmenupadre();
+                    if (menuRecorrido.getMenuPadre() != null) {
+                        menuRecorrido = menuRecorrido.getMenuPadre();
                     } else {
                         menuRecorrido = null;
                     }
@@ -289,29 +289,29 @@ public class MttMenu implements Serializable {
 
         }
         crearMenuPadreSelect(menuSelect);
-        itemModulo.add(new SelectItem(menuSelect.getSegpantallas().getSegmodulo().getCodmod(),
-                menuSelect.getSegpantallas().getSegmodulo().getNommodulo()));
-        itemCodModulo = menuSelect.getSegpantallas().getSegmodulo().getCodmod();
+        itemModulo.add(new SelectItem(menuSelect.getPantalla().getSegmodulo().getCodmod(),
+                menuSelect.getPantalla().getSegmodulo().getNommodulo()));
+        itemCodModulo = menuSelect.getPantalla().getSegmodulo().getCodmod();
 
-        itemPantalla.add(new SelectItem(menuSelect.getSegpantallas().getSegpantallasPK().getCodpantalla(),
-                menuSelect.getSegpantallas().getNompantalla()));
-        itemCodPantalla = menuSelect.getSegpantallas().getSegpantallasPK().getCodpantalla();
+        itemPantalla.add(new SelectItem(menuSelect.getPantalla().getPantallasPK().getCodpantalla(),
+                menuSelect.getPantalla().getNompantalla()));
+        itemCodPantalla = menuSelect.getPantalla().getPantallasPK().getCodpantalla();
     }
 
     public void crearMenuPadreSelect(Segmenu menuSelect) {
         int contador = 0;
         String mPadre = "Raiz";
-        BigInteger codPadre = menuSelect.getCodmenupadre() != null ? menuSelect.getCodmenupadre().getCodmenu() : BigInteger.ZERO;
+        BigInteger codPadre = menuSelect.getMenuPadre() != null ? menuSelect.getMenuPadre().getCodmenu() : BigInteger.ZERO;
         Segmenu menuRecorrido = menuSelect;
         itemCodMenu = codPadre;
-        while (menuRecorrido != null && menuRecorrido.getCodmenupadre() != null) {
+        while (menuRecorrido != null && menuRecorrido.getMenuPadre() != null) {
             if (contador != 0) {
-                mPadre = menuRecorrido.getCodmenupadre().getNommenu() + "->" + mPadre;
+                mPadre = menuRecorrido.getMenuPadre().getNommenu() + "->" + mPadre;
             } else {
-                mPadre = menuRecorrido.getCodmenupadre().getNommenu();
+                mPadre = menuRecorrido.getMenuPadre().getNommenu();
             }
             contador++;
-            menuRecorrido = menuRecorrido.getCodmenupadre();
+            menuRecorrido = menuRecorrido.getMenuPadre();
         }
 
         itmPadre.add(new SelectItem(codPadre, mPadre));

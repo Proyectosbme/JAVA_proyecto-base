@@ -75,17 +75,17 @@ public class Segmenu implements Serializable {
         @JoinColumn(name = "CODMENU", referencedColumnName = "CODMENU")}, inverseJoinColumns = {
         @JoinColumn(name = "CODPERFIL", referencedColumnName = "CODPERFIL")})
     @ManyToMany
-    private List<Segperfiles> segperfilesList;
-    @OneToMany(mappedBy = "codmenupadre")
-    private List<Segmenu> segmenuList;
+    private List<Segperfiles> lstPerfiles;
+    @OneToMany(mappedBy = "menuPadre")
+    private List<Segmenu> lstMenuPadre;
     @JoinColumn(name = "CODMENUPADRE", referencedColumnName = "CODMENU")
     @ManyToOne
-    private Segmenu codmenupadre;
+    private Segmenu menuPadre;
     @JoinColumns({
         @JoinColumn(name = "CODMOD", referencedColumnName = "CODMOD")
         , @JoinColumn(name = "CODPANT", referencedColumnName = "CODPANTALLA")})
     @ManyToOne
-    private Segpantallas segpantallas;
+    private Segpantallas pantalla;
 
     public Segmenu() {
     }
@@ -159,37 +159,37 @@ public class Segmenu implements Serializable {
     }
 
     @XmlTransient
-    public List<Segperfiles> getSegperfilesList() {
-        return segperfilesList;
+    public List<Segperfiles> getLstPerfiles() {
+        return lstPerfiles;
     }
 
-    public void setSegperfilesList(List<Segperfiles> segperfilesList) {
-        this.segperfilesList = segperfilesList;
+    public void setLstPerfiles(List<Segperfiles> segperfilesList) {
+        this.lstPerfiles = segperfilesList;
     }
 
     @XmlTransient
-    public List<Segmenu> getSegmenuList() {
-        return segmenuList;
+    public List<Segmenu> getLstMenuPadre() {
+        return lstMenuPadre;
     }
 
-    public void setSegmenuList(List<Segmenu> segmenuList) {
-        this.segmenuList = segmenuList;
+    public void setLstMenuPadre(List<Segmenu> segmenuList) {
+        this.lstMenuPadre = segmenuList;
     }
 
-    public Segmenu getCodmenupadre() {
-        return codmenupadre;
+    public Segmenu getMenuPadre() {
+        return menuPadre;
     }
 
-    public void setCodmenupadre(Segmenu codmenupadre) {
-        this.codmenupadre = codmenupadre;
+    public void setMenuPadre(Segmenu codmenupadre) {
+        this.menuPadre = codmenupadre;
     }
 
-    public Segpantallas getSegpantallas() {
-        return segpantallas;
+    public Segpantallas getPantalla() {
+        return pantalla;
     }
 
-    public void setSegpantallas(Segpantallas segpantallas) {
-        this.segpantallas = segpantallas;
+    public void setPantalla(Segpantallas pantalla) {
+        this.pantalla = pantalla;
     }
 
     @Override

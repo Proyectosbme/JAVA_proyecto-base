@@ -367,7 +367,7 @@ public class MttenimientoModulos implements Serializable {
                         = segpantallasBusqueda.maxCodPantalla(selectecModulo.getCodmod());
                 SegpantallasPK pkPantalla = new SegpantallasPK(selectecModulo.getCodmod(),
                         corPantalla.add(new BigInteger("5")));
-                addPantalla.setSegpantallasPK(pkPantalla);
+                addPantalla.setPantallasPK(pkPantalla);
                 selectecModulo.getSegpantallasList().add(addPantalla);
                 lstModulos.set(lstModulos.indexOf(selectecModulo), selectecModulo);
                 genProcesos.create(addPantalla);

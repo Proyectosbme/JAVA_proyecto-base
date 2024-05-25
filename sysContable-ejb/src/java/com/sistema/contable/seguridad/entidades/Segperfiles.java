@@ -45,7 +45,7 @@ public class Segperfiles implements Serializable {
     @Size(max = 100)
     @Column(name = "NOMBREPERFIL")
     private String nombreperfil;
-    @ManyToMany(mappedBy = "segperfilesList")
+    @ManyToMany(mappedBy = "lstPerfiles")
     private List<Segmenu> segmenuList;
     @OneToMany(mappedBy = "SegPerfiles")
     private List<Segusuarios> segusuariosList;
