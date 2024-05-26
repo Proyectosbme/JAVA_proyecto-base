@@ -1,0 +1,483 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 05-21-2024, 02:23:38 PM
+    Author     : BME_PERSONAL
+*/
+/* Estilo para los elementos del menú */
+/* Estilo para la barra de menú */
+.ui-menubar {
+    background: grey !important
+}
+
+/* Estilo para el texto de los elementos del menú */
+.ui-menubar .ui-menuitem-text {
+    color: white !important;
+}
+
+/* Estilo para el icono de los elementos del menú */
+.ui-menubar .ui-menuitem-icon {
+    color: white !important;
+}
+
+/* Estilo para el fondo de los elementos del menú */
+.ui-menubar .ui-menuitem {
+    border: 1px solid white !important; /* Cambia el color y el estilo según sea necesario */
+    border-radius: 10px !important; /* Ajusta el valor para controlar el redondeo */
+    margin: 2px !important;
+    background: #001F3F  !important;
+}
+
+/* Estilo para el hover de los elementos del menú */
+.ui-menubar .ui-menuitem:hover .ui-menuitem {
+    border: 1px solid #ccc !important; /* Cambia el color y el estilo según sea necesario */
+    border-radius: 10px !important; /* Ajusta el valor para controlar el redondeo */
+    margin: 2px !important;
+    background-color: #88bde6 !important; /* Fondo celeste pálido */
+}
+
+/* Estilo para el texto de los elementos del menú al hacer hover */
+.ui-menubar .ui-menuitem:hover .ui-menuitem-text {
+    color: black !important; /* Texto en negro */
+}
+
+/* Estilo para el icono de los elementos del menú al hacer hover */
+.ui-menubar .ui-menuitem:hover .ui-menuitem-icon {
+    color: black !important; /* Icono en negro */
+}
+.ui-menubar .ui-menuitem.ui-widget.ui-corner-all:hover {
+    border: 1px solid #ccc !important; /* Cambia el color y el estilo según sea necesario */
+    border-radius: 10px !important; /* Ajusta el valor para controlar el redondeo */
+    margin: 2px !important;
+    background-color: #88bde6 !important; /* Fondo celeste pálido */
+}
+/* Clase para la tabla */
+.ui-datatable.excel-style {
+    border-collapse: collapse !important;
+    width: 100% !important;
+}
+
+.ui-datatable.excel-style th, 
+.ui-datatable.excel-style td {
+    border: 1px solid #aaa !important;
+    padding: -8px !important;
+    height: 10px !important; /* Alto de las celdas */
+
+}
+
+.ui-datatable.excel-style th {
+    background-color: grey !important; /* Azul marino */
+    color: #fff !important;
+}
+
+/* Estilo para las filas impares */
+.ui-datatable.excel-style tbody tr:nth-child(odd) td {
+    background-color: white !important; /* Cambia el color de fondo de las celdas impares aquí */
+    color: black !important; /* Cambia el color del texto de las celdas impares aquí */
+}
+
+/* Estilo para las filas pares */
+.ui-datatable.excel-style tbody tr:nth-child(even) td {
+    background-color: #D6DBDF !important; /* Cambia el color de fondo de las celdas pares aquí */
+    color: black !important; /* Cambia el color del texto de las celdas pares aquí */
+}
+
+/* Estilo para el hover en todas las filas */
+.ui-datatable.excel-style tbody tr:hover td {
+    background-color: #e6f2ff !important; /* Cambia el color de fondo en hover para todas las filas */
+    color: black !important; /* Cambia el color del texto en hover para todas las filas */
+}
+
+/* Estilo para la fila seleccionada */
+.ui-datatable.excel-style tbody tr.ui-state-highlight td {
+    background-color: #3760FF !important; /* Cambia el color de fondo al seleccionar */
+    font-weight: bold !important; /* Hace que el texto sea negrita al seleccionar */
+    color: white !important; /* Cambia el color del texto al seleccionar */
+}
+/* Estilo para los botones dentro de las columnas */
+.ui-datatable.excel-style .ui-button {
+    background-color: grey !important; /* Cambia el color de fondo de los botones a negro */
+    color: white !important; /* Cambia el color del texto (icono) de los botones a blanco */
+    padding: 0 !important;
+    margin: 0 !important;    
+}
+
+/* Estilo para el icono dentro de los botones */
+.ui-datatable.excel-style .ui-button .pi {
+    color: white !important; /* Cambia el color del icono a blanco */
+}
+
+:root {
+    --font-family-sans-serif: "Open Sans", -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-family-sans-serif);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: white ; 
+    text-align: left;
+}
+
+.card {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: white ; 
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding-top: 1.25rem;
+    padding-left: 1.0rem;
+    padding-right:0;
+
+}
+
+.card-header {
+    margin-bottom: 0;
+    background-color: #001F3F; /* Azul marino */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    text-align: center;
+}
+
+.ui-paginator-bottom.excel-style .ui-paginator-pages {
+    float: right !important;
+}
+
+.ui-paginator-bottom.excel-style .ui-paginator-rpp-options {
+    float: left;
+    margin-right: 10px;
+}
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    border-radius: 10px;
+
+}
+
+.dashboard-app {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    margin-top: 40px;
+    width: auto !important;
+    height: auto;
+    border-radius: 10px;
+
+}
+
+.dashboard-nav {
+    min-width: 314px;
+    position: absolute;
+    top: 60px;
+    overflow: auto;
+    border-radius: 10px;
+    height: auto !important;
+    background-color: transparent;
+    border-radius: 10px;
+}
+
+.dashboard-compact .dashboard-nav {
+    display: none;
+
+}
+
+.menu-toggle {
+    width: 15px;
+    height: 15px;
+    margin-left: 10px;
+}
+
+.user-info {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    margin-right: -1000px; 
+}
+
+.small-text {
+    font-size: smaller;
+}
+
+.user-info span {
+}
+
+.menu-label {
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.logout-button {
+    margin-right: 10px;
+    background: grey !important;
+}
+
+.menu-toggle:active::before {
+    content: "\2630";
+    color: black;
+}
+
+.menu-toggle::before {
+    content: "\2630";
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.dashboard-toolbar {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    color: white;
+    background-color: #001F3F; /* Azul marino */
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.user-info span:not(:last-child) {
+    margin-right: 10px;
+}
+
+.messages {
+    color: #222 !important;
+    padding: 10px !important;
+    border-radius: 4px !important;
+    margin-bottom: 10px !important;
+    width: 100% !important;
+}
+
+.messages .ui-message-detail {
+    color: #222 !important;
+}
+
+.ui-messages-info {
+    width: 100% !important;
+    background-color: #e4f2fd !important;/**COLOR BUENO CELESTE PALIDO*/
+    border-color: #88bde6 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.ui-messages-warn {
+    background-color: #fff8b3 !important; /* Amarillo pálido */
+    border-color: #ffd700 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.ui-messages-error {
+    background-color: #ffcccb !important; /* Rojo pálido */
+    border-color: #ff3333 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.ui-messages-fatal {
+    background-color: #d3d3d3 !important; /* Gris pálido */
+    border-color: #ff0000 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.ui-growl-message {
+    font-size: 14px;
+}
+
+.custom-panel .ui-panel-titlebar {
+    background-color: #001F3F !important;
+    color: white !important;
+    text-align: center !important;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 19px;
+    border: 1px solid white !important; /* Cambia el color y el estilo según sea necesario */
+    border-radius: 10px !important;
+    padding-top: 20px !important;
+}
+
+.custom-accordion .ui-accordion-header {
+    background: gray  !important;
+    font-weight: bold !important;
+    color: white !important;
+    border-radius: 10px !important;
+}
+
+.custom-accordion .ui-accordion-header .ui-icon {
+    /* Oculta la flecha predeterminada */
+    color: white !important; /* Por ejemplo, blanco */
+}
+
+
+.custom-accordion .ui-accordion-content {
+    /*  background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.5)) !important;*/
+    background: #D6DBDF !important;;
+    transition: background-color 0.3s ease;
+    border-right: 1px solid black !important;
+    border-left: 1px solid black !important;
+    border-top: transparent !important;
+    border-bottom: 1px solid black !important;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.custom-panel:hover {
+    background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.5)) !important;
+}
+
+.sin-bordes {
+    border: none !important;
+    margin: -10px !important;
+    padding: 0 !important;
+    border-color: white !important;
+}
+
+.custom-accordion .ui-accordion-header.ui-state-active {
+    background: gray !important;
+    border-radius: 1px !important;
+    border-right: 1px solid black !important;
+    border-left: 1px solid black !important;
+    border-top: 1px solid black !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    border-bottom: transparent !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.custom-accordion .ui-accordion-header.ui-state-active .ui-icon {
+    /* Cambia el color de la flecha aquí */
+    color: black !important; /* Por ejemplo, blanco */
+}
+
+.ui-tree .ui-treenode-content {
+    background-color: transparent !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    background-color: #3760FF !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
+
+.ui-dialog .ui-dialog-title {
+    color: white;
+}
+
+.ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close .ui-icon {
+    color: white !important;
+}
+
+.ui-dialog .ui-dialog-content {
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
+
+@media (min-width: 992px) {
+    .dashboard-app {
+        margin-left: 300px;
+    }
+
+    .dashboard-compact .dashboard-app {
+        margin-left: 0;
+    }
+}
+
+.responsive-label-input {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.label-left {
+    margin-right: 10px !important;
+}
+
+.input-right {
+    flex: 1 !important;
+}
+
+.showcase-text-align-left .ui-inputtext {
+    border-radius: 8px; /* Define el radio de los bordes */
+    border: 1px solid #336699; /* Define el borde y su color */
+    background-color: rgba(0, 0, 0, 0.1); /* Define el color de fondo */
+    padding: 8px; /* Añade espacio interno para el contenido */
+    color: #333; /* Define el color del texto */
+}
+
+/* Estilo para cuando el input está enfocado */
+.showcase-text-align-left .ui-inputtext:focus {
+    outline: none; /* Quita el contorno predeterminado del foco */
+    border-color: #6699cc; /* Cambia el color del borde cuando está enfocado */
+}
+
+.showcase-text-align-left .ui-selectonemenu {
+    border-radius: 8px; /* Define el radio de los bordes */
+    border: 1px solid #336699; /* Define el borde y su color */
+    background-color: #e6f2ff !important; /* Define el color de fondo */
+    color: #333; /* Define el color del texto */
+}
+
+/* Estilo para cuando el selectOneMenu está desplegado */
+.showcase-text-align-left .ui-selectonemenu-trigger {
+    background-color: #336699; /* Cambia el color de fondo del botón desplegable */
+    color: #fff; /* Cambia el color del texto del botón desplegable */
+    border-radius: 8px; /* Define el radio de los bordes */
+    border: 1px solid #336699; /* Define el borde y su color */
+}
+
+/* Estilo para cuando el selectOneMenu está enfocado */
+.showcase-text-align-left .ui-selectonemenu-focus {
+    border-color: #6699cc; /* Cambia el color del borde cuando está enfocado */
+}
+
+.showcase-text-align-left .ui-outputlabel {
+    font-weight: bold; /* Establece el texto en negrita */
+    vertical-align: top; /* Alinea verticalmente con el inputText correspondiente */
+}
+.showcase-text-align-left textarea {
+    background-color: #f0f0f0; /* Gris pálido */
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde gris claro */
+    font-family: Arial, sans-serif; /* Fuente predeterminada */
+    font-size: 14px; /* Tamaño de fuente */
+    box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+    resize: none; /* Desactiva el redimensionamiento manual */
+}
+
+.estilo-titulo {
+    /* Estilos generales */
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: blue ;
+    text-align: right;
+    margin-bottom: -5px;
+    /* Otros estilos... */
+}
+
+
+
+
+

@@ -28,7 +28,9 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -237,7 +239,7 @@ public class MttMenu implements Serializable {
             esNuevo = true;
             //      List<Segmodulo> lstmodulos = segmoduloBusqueda.buscarModulo(new HashMap());
             List<Segmodulo> lstmodulos = genbusqueda.buscarTodos(Segmodulo.class);
-             Comparator<Segmodulo> comparator = Comparator.comparing(Segmodulo::getCodmod);
+            Comparator<Segmodulo> comparator = Comparator.comparing(Segmodulo::getCodmod);
 
             // Ordena la lista utilizando el comparador
             Collections.sort(lstmodulos, comparator);
@@ -271,6 +273,18 @@ public class MttMenu implements Serializable {
             }
             if (itemCodPantalla == null) {
                 lstMsj.add("Seleccione una pantalla");
+            }
+            if (menuSelect != null && menuSelect.getDscmenu().isEmpty()) {
+                lstMsj.add("Ingrese la descripcion del menu");
+            }
+            if (menuSelect != null && menuSelect.getNommenu().isEmpty()) {
+                lstMsj.add("Ingrese el nombre del menu");
+            }
+            if (menuSelect != null && menuSelect.getOrdenes()== null) {
+                lstMsj.add("Ingrese la jeraquia del menu");
+            }
+            if (menuSelect != null && menuSelect.getVersion().isEmpty()) {
+                lstMsj.add("Ingrese la version del menu");
             }
             return lstMsj;
         } catch (Exception ex) {
@@ -320,6 +334,8 @@ public class MttMenu implements Serializable {
                 validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.INFO, msjUser);
                 validacionMensajes.mostrarMsj();
             } else {
+                validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.ERROR,
+                        "Faltan los siguentes datos");
                 for (String msj : lstMsj) {
                     validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.WARN, msj);
                 }
@@ -488,6 +504,30 @@ public class MttMenu implements Serializable {
             }
         } catch (Exception ex) {
             validacionMensajes.manejarExcepcion(ex, "Error al eliminar el menu");
+        }
+    }
+    
+    public void imprimir(){
+        imprimirReportes("modulos", "PDF");
+    }
+     private void imprimirReportes(String reporte, String form) {
+        Map parameters = new HashMap();
+        parameters.put("user", "user");
+        try {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpServletRequest request = (HttpServletRequest) fc
+                    .getExternalContext().getRequest();
+            String url = request.getContextPath() + "/ImpRpts";
+            request.getSession().setAttribute("ds", "jdbc/_contabilidad");
+            request.getSession().setAttribute("url",
+                    "/reportes/" + reporte + ".jasper");
+            request.getSession().setAttribute("parameters", parameters);
+            request.getSession().setAttribute("format", form);
+
+            String javascriptCode = "window.open('" + url + "','Rpt','location=0,menubar=0,"
+                    + "resizable=1,status=0,toolbar=0');";
+            PrimeFaces.current().executeScript(javascriptCode);
+        } catch (Exception ex) {
         }
     }
 
