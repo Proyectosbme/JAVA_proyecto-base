@@ -508,7 +508,7 @@ public class MttMenu implements Serializable {
     }
     
     public void imprimir(){
-        imprimirReportes("modulos", "PDF");
+        imprimirReportes("modulos", "DOCX");
     }
      private void imprimirReportes(String reporte, String form) {
         Map parameters = new HashMap();

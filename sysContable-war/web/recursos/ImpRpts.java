@@ -9,13 +9,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -170,66 +166,7 @@ public class ImpRpts extends HttpServlet {
                 bufferSalida.flush();
                 bufferSalida.close();
             }
-            if (format.equals("Bandesal")) {
-                String op = "";
-                String texto = "";
-                if (request.getSession().getAttribute("op") != null) {
-                    op = (String) request.getSession().getAttribute("op");
-                }
-                Calendar c = Calendar.getInstance();
-                c.setTime(new Date());
-                String rptxls = "";
-                rptxls = imprpt.ImprimeReporteXLS(ds, url, parameters);
-                response.reset();
-                String fechaString;
-                if ((Integer)Tiempo.getMes(new Date()) < 10) {
-                    fechaString = "0" + Tiempo.getMes(new Date());
-                    if (c.get(Calendar.DAY_OF_MONTH) < 10) {
-                        fechaString = fechaString + "0" + c.get(Calendar.DAY_OF_MONTH);
-                    } else {
-                        fechaString = fechaString + c.get(Calendar.DAY_OF_MONTH);
-                    }
-                } else {
-                    fechaString = "" + Tiempo.getMes(new Date());
-                    if (c.get(Calendar.DAY_OF_MONTH) < 10) {
-                        fechaString = fechaString + "0" + c.get(Calendar.DAY_OF_MONTH);
-                    } else {
-                        fechaString = fechaString + c.get(Calendar.DAY_OF_MONTH);
-                    }
-                }
-                if (op.equals("Inscripcion")) {
-                    response.setHeader("Content-Disposition",
-                            "attachment; filename=\"" + "NvasGar_"
-                            + Tiempo.getAnio(new Date())
-                            + fechaString + ".xls" + "\"");
-                }
-                if (op.equals("Actualizacion")) {
-                    response.setHeader("Content-Disposition",
-                            "attachment; filename=\"" + "Actsal_"
-                            + Tiempo.getAnio(new Date())
-                            + fechaString + ".xls" + "\"");
-                }
-                if (op.equals("Renovacion")) {
-                    response.setHeader("Content-Disposition",
-                            "attachment; filename=\"" + "Ren_"
-                            + Tiempo.getAnio(new Date())
-                            + fechaString + ".xls" + "\"");
-                }
-                InputStream in = null;
-                ServletOutputStream bufferSalida = null;
-                in = new FileInputStream(rptxls);
-                bufferSalida = response.getOutputStream();
-                //se transfieren los bytes
-                byte[] buf = new byte[256];//256
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    bufferSalida.write(buf, 0, len);
-                }
-                //vaciamos el buffer de salida y se envia el resultado
-                in.close();
-                bufferSalida.flush();
-                bufferSalida.close();
-            }
+          
       
         } catch (Exception ex) {
             Logger.getLogger(ImpRpts.class.getName())
