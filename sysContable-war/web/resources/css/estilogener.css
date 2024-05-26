@@ -32,11 +32,11 @@ and open the template in the editor.
 }
 
 /* Estilo para el hover de los elementos del menú */
-.ui-menubar .ui-menuitem:hover {
+.ui-menubar .ui-menuitem:hover .ui-menuitem {
     border: 1px solid #ccc !important; /* Cambia el color y el estilo según sea necesario */
     border-radius: 10px !important; /* Ajusta el valor para controlar el redondeo */
     margin: 2px !important;
-    background: #88bde6 !important; /* Fondo celeste pálido */
+    background-color: #88bde6 !important; /* Fondo celeste pálido */
 }
 
 /* Estilo para el texto de los elementos del menú al hacer hover */
@@ -52,8 +52,9 @@ and open the template in the editor.
     border: 1px solid #ccc !important; /* Cambia el color y el estilo según sea necesario */
     border-radius: 10px !important; /* Ajusta el valor para controlar el redondeo */
     margin: 2px !important;
-    background: #88bde6 !important; /* Fondo celeste pálido */
+    background-color: #88bde6 !important; /* Fondo celeste pálido */
 }
+/* Clase para la tabla */
 .ui-datatable.excel-style {
     border-collapse: collapse !important;
     width: 100% !important;
@@ -68,17 +69,47 @@ and open the template in the editor.
 }
 
 .ui-datatable.excel-style th {
-    background-color: #3760FF !important; /* Azul marino */
+    background-color: grey !important; /* Azul marino */
     color: #fff !important;
 }
 
-.ui-datatable.excel-style tbody tr:nth-child(odd) {
-    background-color: #f2f2f2;
+/* Estilo para las filas impares */
+.ui-datatable.excel-style tbody tr:nth-child(odd) td {
+    background-color: white !important; /* Cambia el color de fondo de las celdas impares aquí */
+    color: black !important; /* Cambia el color del texto de las celdas impares aquí */
 }
 
-.ui-datatable.excel-style tbody tr:hover {
-    background-color: #ddd !important;
+/* Estilo para las filas pares */
+.ui-datatable.excel-style tbody tr:nth-child(even) td {
+    background-color: #e6f2ff !important; /* Cambia el color de fondo de las celdas pares aquí */
+    color: black !important; /* Cambia el color del texto de las celdas pares aquí */
 }
+
+/* Estilo para el hover en todas las filas */
+.ui-datatable.excel-style tbody tr:hover td {
+    background-color: #D6DBDF !important; /* Cambia el color de fondo en hover para todas las filas */
+    color: black !important; /* Cambia el color del texto en hover para todas las filas */
+}
+
+/* Estilo para la fila seleccionada */
+.ui-datatable.excel-style tbody tr.ui-state-highlight td {
+    background-color: #3760FF !important; /* Cambia el color de fondo al seleccionar */
+    font-weight: bold !important; /* Hace que el texto sea negrita al seleccionar */
+    color: white !important; /* Cambia el color del texto al seleccionar */
+}
+/* Estilo para los botones dentro de las columnas */
+.ui-datatable.excel-style .ui-button {
+    background-color: grey !important; /* Cambia el color de fondo de los botones a negro */
+    color: white !important; /* Cambia el color del texto (icono) de los botones a blanco */
+    padding: 0 !important;
+    margin: 0 !important;    
+}
+
+/* Estilo para el icono dentro de los botones */
+.ui-datatable.excel-style .ui-button .pi {
+    color: white !important; /* Cambia el color del icono a blanco */
+}
+
 :root {
     --font-family-sans-serif: "Open Sans", -apple-system, BlinkMacSystemFont,
         "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
@@ -129,11 +160,6 @@ body {
 .ui-paginator-bottom.excel-style .ui-paginator-rpp-options {
     float: left;
     margin-right: 10px;
-}
-.ui-datatable.excel-style .ui-state-highlight {
-    background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.5)) !important; /* Fondo con gradiente */
-    color: black !important; /* Color del texto */
-    font-weight: bold !important; /* Negrita */
 }
 
 .dashboard {
@@ -328,7 +354,7 @@ body {
 }
 
 .custom-accordion .ui-accordion-header.ui-state-active {
-    background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.5)) !important;
+    background: gray !important;
     border-radius: 1px !important;
     border-right: 1px solid black !important;
     border-left: 1px solid black !important;
@@ -427,6 +453,15 @@ body {
 .showcase-text-align-left .ui-outputlabel {
     font-weight: bold; /* Establece el texto en negrita */
     vertical-align: top; /* Alinea verticalmente con el inputText correspondiente */
+}
+.estilo-titulo {
+    /* Estilos generales */
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: blue ;
+    text-align: right;
+    margin-bottom: -5px;
+    /* Otros estilos... */
 }
 
 

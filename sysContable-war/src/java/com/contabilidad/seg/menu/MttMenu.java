@@ -17,6 +17,8 @@ import com.sistema.contable.seguridad.entidades.Segpantallas;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -211,19 +214,33 @@ public class MttMenu implements Serializable {
         }
     }
 
+    /**
+     * Metodo que limpia las variables
+     */
+    public void limpiar() {
+        itemModulo = new ArrayList<>();
+        itemPantalla = new ArrayList<>();
+        itmPadre = new ArrayList<>();;
+        itemCodMenu = null;
+        itemCodModulo = null;
+        itemCodPantalla = null;
+        menuSelect = new Segmenu();
+    }
+
+    /**
+     * Metodo que inicializa para agregar un nuevo menu
+     */
     public void nuevo() {
         try {
-            itemModulo = new ArrayList<>();
-            itemPantalla = new ArrayList<>();
-            itmPadre = new ArrayList<>();;
-            itemCodMenu = null;
-            itemCodModulo = null;
-            itemCodPantalla = null;
-            menuSelect = new Segmenu();
+            limpiar();
 
             esNuevo = true;
             //      List<Segmodulo> lstmodulos = segmoduloBusqueda.buscarModulo(new HashMap());
             List<Segmodulo> lstmodulos = genbusqueda.buscarTodos(Segmodulo.class);
+             Comparator<Segmodulo> comparator = Comparator.comparing(Segmodulo::getCodmod);
+
+            // Ordena la lista utilizando el comparador
+            Collections.sort(lstmodulos, comparator);
             itemCodModulo = BigInteger.ZERO;
             for (Segmodulo md : lstmodulos) {
                 itemModulo.add(new SelectItem(md.getCodmod(), md.getNommodulo()));
@@ -237,7 +254,12 @@ public class MttMenu implements Serializable {
         }
     }
 
-    public List<String> validarGuardar() {
+    /**
+     * Valida los datatos antes de agregar el nuevo menu o su edicion
+     *
+     * @return
+     */
+    public List<String> validarGuardar() throws Exception {
         try {
 
             List<String> lstMsj = new ArrayList<>();
@@ -256,13 +278,17 @@ public class MttMenu implements Serializable {
         }
     }
 
+    /**
+     * Metodo que guarda o edita el nuevo menu
+     */
     public void guardarMenu() {
         try {
-
+            String msjUser = "Menu editado con exito";
             List<String> lstMsj = validarGuardar();
             if (lstMsj.isEmpty()) {
                 Segpantallas pantalla = new Segpantallas(itemCodModulo, itemCodPantalla);
                 if (esNuevo) {
+                    msjUser = "Menu agregado con exito";
                     BigInteger codMenu = gencorrelativosBusqueda.obtenerCorrelativo("GENCORSMENU");
                     menuSelect.setCodmenu(codMenu);
                 }
@@ -287,10 +313,11 @@ public class MttMenu implements Serializable {
                 } else {
                     genProcesos.edit(menuSelect);
                 }
+                this.menuSelect = new Segmenu();
 
                 this.crearMenuPadre();
                 esNuevo = false;
-                validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.INFO, "Menu guardado con exito");
+                validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.INFO, msjUser);
                 validacionMensajes.mostrarMsj();
             } else {
                 for (String msj : lstMsj) {
@@ -304,6 +331,9 @@ public class MttMenu implements Serializable {
         }
     }
 
+    /**
+     * Obtiene las pantallas asignadas al modulo
+     */
     public void obtenerPantallas() {
         try {
             cargarMenuPadre();
@@ -322,6 +352,9 @@ public class MttMenu implements Serializable {
         }
     }
 
+    /**
+     * Carga el menu padre de los menu raiz del modulo seleccionado
+     */
     public void cargarMenuPadre() {
         try {
             itmPadre = new ArrayList<>();
@@ -357,6 +390,11 @@ public class MttMenu implements Serializable {
 
     }
 
+    /**
+     * Nodo seleccionado y asignar su variables
+     *
+     * @param event evento que se maneja al seleccionar un nodo
+     */
     public void onNodeSelect(NodeSelectEvent event) {
         try {
             esNuevo = false;
@@ -364,9 +402,10 @@ public class MttMenu implements Serializable {
             itemPantalla = new ArrayList<>();
             itmPadre = new ArrayList<>();
             esNuevo = false;
-            TreeNode selectedNode = event.getTreeNode();
-            if (selectedNode.getData() instanceof MenuStructura) {
-                MenuStructura obtenerMenu = (MenuStructura) selectedNode.getData();
+            TreeNode nodoSelect = event.getTreeNode();
+            this.selectedNode = nodoSelect;
+            if (nodoSelect.getData() instanceof MenuStructura) {
+                MenuStructura obtenerMenu = (MenuStructura) nodoSelect.getData();
                 this.setMenuSelect(obtenerMenu.getSegMenu());
 
             }
@@ -383,6 +422,12 @@ public class MttMenu implements Serializable {
         }
     }
 
+    /**
+     * Crea el menu padre del modulo seleccionado
+     *
+     * @param menuSelect parametros del menu seleccionado
+     * @throws Exception error que puedo arrojar el metodo
+     */
     public void crearMenuPadreSelect(Segmenu menuSelect) throws Exception {
         try {
 
@@ -404,6 +449,45 @@ public class MttMenu implements Serializable {
             itmPadre.add(new SelectItem(codPadre, mPadre));
         } catch (Exception e) {
             throw e;
+        }
+    }
+
+    /**
+     * Abre un popup para confirmar la eliminacion del menu
+     */
+    public void confirmarEliminarMenu() {
+        if (menuSelect != null && menuSelect.getCodmenu() != null) {
+            PrimeFaces.current().executeScript("PF('deleteMenu').show();");
+        } else {
+            validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.ERROR,
+                    "Seleccione un menu a elimianr");
+            validacionMensajes.mostrarMsj();
+
+        }
+    }
+
+    /**
+     * Metodo que elimina el menu seleccionado
+     */
+    public void eliminarMenu() {
+        try {
+            if (menuSelect != null && menuSelect.getCodmenu() != null) {
+                genProcesos.remove(menuSelect);
+                if (selectedNode != null) {
+                    selectedNode.getParent().getChildren().remove(selectedNode);
+                    selectedNode = null;
+                }
+                this.limpiar();
+                validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.INFO,
+                        "Menu eliminado exitosamente");
+                validacionMensajes.mostrarMsj();
+                //this.crearMenuPadre();
+            } else {
+                validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.ERROR, "No hay menu que eliminar");
+                validacionMensajes.mostrarMsj();
+            }
+        } catch (Exception ex) {
+            validacionMensajes.manejarExcepcion(ex, "Error al eliminar el menu");
         }
     }
 

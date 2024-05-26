@@ -24,6 +24,8 @@ import com.sistema.contable.seguridad.busquedas.SegpantallasBusquedaLocal;
 import com.sistema.contable.seguridad.entidades.Segpantallas;
 import com.sistema.contable.seguridad.entidades.SegpantallasPK;
 import java.math.BigInteger;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -112,7 +114,15 @@ public class MttenimientoModulos implements Serializable {
     @PostConstruct
     public void init() {
         try {
+            // Obtén la lista de Segmodulo
             lstModulos = genbusqueda.buscarTodos(Segmodulo.class);
+
+            // Define un comparador para comparar los Segmodulo por el atributo codmod
+            Comparator<Segmodulo> comparator = Comparator.comparing(Segmodulo::getCodmod);
+
+            // Ordena la lista utilizando el comparador
+            Collections.sort(lstModulos, comparator);
+            // lstModulos = genbusqueda.buscarTodos(Segmodulo.class);
         } catch (Exception e) {
             validar.manejarExcepcion(e, "Error al bsucar modulo");
         }

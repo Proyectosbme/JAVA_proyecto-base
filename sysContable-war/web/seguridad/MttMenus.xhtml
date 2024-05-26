@@ -10,6 +10,7 @@
     </h:head>
     <h:body>
         <h:form id="miform">
+            <h1 class="estilo-titulo">Mantenimiento de menus</h1>
             <p:tabView  prependId="false" >
                 <p:tab title="Detalle" >
                     <div class="ui-g">
@@ -24,6 +25,15 @@
                                             icon="pi pi-plus" 
                                             update="miform:menuTree"
                                             action="#{mttMenu.guardarMenu()}"
+                                            />
+                                <p:menuitem value="eliminar" 
+                                            icon="pi pi-trash" 
+                                            action="#{mttMenu.confirmarEliminarMenu()}"
+                                            />
+                                <p:menuitem value="limpiar" 
+                                            icon="pi pi-times" 
+                                            update="miform"
+                                            action="#{mttMenu.limpiar()}"
                                             />
                             </p:menubar>
 
@@ -89,7 +99,25 @@
                 </p:tab>
             </p:tabView>
         </h:form>
-
+        <p:confirmDialog  global="true" 
+                          showEffect="fade" 
+                          hideEffect="fade"
+                          id="deleteMenu"
+                          header="Confirmar eliminar el menu" 
+                          widgetVar="deleteMenu"
+                          message="Esta seguro de eliminar el menu ?">
+            <h:form>
+                <p:commandButton value="Yes"  
+                                 icon="pi pi-check" 
+                                 update="miform"
+                                 actionListener="#{mttMenu.eliminarMenu()}"
+                                 onclick="PF('deleteMenu').hide();"/>
+                <p:commandButton value="No" 
+                                 icon="pi pi-times" 
+                                 onclick="PF('deleteMenu').hide();"
+                                 />
+            </h:form>
+        </p:confirmDialog>
         <!--dialogo para los msj-->
         <p:dialog id="busc" 
                   header="Informacion" 
