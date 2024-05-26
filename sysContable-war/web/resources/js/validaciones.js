@@ -4,27 +4,6 @@
  * and open the template in the editor.
  */
 
-
-$(document).ready(function () {
-    // Verificar si hay un estado guardado en el almacenamiento local
-    var isMenuActive = localStorage.getItem('menuActive') === 'true';
-
-    // Si el menú estaba activo antes de la recarga de la página, aplicar la clase 'active'
-    if (isMenuActive) {
-        $('#sidebar, #content').addClass('active');
-    }
-
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar, #content').toggleClass('active');
-        $('.collapse.in').toggleClass('in');
-        $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-        document.getElementById("bodyContent").style.width = "100%";
-
-        // Guardar el estado del menú en el almacenamiento local
-        localStorage.setItem('menuActive', $('#sidebar').hasClass('active'));
-    });
-});
-
 function validarSoloLetras(event) {
     var charCode = event.which || event.keyCode;
     var charStr = String.fromCharCode(charCode);

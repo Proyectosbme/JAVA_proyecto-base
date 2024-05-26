@@ -6,6 +6,8 @@ package com.sistema.contable.general.validaciones;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
@@ -14,6 +16,10 @@ public class ValidacionMensajes {
 
     // Lista para almacenar los mensajes a mostrar
     private List<FacesMessage> messages = new ArrayList<>();
+    /**
+     * Variables para manejar los logs en consola
+     */
+      private static Logger LOGGER;
 
     /*
      * Enumeración Severidad
@@ -66,7 +72,6 @@ public class ValidacionMensajes {
         if (facesMessage != null) {
             messages.add(facesMessage); // Agrega el mensaje a la lista de mensajes
         }
-        mostrarMsj(); // Muestra los mensajes después de agregarlos
     }
 
    /**
@@ -76,7 +81,7 @@ public class ValidacionMensajes {
     * @param tipoError tipo de error 
     * @param mesjError  mensaje para descripcion del error
     */
-    public void mostrarErrorDetallado(String informacion, String tipoError, String mesjError) {
+    private void mostrarErrorDetallado(String informacion, String tipoError, String mesjError) {
         String mensajeDetallado;
         if (mesjError != null && !mesjError.isEmpty()) {
             mensajeDetallado = String.format("[%s] %s: %s", tipoError, informacion, mesjError);
@@ -97,6 +102,27 @@ public class ValidacionMensajes {
     public void manejarExcepcion(Throwable ex, String informacion) {
         String tipoError = ex.getClass().getSimpleName(); // Obtiene el tipo de error de la excepción
         String mensajeError = ex.getMessage(); // Obtiene el mensaje de error de la excepción
-        mostrarErrorDetallado(informacion, tipoError, mensajeError); // Muestra un mensaje de error detallado
+        StackTraceElement[] stackTrace = ex.getStackTrace();
+        String claseError = stackTrace.length > 0 ? stackTrace[0].getClassName() : "Clase no disponible";
+
+        // Obtener la clase desde donde se llamó el método manejarExcepcion
+        String claseLlamadora = Thread.currentThread().getStackTrace()[2].getClassName();
+        Logger logger = Logger.getLogger(claseLlamadora);
+
+        // Mostrar un mensaje de error detallado
+        mostrarErrorDetallado(informacion, tipoError, mensajeError);
+
+        // Loguear el error
+        logger.log(Level.SEVERE, "Información adicional: " + informacion);
+        logger.log(Level.SEVERE, "Tipo de error: " + tipoError);
+        logger.log(Level.SEVERE, "Mensaje de error: " + mensajeError);
+        logger.log(Level.SEVERE, "Clase donde ocurrió el error: " + claseError);
+        ex.printStackTrace();
     }
+
+    public List<FacesMessage> getMessages() {
+        return messages;
+    }
+    
+    
 }
