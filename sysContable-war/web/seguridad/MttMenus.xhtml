@@ -30,6 +30,10 @@
                                             icon="pi pi-trash" 
                                             action="#{mttMenu.confirmarEliminarMenu()}"
                                             />
+                                 <p:menuitem value="imprimir" 
+                                            icon="pi pi-times" 
+                                            action="#{mttMenu.imprimir()}"
+                                            />
                                 <p:menuitem value="limpiar" 
                                             icon="pi pi-times" 
                                             update="miform"
@@ -71,7 +75,8 @@
                                     </p:selectOneMenu>
 
                                     <p:outputLabel for="textNombre" value="Nombre del menu" />
-                                    <p:inputText id="textNombre" value="#{mttMenu.menuSelect.nommenu}" />
+                                    <p:inputText id="textNombre" value="#{mttMenu.menuSelect.nommenu}" 
+                                                 onkeypress="return validarSoloLetras(event)"/>
 
 
                                     <p:outputLabel for="textNomPantalla" value="Pantalla" />
@@ -87,11 +92,22 @@
                                         <f:selectItems value="#{mttMenu.itmPadre}" />
                                     </p:selectOneMenu>
 
+                                    <p:outputLabel for="textDescripcionMenu" value="Descripcion" />
+                                    <p:inputTextarea id="textDescripcionMenu"
+                                                     value="#{mttMenu.menuSelect.dscmenu}"
+                                                     rows="10" cols="40"
+                                                     onkeypress="return validarSoloLetras(event)">
+                                    </p:inputTextarea>
+                                    
                                     <p:outputLabel for="textOrden" value="Orden" />
-                                    <p:inputText id="textOrden" value="#{mttMenu.menuSelect.ordenes}" />
+                                    <p:inputText id="textOrden" value="#{mttMenu.menuSelect.ordenes}"
+                                                 onkeypress="soloNumeros(event)"/>
 
                                     <p:outputLabel for="textIcono" value="Icono" />
                                     <p:inputText id="textIcono" value="#{mttMenu.menuSelect.urlicono}" />
+
+                                    <p:outputLabel for="textVersion" value="Version" />
+                                    <p:inputText id="textVersion" value="#{mttMenu.menuSelect.version}" />
                                 </p:panelGrid>
                             </p:panel>
                         </div>

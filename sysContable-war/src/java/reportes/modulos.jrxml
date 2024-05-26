@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="modulos" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eb029fb6-9236-4630-8f98-39ca15198ab7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select * from Segmodulo]]>
+	</queryString>
+	<field name="CODMOD" class="java.math.BigDecimal"/>
+	<field name="NOMMODULO" class="java.lang.String"/>
+	<field name="URLDIRECC" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="fd2d0db3-3d6b-4ff8-9ded-406e6588f6a2"/>
+				<text><![CDATA[CODMOD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="100" height="20" uuid="dc2582c8-6d41-4b09-91c6-3671ac31b03e"/>
+				<text><![CDATA[NOMMODULO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="100" height="20" uuid="da45a414-df88-45e0-95ce-81270469ee92"/>
+				<text><![CDATA[URLDIRECC]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="39227839-17fc-46ca-9557-9f77ff20e098"/>
+				<textFieldExpression><![CDATA[$F{CODMOD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="100" height="20" uuid="f7b53492-5bd5-4d0c-b245-828ffcac9826"/>
+				<textFieldExpression><![CDATA[$F{NOMMODULO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="0" width="100" height="20" uuid="559146b8-28ae-418d-bbd7-05df20479659"/>
+				<textFieldExpression><![CDATA[$F{URLDIRECC}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
