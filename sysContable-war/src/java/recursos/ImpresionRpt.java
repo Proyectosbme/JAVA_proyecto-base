@@ -1,405 +1,179 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package recursos;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+
+import java.io.*;
 import java.net.URI;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.net.URISyntaxException;
+import java.sql.*;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.export.JRCsvExporter;
-import net.sf.jasperreports.engine.export.JRCsvExporterParameter;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.export.*;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
-import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 
-/**
- *
- * @author UES_BRYAN
- */
 public class ImpresionRpt {
 
-    @SuppressWarnings("CallToThreadDumpStack")
-    public String ImprimeReporteXLS(String datSource, String url,
-            Map parameters) throws IOException, NamingException,
-            SQLException, Exception {
-        Connection connection = null;
-        String archJasper;
-        URI uriObj = null;
-        try {
-            InitialContext initialContext = new InitialContext();
-            DataSource ds = (DataSource) initialContext.lookup(datSource);
-            connection = ds.getConnection();
-            uriObj = getClass().getResource(url).toURI();
-            File reporte = new File(uriObj);
-            archJasper = reporte.getAbsolutePath();
-            JasperPrint jasperPrint = null;
-
-            jasperPrint = JasperFillManager
-                    .fillReport(archJasper, parameters, connection);
-            String xlsPath = archJasper;
-            String xlsFileName = "";
-            xlsFileName = "rpt.xls";
-
-            JRXlsExporter exporter = new JRXlsExporter();
-            exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-            exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                    xlsPath + xlsFileName);
-            exporter.setParameter(JRExporterParameter.IGNORE_PAGE_MARGINS, true);
-            //exporter.setParameter(JRXlsAbstractExporterParameter
-            //.IS_WHITE_PAGE_BACKGROUND, false);
-            exporter.setParameter(JRXlsAbstractExporterParameter.IS_IGNORE_CELL_BORDER, false);
-            exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, true);
-            exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, true);
-            exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, true);
-            exporter.exportReport();
-            connection.close();
-            return xlsPath + xlsFileName;
-        } catch (NamingException ne) {
-            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
-                    null, ne);
-            ne.printStackTrace();
-            throw new Exception("Error al accededer al DataSource "
-                    + ne.getMessage());
-        } catch (SQLException sqle) {
-            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
-                    null, sqle);
-            sqle.printStackTrace();
-            throw new Exception("SQL Exception " + sqle.getMessage());
-        } catch (JRException ex) {
-            Logger.getLogger(ImpresionRpt.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-            throw new Exception("JRException " + ex.getMessage());
-        } catch (Exception e) {
-            Logger.getLogger(ImpresionRpt.class.getName())
-                    .log(Level.SEVERE, null, e);
-            e.printStackTrace();
-            throw new Exception("Exception " + e.getMessage());
-        } finally {
-            connection.close();
+    
+    /**
+     * Imprime y exporta un informe en formato XLS.
+     * 
+     * @param datSource nombre del DataSource.
+     * @param url dirección URI donde se encuentra el archivo .jasper.
+     * @param parameters parámetros del informe.
+     * @return array de bytes del informe exportado.
+     * @throws IOException si hay un error de E/S.
+     * @throws NamingException si hay un error de acceso al contexto de nombres.
+     * @throws SQLException si hay un error de acceso a la base de datos.
+     * @throws JRException si hay un error durante la generación del informe.
+     * @throws URISyntaxException si hay un error de sintaxis en la URI.
+     */
+    public byte[] ImprimeReporteXLS(String datSource, String url, Map parameters)
+            throws IOException, NamingException, SQLException, JRException, URISyntaxException {
+        try (Connection connection = getConnection(datSource);) {
+            JasperPrint jasperPrint = fillReport(url, parameters, connection);
+            return exportReportToXLS(jasperPrint);
         }
     }
 
-    public String ImprimeReporteDOCX(String datSource, String url,
-            Map parameters) throws IOException, NamingException,
-            SQLException, Exception {
-        Connection connection = null;
-        String archJasper;
-        URI uriObj = null;
-        try {
-            InitialContext initialContext = new InitialContext();
-            DataSource ds = (DataSource) initialContext.lookup(datSource);
-            connection = ds.getConnection();
-            uriObj = getClass().getResource(url).toURI();
-            File reporte = new File(uriObj);
-            archJasper = reporte.getAbsolutePath();
-            JasperPrint jasperPrint = null;
-
-            jasperPrint = JasperFillManager
-                    .fillReport(archJasper, parameters, connection);
-            String docxPath = archJasper;
-            String docxFileName = "";
-            docxFileName = "rpt.docx";
-            JRDocxExporter exporter = new JRDocxExporter();
-            exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-            exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                    docxPath + docxFileName);
-            exporter.setParameter(JRExporterParameter.IGNORE_PAGE_MARGINS, true);
-            //exporter.setParameter(JRXlsAbstractExporterParameter
-            //.IS_WHITE_PAGE_BACKGROUND, false);
-            exporter.setParameter(JRXlsAbstractExporterParameter.IS_IGNORE_CELL_BORDER, false);
-            exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, true);
-            exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, true);
-            exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, true);
-            exporter.exportReport();
-            connection.close();
-            return docxPath + docxFileName;
-        } catch (NamingException ne) {
-            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
-                    null, ne);
-            ne.printStackTrace();
-            throw new Exception("Error al accededer al DataSource "
-                    + ne.getMessage());
-        } catch (SQLException sqle) {
-            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
-                    null, sqle);
-            sqle.printStackTrace();
-            throw new Exception("SQL Exception " + sqle.getMessage());
-        } catch (JRException ex) {
-            Logger.getLogger(ImpresionRpt.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-            throw new Exception("JRException " + ex.getMessage());
-        } catch (Exception e) {
-            Logger.getLogger(ImpresionRpt.class.getName())
-                    .log(Level.SEVERE, null, e);
-            e.printStackTrace();
-            throw new Exception("Exception " + e.getMessage());
-        } finally {
-            connection.close();
+       /**
+     * Imprime y exporta un informe en formato DOCX.
+     * 
+     * @param datSource nombre del DataSource.
+     * @param url dirección URI donde se encuentra el archivo .jasper.
+     * @param parameters parámetros del informe.
+     * @return array de bytes del informe exportado.
+     * @throws IOException si hay un error de E/S.
+     * @throws NamingException si hay un error de acceso al contexto de nombres.
+     * @throws SQLException si hay un error de acceso a la base de datos.
+     * @throws JRException si hay un error durante la generación del informe.
+     * @throws URISyntaxException si hay un error de sintaxis en la URI.
+     */
+    public byte[] ImprimeReporteDOCX(String datSource, String url, Map parameters)
+            throws IOException, NamingException, SQLException, JRException, URISyntaxException {
+        try (Connection connection = getConnection(datSource);) {
+            JasperPrint jasperPrint = fillReport(url, parameters, connection);
+            return exportReportToDOCX(jasperPrint);
         }
+    }
+
+      /**
+     * Imprime y exporta un informe en formato PDF.
+     * 
+     * @param datSource nombre del DataSource.
+     * @param url dirección URI donde se encuentra el archivo .jasper.
+     * @param parameters parámetros del informe.
+     * @return array de bytes del informe exportado.
+     * @throws IOException si hay un error de E/S.
+     * @throws NamingException si hay un error de acceso al contexto de nombres.
+     * @throws SQLException si hay un error de acceso a la base de datos.
+     * @throws JRException si hay un error durante la generación del informe.
+     * @throws URISyntaxException si hay un error de sintaxis en la URI.
+     */
+    public byte[] ImprimeReportePDF(String datSource, String url, Map parameters)
+            throws IOException, NamingException, SQLException, JRException, URISyntaxException {
+        try (Connection connection = getConnection(datSource);) {
+            JasperPrint jasperPrint = fillReport(url, parameters, connection);
+            return exportReportToPDF(jasperPrint);
+        }
+    }
+
+    // Métodos auxiliares privados
+    /**
+     * Obtiene una conexión a la base de datos utilizando el DataSource
+     * especificado.
+     *
+     * @param datSource nombre del DataSource.
+     * @return conexión a la base de datos.
+     * @throws NamingException si hay un error de acceso al contexto de nombres.
+     * @throws SQLException si hay un error de acceso a la base de datos.
+     */
+    private Connection getConnection(String datSource) throws NamingException, SQLException {
+        InitialContext initialContext = new InitialContext();
+        DataSource ds = (DataSource) initialContext.lookup(datSource);
+        return ds.getConnection();
     }
 
     /**
-     * Metodo que ejecuta un reporte y lo exporta en pdf.
+     * Genera un informe JasperPrint a partir de un archivo .jasper y unos
+     * parámetros.
      *
-     * @param datSource String nombre del DataSource.
-     * @param url Direccion uri donde esta el jsaper.
-     * @param parameters map de los parametros del reporte.
-     * @throws java.lang.Exception error general.
+     * @param url dirección URI donde se encuentra el archivo .jasper.
+     * @param parameters parámetros del informe.
+     * @param connection conexión a la base de datos.
+     * @return objeto JasperPrint del informe generado.
+     * @throws JRException si hay un error durante la generación del informe.
+     * @throws IOException si hay un error de E/S.
+     * @throws URISyntaxException si hay un error de sintaxis en la URI.
      */
-    public byte[] ImprimeReportePDF(String datSource, String url,
-            Map parameters) throws IOException, NamingException,
-            SQLException, Exception {
-        Connection connection = null;
-        String archJasper;
-        URI uriObj = null;
-        byte[] reporteByte = null;
-        try {
-            InitialContext initialContext = new InitialContext();
-            DataSource ds = (DataSource) initialContext.lookup(datSource);
-            connection = ds.getConnection();
-            uriObj = getClass().getResource(url).toURI();
-            File reporte = new File(uriObj);
-            archJasper = reporte.getAbsolutePath();
-            JasperPrint impresion = null;
-            JRExporter exporter = new JRPdfExporter();
-            ByteArrayOutputStream reportePDF = new ByteArrayOutputStream();
-            reporteByte = JasperRunManager.runReportToPdf(reporte.getPath(),
-                    parameters, connection);
-            impresion =
-                    JasperFillManager.fillReport(archJasper, parameters, connection);
-            exporter.setParameter(JRExporterParameter.JASPER_PRINT, impresion);
-            exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, reportePDF);
-            connection.close();
-        } catch (NamingException ne) {
-            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
-                    null, ne);
-            ne.printStackTrace();
-            throw new Exception("Error al accededer al DataSource "
-                    + ne.getMessage());
-        } catch (SQLException sqle) {
-            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
-                    null, sqle);
-            sqle.printStackTrace();
-            throw new Exception("SQL Exception " + sqle.getMessage());
-        } catch (JRException ex) {
-            Logger.getLogger(ImpresionRpt.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-            throw new Exception("JRException " + ex.getMessage());
-        } catch (Exception e) {
-            Logger.getLogger(ImpresionRpt.class.getName())
-                    .log(Level.SEVERE, null, e);
-            e.printStackTrace();
-            throw new Exception("Exception " + e.getMessage());
-        } finally {
-            connection.close();
-        }
-        return reporteByte;
+    private JasperPrint fillReport(String url, Map parameters, Connection connection)
+            throws JRException, IOException, URISyntaxException {
+        URI uriObj = getClass().getResource(url).toURI();
+        File reporte = new File(uriObj);
+        String archJasper = reporte.getAbsolutePath();
+        return JasperFillManager.fillReport(archJasper, parameters, connection);
     }
 
     /**
-     * Metodo que ejecuta un reporte y lo exporta en pdf.
+     * Exporta un informe JasperPrint a formato XLS.
      *
-     * @param datSource String nombre del DataSource.
-     * @param url Direccion uri donde esta el jsaper.
-     * @param parameters map de los parametros del reporte.
-     * @throws java.lang.Exception error general.
+     * @param jasperPrint objeto JasperPrint del informe.
+     * @return array de bytes del informe exportado.
+     * @throws JRException si hay un error durante la exportación del informe.
      */
-    public byte[] GuardarReportePDF(String datSource, String url,
-            Map parameters) throws IOException, NamingException,
-            SQLException, Exception {
-        Connection connection = null;
-        URI uriObj = null;
-        byte[] reporteByte = null;
-        try {
-            InitialContext initialContext = new InitialContext();
-            DataSource ds = (DataSource) initialContext.lookup(datSource);
-            connection = ds.getConnection();
-            uriObj = getClass().getResource(url).toURI();
-            File reporte = new File(uriObj);
-            reporteByte = JasperRunManager.runReportToPdf(reporte.getPath(),
-                    parameters, connection);
-            connection.close();
-        } catch (NamingException ne) {
-            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
-                    null, ne);
-            ne.printStackTrace();
-            throw new Exception("Error al accededer al DataSource "
-                    + ne.getMessage());
-        } catch (SQLException sqle) {
-            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
-                    null, sqle);
-            sqle.printStackTrace();
-            throw new Exception("SQL Exception " + sqle.getMessage());
-        } catch (JRException ex) {
-            Logger.getLogger(ImpresionRpt.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-            throw new Exception("JRException " + ex.getMessage());
-        } catch (Exception e) {
-            Logger.getLogger(ImpresionRpt.class.getName())
-                    .log(Level.SEVERE, null, e);
-            e.printStackTrace();
-            throw new Exception("Exception " + e.getMessage());
-        } finally {
-            connection.close();
-        }
-        return reporteByte;
+    private byte[] exportReportToXLS(JasperPrint jasperPrint) throws JRException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        JRXlsExporter exporter = new JRXlsExporter();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, byteArrayOutputStream);
+        setXLSExporterParameters(exporter);
+        exporter.exportReport();
+        return byteArrayOutputStream.toByteArray();
     }
 
-    public String ImprimeReporteCSV(String datSource, String url,
-            Map parameters) throws IOException, NamingException,
-            SQLException, Exception {
-        Connection connection = null;
-        String archJasper;
-        URI uriObj = null;
-        try {
-            InitialContext initialContext = new InitialContext();
-            DataSource ds = (DataSource) initialContext.lookup(datSource);
-            connection = ds.getConnection();
-            uriObj = getClass().getResource(url).toURI();
-            File reporte = new File(uriObj);
-            archJasper = reporte.getAbsolutePath();
-            JasperPrint jasperPrint = null;
-
-            jasperPrint = JasperFillManager
-                    .fillReport(archJasper, parameters, connection);
-            String csvPath = archJasper;
-            String csvFileName = "";
-            csvFileName = "rpt.csv";
-
-            JRCsvExporter exporter = new JRCsvExporter();
-            exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-            exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                    csvPath + csvFileName);
-            exporter.setParameter(JRExporterParameter.IGNORE_PAGE_MARGINS, true);
-            /*HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            httpServletResponse.setContentType("application/csv; charset=cp1252");
-            httpServletResponse.setCharacterEncoding("cp1252");
-            httpServletResponse.addHeader("Content-disposition", "attachment; filename=nameoffile.csv");
-            httpServletResponse.addHeader("Content-type", "application/csv; charset=" + Charset.forName("utf-8").displayName());
-            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
-*/
-            exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-            exporter.setParameter(JRExporterParameter.CHARACTER_ENCODING, "cp1252");
-            //exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
-            exporter.setParameter(JRCsvExporterParameter.CHARACTER_ENCODING, "cp1252");
-            exporter.setParameter(JRCsvExporterParameter.FIELD_DELIMITER, ",");
-            //exporter.setParameter(JRXlsAbstractExporterParameter
-            //.IS_WHITE_PAGE_BACKGROUND, false);
-           /* exporter.setParameter(JRXlsAbstractExporterParameter.IS_IGNORE_CELL_BORDER, false);
-             exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, true);
-             exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, true);*/
-             exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, false);
-            exporter.exportReport();
-            connection.close();
-            return csvPath + csvFileName;
-        } catch (NamingException ne) {
-            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
-                    null, ne);
-            ne.printStackTrace();
-            throw new Exception("Error al accededer al DataSource "
-                    + ne.getMessage());
-        } catch (SQLException sqle) {
-            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
-                    null, sqle);
-            sqle.printStackTrace();
-            throw new Exception("SQL Exception " + sqle.getMessage());
-        } catch (JRException ex) {
-            Logger.getLogger(ImpresionRpt.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-            throw new Exception("JRException " + ex.getMessage());
-        } catch (Exception e) {
-            Logger.getLogger(ImpresionRpt.class.getName())
-                    .log(Level.SEVERE, null, e);
-            e.printStackTrace();
-            throw new Exception("Exception " + e.getMessage());
-        } finally {
-            connection.close();
-        }
+    /**
+     * Exporta un informe JasperPrint a formato DOCX.
+     *
+     * @param jasperPrint objeto JasperPrint del informe.
+     * @return array de bytes del informe exportado.
+     * @throws JRException si hay un error durante la exportación del informe.
+     */
+    private byte[] exportReportToDOCX(JasperPrint jasperPrint) throws JRException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        JRDocxExporter exporter = new JRDocxExporter();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, byteArrayOutputStream);
+        exporter.exportReport();
+        return byteArrayOutputStream.toByteArray();
     }
 
-    public String ImprimeReporteXLSX(String datSource, String url,
-            Map parameters) throws IOException, NamingException,
-            SQLException, Exception {
-        Connection connection = null;
-        String archJasper;
-        URI uriObj = null;
-        try {
-            InitialContext initialContext = new InitialContext();
-            DataSource ds = (DataSource) initialContext.lookup(datSource);
-            connection = ds.getConnection();
-            uriObj = getClass().getResource(url).toURI();
-            File reporte = new File(uriObj);
-            archJasper = reporte.getAbsolutePath();
-            JasperPrint jasperPrint = null;
+    /**
+     * Exporta un informe JasperPrint a formato PDF.
+     *
+     * @param jasperPrint objeto JasperPrint del informe.
+     * @return array de bytes del informe exportado.
+     * @throws JRException si hay un error durante la exportación del informe.
+     */
+    private byte[] exportReportToPDF(JasperPrint jasperPrint) throws JRException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        JRPdfExporter exporter = new JRPdfExporter();
+        exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, byteArrayOutputStream);
+        exporter.exportReport();
+        return byteArrayOutputStream.toByteArray();
+    }
 
-            jasperPrint = JasperFillManager
-                    .fillReport(archJasper, parameters, connection);
-            String xlsPath = archJasper;
-            String xlsFileName = "";
-            xlsFileName = "rpt.xlsx";
-
-            JRXlsxExporter exporter = new JRXlsxExporter();
-            exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-            exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                    xlsPath + xlsFileName);
-            exporter.setParameter(JRExporterParameter.IGNORE_PAGE_MARGINS, true);
-            //exporter.setParameter(JRXlsAbstractExporterParameter
-            //.IS_WHITE_PAGE_BACKGROUND, false);
-            exporter.setParameter(JRXlsAbstractExporterParameter.IS_IGNORE_CELL_BORDER, false);
-            exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, true);
-            exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, true);
-            exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, true);
-            exporter.exportReport();
-            connection.close();
-            return xlsPath + xlsFileName;
-        } catch (NamingException ne) {
-            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
-                    null, ne);
-            ne.printStackTrace();
-            throw new Exception("Error al accededer al DataSource "
-                    + ne.getMessage());
-        } catch (SQLException sqle) {
-            Logger.getLogger(ImpresionRpt.class.getName()).log(Level.SEVERE,
-                    null, sqle);
-            sqle.printStackTrace();
-            throw new Exception("SQL Exception " + sqle.getMessage());
-        } catch (JRException ex) {
-            Logger.getLogger(ImpresionRpt.class.getName())
-                    .log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-            throw new Exception("JRException " + ex.getMessage());
-        } catch (Exception e) {
-            Logger.getLogger(ImpresionRpt.class.getName())
-                    .log(Level.SEVERE, null, e);
-            e.printStackTrace();
-            throw new Exception("Exception " + e.getMessage());
-        } finally {
-            connection.close();
-        }
+    // Método auxiliar para configurar parámetros comunes del exportador XLS
+    /**
+     * Configura los parámetros comunes del exportador XLS.
+     *
+     * @param exporter exportador XLS.
+     */
+    private void setXLSExporterParameters(JRXlsExporter exporter) {
+        exporter.setParameter(JRExporterParameter.IGNORE_PAGE_MARGINS, true);
+        exporter.setParameter(JRXlsAbstractExporterParameter.IS_IGNORE_CELL_BORDER, false);
+        exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, true);
+        exporter.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, true);
+        exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, true);
     }
 }
