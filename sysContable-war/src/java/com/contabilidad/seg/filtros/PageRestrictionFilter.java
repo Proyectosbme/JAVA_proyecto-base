@@ -27,7 +27,8 @@ public class PageRestrictionFilter implements Filter {
     // Conjunto de páginas permitidas que los usuarios pueden acceder sin necesidad de autenticación
     private static final Set<String> ALLOWED_PAGES = new HashSet<>(Arrays.asList(
             "/index.xhtml",
-            "/login.xhtml"
+            "/login.xhtml",
+            "/ImpRpts"
     ));
 
     // Conjunto de recursos estáticos permitidos
