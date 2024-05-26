@@ -7,12 +7,10 @@
        xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
-        <style>
-         
-        </style>
     </h:head>
     <h:body>
         <h:form id="form">
+            <h1 class="estilo-titulo">Mantenimiento de modulos</h1>
             <p:tabView dynamic="true"   style="border: none;" 
                        activeIndex="#{mttenimientoModulos.indexTab}">
                 <p:tab title="Busqueda" >
@@ -44,8 +42,8 @@
                                  paginator="true" 
                                  paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rows="10"
-                                 paginatorPosition="bottom"
                                  styleClass="excel-style"
+                                 paginatorPosition="bottom"
                                  selectionMode="single" 
                                  selection="#{mttenimientoModulos.selectecModulo}">
                         <p:ajax event="rowSelect"  listener="#{mttenimientoModulos.cargarPantallas}" 
