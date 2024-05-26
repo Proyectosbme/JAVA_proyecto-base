@@ -528,6 +528,7 @@ public class MttMenu implements Serializable {
                     + "resizable=1,status=0,toolbar=0');";
             PrimeFaces.current().executeScript(javascriptCode);
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

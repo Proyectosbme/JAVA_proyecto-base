@@ -8,10 +8,14 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>nova-dark</param-value>
     </context-param>
-    <servlet>
+      <servlet>
         <servlet-name>ImpRpts</servlet-name>
         <servlet-class>recursos.ImpRpts</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>ImpRpts</servlet-name>
+        <url-pattern>/ImpRpts</url-pattern>
+    </servlet-mapping>
     <!-- Mapeo de tipos MIME para fuentes -->
     <mime-mapping>
         <extension>ttf</extension>
