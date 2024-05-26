@@ -5,6 +5,7 @@ que se encarga de manejar el mantenimiento de módulos Y SUS PANTALLAS
  */
 package com.contabilidad.seg.menu;
 
+import com.sistema.contable.general.busquedas.GenBusquedadLocal;
 import com.sistema.contable.seguridad.entidades.Segmodulo;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -13,19 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
 import com.sistema.contable.seguridad.busquedas.SegmoduloBusquedaLocal;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import com.sistema.contable.general.busquedas.GencorrelativosBusquedaLocal;
 import com.sistema.contable.general.procesos.GenProcesosLocal;
+import com.sistema.contable.general.validaciones.ValidacionMensajes;
 import com.sistema.contable.general.validaciones.ValidacionesException;
 import com.sistema.contable.seguridad.busquedas.SegpantallasBusquedaLocal;
 import com.sistema.contable.seguridad.entidades.Segpantallas;
 import com.sistema.contable.seguridad.entidades.SegpantallasPK;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,9 +37,6 @@ import java.util.Map;
 @SessionScoped
 public class MttenimientoModulos implements Serializable {
 
-    @EJB
-    private SegpantallasBusquedaLocal segpantallasBusqueda;
-
 //<editor-fold defaultstate="collapsed" desc="DECLARACIÓN DE VARIABLES">
     @EJB
     private GenProcesosLocal genProcesos;
@@ -50,8 +44,17 @@ public class MttenimientoModulos implements Serializable {
     private GencorrelativosBusquedaLocal busGenCors;
     @EJB
     private SegmoduloBusquedaLocal busquedaModulo;
+    @EJB
+    private SegpantallasBusquedaLocal segpantallasBusqueda;
+    @EJB
+    private GenBusquedadLocal genbusqueda;
 
 //<editor-fold defaultstate="collapsed" desc="Variables de modulo">
+    /**
+     * Variables para los mensajes al usuario
+     */
+    private final ValidacionMensajes validar = new ValidacionMensajes();
+
     /**
      * Guarda la lista de modulos que se encuentran en la base de datos
      */
@@ -73,17 +76,9 @@ public class MttenimientoModulos implements Serializable {
      */
     private String nomModulo = "";
     /**
-     * Mensjae que se mostraran al usuario
-     */
-    private List<FacesMessage> messages = new ArrayList<>();
-    /**
      * Maneja el valor del tab que se mostrara
      */
     private int indexTab = 0;
-    /**
-     * Variable que mostrara los mensjaes a mayor detalle en el log
-     */
-    private static final Logger LOGGER = Logger.getLogger(MttenimientoModulos.class.getName());
     /**
      * Variables que contiene el modulo a eliminar
      */
@@ -117,9 +112,9 @@ public class MttenimientoModulos implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            lstModulos = busquedaModulo.buscarModulo(new HashMap());
+            lstModulos = genbusqueda.buscarTodos(Segmodulo.class);
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al buscar módulos", e);
+            validar.manejarExcepcion(e, "Error al bsucar modulo");
         }
 
     }
@@ -137,12 +132,11 @@ public class MttenimientoModulos implements Serializable {
             }
             lstModulos = busquedaModulo.buscarModulo(parametros);
             if (lstModulos.isEmpty()) {
-                agregarMsj(2, "No se encontraron resultados");
-                mostrarMsj();
+                validar.agregarMsj(ValidacionMensajes.Severidad.WARN, "No se encontraron resultados");
+                validar.mostrarMsj();
             }
         } catch (Exception ex) {
-            agregarMsj(4, "Ocurrio un error");
-            mostrarMsj();
+            validar.manejarExcepcion(ex, "Comuniquese con el equipo de informatica");
         }
     }
 
@@ -161,6 +155,9 @@ public class MttenimientoModulos implements Serializable {
         PrimeFaces.current().executeScript("PF('addModulo').show();");
     }
 
+    /**
+     * Metodo que agrega el nuevo modulo
+     */
     public void agregarModulo() {
         try {
 
@@ -168,8 +165,8 @@ public class MttenimientoModulos implements Serializable {
              * VALIDACION DE VARIABLES
              */
             if (moduloAgregar.getNommodulo() == null || moduloAgregar.getNommodulo().isEmpty()) {
-                agregarMsj(1, "Ingrese el nombre del modulo");
-                mostrarMsj();
+                validar.agregarMsj(ValidacionMensajes.Severidad.WARN, "Ingrese el nombre del modulo");
+                validar.mostrarMsj();
                 return;
             }
             //PROCESOS
@@ -181,18 +178,23 @@ public class MttenimientoModulos implements Serializable {
             moduloAgregar.setUrldirecc("LOCAL");
             genProcesos.create(moduloAgregar);
             lstModulos.add(moduloAgregar);
-            agregarMsj(1, "Modulo agregado correctamente");
-            mostrarMsj();
+            validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Modulo agregado correctamente");
+            validar.mostrarMsj();
             this.setIndexTab(0);
 
             //ERRORES
         } catch (ValidacionesException ve) {
-            agregarMsj(1, ve.getMessage());
-            agregarMsj(1, ve.getMensaje());
-            mostrarMsj();
+            validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, ve.getMensaje());
+            validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, ve.getMessage());
+            for (String msj : ve.getMensajes()) {
+                validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, msj);
+            }
+            validar.mostrarMsj();
+            validar.mostrarMsj();
+
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error al buscar módulos", ex);
-            agregarMsj(4, "Error inesperado");
+            validar.manejarExcepcion(ex, "Error al buscar módulos comuniquise con el equipo de"
+                    + "informatica");
         }
     }
 
@@ -206,8 +208,8 @@ public class MttenimientoModulos implements Serializable {
             eliminarModulo = modulo;
             PrimeFaces.current().executeScript("PF('deleteMod').show();");
         } else {
-            agregarMsj(4, "Seleccione un modulo");
-            mostrarMsj();
+            validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione un modulo");
+            validar.mostrarMsj();
         }
 
     }
@@ -221,12 +223,13 @@ public class MttenimientoModulos implements Serializable {
             if (eliminarModulo != null) {
                 genProcesos.remove(eliminarModulo);
                 lstModulos.remove(eliminarModulo);
-                agregarMsj(1, "Modulo eliminado con exito");
+                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Modulo eliminado con exito");
             } else {
-                agregarMsj(4, "Seleccione un modulo");
+                validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione un modulo");
             }
-            mostrarMsj();
+            validar.mostrarMsj();
         } catch (Exception e) {
+            validar.manejarExcepcion(e, "Erro en eliminacion del modulo");
         }
     }
 
@@ -240,8 +243,8 @@ public class MttenimientoModulos implements Serializable {
             selectecModulo = modulo;
             PrimeFaces.current().executeScript("PF('editModulo').show();");
         } else {
-            agregarMsj(4, "Seleccione un modulo");
-            mostrarMsj();
+            validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione un modulo");
+            validar.mostrarMsj();
         }
 
     }
@@ -256,11 +259,11 @@ public class MttenimientoModulos implements Serializable {
                 genProcesos.edit(selectecModulo);
                 lstModulos.set(lstModulos.indexOf(selectecModulo), selectecModulo);
                 PrimeFaces.current().executeScript("PF('editModulo').hide();");
-                agregarMsj(1, "Modulo editado con exito");
+                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Modulo editado con exito");
             } else {
-                agregarMsj(4, "Seleccione u nmodulo");
+                validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione u nmodulo");
             }
-            mostrarMsj();
+            validar.mostrarMsj();
         } catch (Exception e) {
         }
     }
@@ -273,8 +276,8 @@ public class MttenimientoModulos implements Serializable {
      */
     public void cargarPantallas() {
         if (this.selectecModulo.getSegpantallasList().isEmpty()) {
-            agregarMsj(1, "El modulo no contiene pantallas");
-            mostrarMsj();
+            validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "El modulo no contiene pantallas");
+            validar.mostrarMsj();
         } else {
             this.setIndexTab(1);
         }
@@ -290,8 +293,8 @@ public class MttenimientoModulos implements Serializable {
             eliminarPantalla = pantalla;
             PrimeFaces.current().executeScript("PF('deletePantaid').show();");
         } else {
-            agregarMsj(4, "Seleccione una pantalla");
-            mostrarMsj();
+            validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione una pantalla");
+            validar.mostrarMsj();
         }
 
     }
@@ -305,12 +308,13 @@ public class MttenimientoModulos implements Serializable {
             if (eliminarPantalla != null) {
                 genProcesos.remove(eliminarPantalla);
                 selectecModulo.getSegpantallasList().remove(eliminarPantalla);
-                agregarMsj(1, "Pantalla eliminada con exito");
+                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Pantalla eliminada con exito");
             } else {
-                agregarMsj(4, "Seleccione una pantalla");
+                validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione una pantalla");
             }
-            mostrarMsj();
+            validar.mostrarMsj();
         } catch (Exception e) {
+            validar.manejarExcepcion(e, "Error al eliminar pantalla");
         }
 
     }
@@ -325,8 +329,8 @@ public class MttenimientoModulos implements Serializable {
             editPantalla = pantalla;
             PrimeFaces.current().executeScript("PF('editPantalla').show();");
         } else {
-            agregarMsj(4, "Seleccione una pantalla");
-            mostrarMsj();
+            validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione una pantalla");
+            validar.mostrarMsj();
         }
 
     }
@@ -342,12 +346,13 @@ public class MttenimientoModulos implements Serializable {
                         .set(selectecModulo.getSegpantallasList().indexOf(editPantalla),
                                 editPantalla);
                 PrimeFaces.current().executeScript("PF('editPantalla').hide();");
-                agregarMsj(1, "Pantalla editado con exito");
+                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Pantalla editado con exito");
             } else {
-                agregarMsj(4, "Seleccione una pantalla");
+                validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione una pantalla");
             }
-            mostrarMsj();
+            validar.mostrarMsj();
         } catch (Exception e) {
+            validar.manejarExcepcion(e, "Error al editar pantalla");
         }
     }
 
@@ -371,75 +376,31 @@ public class MttenimientoModulos implements Serializable {
                 selectecModulo.getSegpantallasList().add(addPantalla);
                 lstModulos.set(lstModulos.indexOf(selectecModulo), selectecModulo);
                 genProcesos.create(addPantalla);
-                agregarMsj(1, "Pantalla agregada correctamente");
-                mostrarMsj();
+                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Pantalla agregada correctamente");
+                validar.mostrarMsj();
             } else {
                 lstMsj.forEach((msj) -> {
-                    agregarMsj(4, msj);
+                    validar.agregarMsj(ValidacionMensajes.Severidad.INFO, msj);
                 });
-                mostrarMsj();
+                validar.mostrarMsj();
             }
         } catch (ValidacionesException ex) {
-            agregarMsj(4, ex.getMessage());
-            agregarMsj(4, ex.getMensaje());
-            mostrarMsj();
+            validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, ex.getMensaje());
+            validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, ex.getMessage());
+            for (String msj : ex.getMensajes()) {
+                validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, msj);
+            }
+            validar.mostrarMsj();
         } catch (Exception ex) {
-            agregarMsj(4, "Error inesperado" + ex.toString());
-            mostrarMsj();
+            validar.manejarExcepcion(ex, "Error al guardar pantalla");
         }
 
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="METODOS PARA MENSAJES">
-    /**
-     * Metodo que muestra el mensaje al usuario y abre un popup
-     */
-    public void mostrarMsj() {
-        PrimeFaces.current().executeScript("PF('dlgMensajes').show();");
-        FacesContext context = FacesContext.getCurrentInstance();
-        for (FacesMessage message : messages) {
-            context.addMessage(null, message);
-        }
-        messages.clear();
-    }
-
-    /**
-     * Metodo que agrega el mensaje a una lista
-     *
-     * @param numero
-     * @param msj
-     */
-    public void agregarMsj(int numero, String msj) {
-        switch (numero) {
-            case 1:
-                messages.add(new FacesMessage(FacesMessage.SEVERITY_INFO, null, msj));
-                break;
-            case 2:
-                messages.add(new FacesMessage(FacesMessage.SEVERITY_WARN, null, msj));
-                break;
-            case 3:
-                messages.add(new FacesMessage(FacesMessage.SEVERITY_FATAL, null, msj));
-                break;
-            case 4:
-                messages.add(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, msj));
-                break;
-
-        }
-    }
 //</editor-fold>
-//</editor-fold>
-
 //<editor-fold defaultstate="collapsed" desc="GET AND SET">
 //<editor-fold defaultstate="collapsed" desc="GENERALES">
-    public List<FacesMessage> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<FacesMessage> messages) {
-        this.messages = messages;
-    }
-
     public int getIndexTab() {
         return indexTab;
     }
@@ -510,6 +471,10 @@ public class MttenimientoModulos implements Serializable {
         this.nomModulo = nomModulo;
     }
 
+    public ValidacionMensajes getValidar() {
+        return validar;
+    }
 //</editor-fold>
 //</editor-fold>
+
 }

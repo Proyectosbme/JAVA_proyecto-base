@@ -26,53 +26,102 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import org.primefaces.PrimeFaces;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 /**
+ * Controlador para la gestión de menús. Permite crear, modificar y eliminar
+ * menús en el sistema.
  *
  * @author BME_PERSONAL
  */
 @Named(value = "mttMenu")
 @SessionScoped
 public class MttMenu implements Serializable {
+// Inyección de dependencias para los EJBs necesarios
 
     @EJB
-    private GenBusquedadLocal genbusqueda;
+    private GenBusquedadLocal genbusqueda; // Bean para realizar búsquedas generales
+    @EJB
+    private GencorrelativosBusquedaLocal gencorrelativosBusqueda; // Bean para buscar correlativos
+    @EJB
+    private GenProcesosLocal genProcesos; // Bean para realizar procesos generales
+    @EJB
+    private SegmoduloBusquedaLocal segmoduloBusqueda; // Bean para buscar módulos de seguridad
+    @EJB
+    private SegmenuBusquedaLocal segmenuBusqueda; // Bean para buscar menús de seguridad
 
-    @EJB
-    private GencorrelativosBusquedaLocal gencorrelativosBusqueda;
-    @EJB
-    private GenProcesosLocal genProcesos;
-    @EJB
-    private SegmoduloBusquedaLocal segmoduloBusqueda;
-    @EJB
-    private SegmenuBusquedaLocal segmenuBusqueda;
-
-    private final ValidacionMensajes validacionMensajes = new ValidacionMensajes();
-    private List<Segmenu> lstSegmenu = new ArrayList();
-    private List<Segmenu> lstSegmenuSub = new ArrayList();
-    private TreeNode root;
-    private TreeNode selectedNode;
-    private Segmenu menuSelect = new Segmenu();
-    private List<SelectItem> itmPadre = new ArrayList<>();
-    private List<SelectItem> itemPantalla = new ArrayList<>();
-    private List<SelectItem> itemModulo = new ArrayList<>();
-    private BigInteger itemCodMenu;
-    private BigInteger itemCodModulo;
-    private BigInteger itemCodPantalla;
-    private boolean esNuevo = false;
-    private static final Logger LOGGER = Logger.getLogger(MttMenu.class.getName());
-    private Map<String, Boolean> expandedNodes;
     /**
-     * Mensjae que se mostraran al usuario
+     * Manejador de mensajes de validación y errores.
      */
-    private List<FacesMessage> messages = new ArrayList<>();
+    private final ValidacionMensajes validacionMensajes = new ValidacionMensajes();
+
+    /**
+     * Lista de menús principales.
+     */
+    private List<Segmenu> lstSegmenu = new ArrayList<>();
+
+    /**
+     * Lista de submenús.
+     */
+    private List<Segmenu> lstSegmenuSub = new ArrayList<>();
+
+    /**
+     * Nodo raíz del árbol de menús.
+     */
+    private TreeNode root;
+
+    /**
+     * Nodo seleccionado en el árbol de menús.
+     */
+    private TreeNode selectedNode;
+
+    /**
+     * Menú seleccionado.
+     */
+    private Segmenu menuSelect = new Segmenu();
+
+    /**
+     * Lista de elementos para seleccionar el menú padre.
+     */
+    private List<SelectItem> itmPadre = new ArrayList<>();
+
+    /**
+     * Lista de elementos para seleccionar la pantalla del menú.
+     */
+    private List<SelectItem> itemPantalla = new ArrayList<>();
+
+    /**
+     * Lista de elementos para seleccionar el módulo del menú.
+     */
+    private List<SelectItem> itemModulo = new ArrayList<>();
+
+    /**
+     * Código del menúPadre seleccionado.
+     */
+    private BigInteger itemCodMenu;
+
+    /**
+     * Código del módulo seleccionado.
+     */
+    private BigInteger itemCodModulo;
+
+    /**
+     * Código de la pantalla seleccionada.
+     */
+    private BigInteger itemCodPantalla;
+
+    /**
+     * Indicador de si se está creando un nuevo menú.
+     */
+    private boolean esNuevo = false;
+
+    /**
+     * Logger para registrar información y errores.
+     */
+    private static final Logger LOGGER = Logger.getLogger(MttMenu.class.getName());
 
     /**
      * Creates a new instance of MttMenu
@@ -80,36 +129,62 @@ public class MttMenu implements Serializable {
     public MttMenu() {
     }
 
+    /**
+     *
+     */
     @PostConstruct
     public void init() {
-        this.crearMenuPadre();
+        try {
+            this.crearMenuPadre();
+        } catch (Exception ex) {
+            validacionMensajes.manejarExcepcion(ex, "Comuniquese con informatica");
+        }
+
     }
 
-    public void crearMenuPadre() {
+    /**
+     * Crea los nodos raíz y los nodos de menús principales del árbol de menús.
+     * Los menús principales son aquellos que no tienen un menú padre asociado.
+     *
+     * @throws java.lang.Exception
+     */
+    public void crearMenuPadre() throws Exception {
         try {
-            expandedNodes = new HashMap<>();
+            // Parámetros para buscar menús con jerarquía cero (menús principales)
             Map parametros = new HashMap();
             parametros.put("jerarquia", BigInteger.ZERO);
+
+            // Busca todos los menús principales
             lstSegmenu = segmenuBusqueda.buscarTodosMenu(parametros);
-            // lstSegmenu = segmenuFacade.buscarSubMenu(new BigInteger("10"), new BigInteger("10"));
+
+            // Crea el nodo raíz del árbol de menús
             root = new DefaultTreeNode(new MenuStructura("Menus", "-", "Modulos", "-", null), null);
             root.setExpanded(true);
+
+            // Itera sobre los menús principales y crea los nodos correspondientes en el árbol
             for (Segmenu m : lstSegmenu) {
                 if (m.getMenuPadre() == null) {
+                    // Crea un nuevo nodo para el menú principal
                     TreeNode menu = new DefaultTreeNode(new MenuStructura(m.getNommenu(), "-", "Submenu", "-", m), root);
                     menu.setExpanded(true);
-                    crearSubMenu(menu, m);
-                    expandedNodes.put(menu.getRowKey(), true);
 
+                    // Crea los submenús recursivamente
+                    crearSubMenu(menu, m);
                 }
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
-    public void crearSubMenu(TreeNode node, Segmenu menu) {
+    /**
+     * Metodo que crea los submenu
+     *
+     * @param node
+     * @param menu
+     * @throws java.lang.Exception
+     */
+    public void crearSubMenu(TreeNode node, Segmenu menu) throws NullPointerException, Exception {
         try {
 
             lstSegmenuSub = segmenuBusqueda.buscarSubMenu(menu.getCodmenu());
@@ -130,9 +205,9 @@ public class MttMenu implements Serializable {
             }
 
         } catch (NullPointerException ne) {
-            ne.printStackTrace();
+            throw ne;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
@@ -163,17 +238,22 @@ public class MttMenu implements Serializable {
     }
 
     public List<String> validarGuardar() {
-        List<String> lstMsj = new ArrayList<>();
-        if (itemCodModulo == null) {
-            lstMsj.add("Seleccione un modulo");
+        try {
+
+            List<String> lstMsj = new ArrayList<>();
+            if (itemCodModulo == null) {
+                lstMsj.add("Seleccione un modulo");
+            }
+            if (itemCodMenu == null) {
+                lstMsj.add("Seleccione un menu");
+            }
+            if (itemCodPantalla == null) {
+                lstMsj.add("Seleccione una pantalla");
+            }
+            return lstMsj;
+        } catch (Exception ex) {
+            throw ex;
         }
-        if (itemCodMenu == null) {
-            lstMsj.add("Seleccione un menu");
-        }
-        if (itemCodPantalla == null) {
-            lstMsj.add("Seleccione una pantalla");
-        }
-        return lstMsj;
     }
 
     public void guardarMenu() {
@@ -211,15 +291,16 @@ public class MttMenu implements Serializable {
                 this.crearMenuPadre();
                 esNuevo = false;
                 validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.INFO, "Menu guardado con exito");
+                validacionMensajes.mostrarMsj();
             } else {
                 for (String msj : lstMsj) {
                     validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.WARN, msj);
                 }
-                mostrarMsj();
+                validacionMensajes.mostrarMsj();
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            validacionMensajes.manejarExcepcion(ex, "Error inesperado en guardar menu");
         }
     }
 
@@ -237,7 +318,7 @@ public class MttMenu implements Serializable {
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            validacionMensajes.manejarExcepcion(ex, "Comuniquese con informatica");
         }
     }
 
@@ -271,91 +352,62 @@ public class MttMenu implements Serializable {
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            validacionMensajes.manejarExcepcion(ex, "Comuniquese con informatica");
         }
 
     }
 
     public void onNodeSelect(NodeSelectEvent event) {
-        esNuevo = false;
-        itemModulo = new ArrayList<>();
-        itemPantalla = new ArrayList<>();
-        itmPadre = new ArrayList<>();
-        esNuevo = false;
-        TreeNode selectedNode = event.getTreeNode();
-        if (selectedNode.getData() instanceof MenuStructura) {
-            MenuStructura obtenerMenu = (MenuStructura) selectedNode.getData();
-            this.setMenuSelect(obtenerMenu.getSegMenu());
+        try {
+            esNuevo = false;
+            itemModulo = new ArrayList<>();
+            itemPantalla = new ArrayList<>();
+            itmPadre = new ArrayList<>();
+            esNuevo = false;
+            TreeNode selectedNode = event.getTreeNode();
+            if (selectedNode.getData() instanceof MenuStructura) {
+                MenuStructura obtenerMenu = (MenuStructura) selectedNode.getData();
+                this.setMenuSelect(obtenerMenu.getSegMenu());
 
-        }
-        crearMenuPadreSelect(menuSelect);
-        itemModulo.add(new SelectItem(menuSelect.getPantalla().getSegmodulo().getCodmod(),
-                menuSelect.getPantalla().getSegmodulo().getNommodulo()));
-        itemCodModulo = menuSelect.getPantalla().getSegmodulo().getCodmod();
-
-        itemPantalla.add(new SelectItem(menuSelect.getPantalla().getPantallasPK().getCodpantalla(),
-                menuSelect.getPantalla().getNompantalla()));
-        itemCodPantalla = menuSelect.getPantalla().getPantallasPK().getCodpantalla();
-    }
-
-    public void crearMenuPadreSelect(Segmenu menuSelect) {
-        int contador = 0;
-        String mPadre = "Raiz";
-        BigInteger codPadre = menuSelect.getMenuPadre() != null ? menuSelect.getMenuPadre().getCodmenu() : BigInteger.ZERO;
-        Segmenu menuRecorrido = menuSelect;
-        itemCodMenu = codPadre;
-        while (menuRecorrido != null && menuRecorrido.getMenuPadre() != null) {
-            if (contador != 0) {
-                mPadre = menuRecorrido.getMenuPadre().getNommenu() + "->" + mPadre;
-            } else {
-                mPadre = menuRecorrido.getMenuPadre().getNommenu();
             }
-            contador++;
-            menuRecorrido = menuRecorrido.getMenuPadre();
-        }
+            crearMenuPadreSelect(menuSelect);
+            itemModulo.add(new SelectItem(menuSelect.getPantalla().getSegmodulo().getCodmod(),
+                    menuSelect.getPantalla().getSegmodulo().getNommodulo()));
+            itemCodModulo = menuSelect.getPantalla().getSegmodulo().getCodmod();
 
-        itmPadre.add(new SelectItem(codPadre, mPadre));
-
-    }
-
-    //<editor-fold defaultstate="collapsed" desc="METODOS PARA MENSAJES">
-    /**
-     * Metodo que muestra el mensaje al usuario y abre un popup
-     */
-    public void mostrarMsj() {
-        PrimeFaces.current().executeScript("PF('dlgMensajes').show();");
-        FacesContext context = FacesContext.getCurrentInstance();
-        for (FacesMessage message : messages) {
-            context.addMessage(null, message);
-        }
-        messages.clear();
-    }
-
-    /**
-     * Metodo que agrega el mensaje a una lista
-     *
-     * @param numero
-     * @param msj
-     */
-    public void agregarMsj(int numero, String msj) {
-        switch (numero) {
-            case 1:
-                messages.add(new FacesMessage(FacesMessage.SEVERITY_INFO, null, msj));
-                break;
-            case 2:
-                messages.add(new FacesMessage(FacesMessage.SEVERITY_WARN, null, msj));
-                break;
-            case 3:
-                messages.add(new FacesMessage(FacesMessage.SEVERITY_FATAL, null, msj));
-                break;
-            case 4:
-                messages.add(new FacesMessage(FacesMessage.SEVERITY_ERROR, null, msj));
-                break;
-
+            itemPantalla.add(new SelectItem(menuSelect.getPantalla().getPantallasPK().getCodpantalla(),
+                    menuSelect.getPantalla().getNompantalla()));
+            itemCodPantalla = menuSelect.getPantalla().getPantallasPK().getCodpantalla();
+        } catch (Exception ex) {
+            validacionMensajes.manejarExcepcion(ex, "Comuniquese con informatica");
         }
     }
+
+    public void crearMenuPadreSelect(Segmenu menuSelect) throws Exception {
+        try {
+
+            int contador = 0;
+            String mPadre = "Raiz";
+            BigInteger codPadre = menuSelect.getMenuPadre() != null ? menuSelect.getMenuPadre().getCodmenu() : BigInteger.ZERO;
+            Segmenu menuRecorrido = menuSelect;
+            itemCodMenu = codPadre;
+            while (menuRecorrido != null && menuRecorrido.getMenuPadre() != null) {
+                if (contador != 0) {
+                    mPadre = menuRecorrido.getMenuPadre().getNommenu() + "->" + mPadre;
+                } else {
+                    mPadre = menuRecorrido.getMenuPadre().getNommenu();
+                }
+                contador++;
+                menuRecorrido = menuRecorrido.getMenuPadre();
+            }
+
+            itmPadre.add(new SelectItem(codPadre, mPadre));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
 //</editor-fold>
-
     public List<Segmenu> getLstSegmenu() {
         return lstSegmenu;
     }
@@ -434,22 +486,6 @@ public class MttMenu implements Serializable {
 
     public void setItemCodPantalla(BigInteger itemCodPantalla) {
         this.itemCodPantalla = itemCodPantalla;
-    }
-
-    public List<FacesMessage> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<FacesMessage> messages) {
-        this.messages = messages;
-    }
-
-    public Map<String, Boolean> getExpandedNodes() {
-        return expandedNodes;
-    }
-
-    public void setExpandedNodes(Map<String, Boolean> expandedNodes) {
-        this.expandedNodes = expandedNodes;
     }
 
 }

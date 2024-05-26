@@ -7,6 +7,8 @@ package com.sistema.contable.seguridad.busquedas;
 
 import com.sistema.contable.seguridad.entidades.Segusuarios;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -14,8 +16,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
+ * Stateless session bean para buscar usuarios en la base de datos. Proporciona
+ * métodos para realizar búsquedas de usuarios con parámetros dinámicos. Utiliza
+ * JPA para la interacción con la base de datos.
  *
- * @author BME_PERSONAL
+ * @autor BME_PERSONAL
  */
 @Stateless
 public class SegusuariosBusqueda implements SegusuariosBusquedaLocal {
@@ -23,14 +28,27 @@ public class SegusuariosBusqueda implements SegusuariosBusquedaLocal {
     @PersistenceContext(unitName = "sysContable-ejbPU")
     private EntityManager em;
 
+    // Logger para registrar información y excepciones
+    private static final Logger LOGGER = Logger.getLogger(SegusuariosBusqueda.class.getName());
+
+    /**
+     * Busca usuarios en la base de datos según los parámetros proporcionados en
+     * el mapa.
+     *
+     * @param elementos Mapa que contiene los parámetros de búsqueda (usuario,
+     * password, estado).
+     * @return El usuario encontrado o null si no se encuentra ningún usuario
+     * que cumpla los criterios.
+     * @throws NullPointerException si los parámetros proporcionados son nulos.
+     * @throws Exception si ocurre cualquier otro error durante la búsqueda.
+     */
     @Override
-    public Segusuarios buscarSubMenu(Map elementos) throws NullPointerException, Exception {
+    public Segusuarios buscarUsuarios(Map elementos) throws NullPointerException, Exception {
 
         Segusuarios usuario = new Segusuarios();
         StringBuilder sql = new StringBuilder();
 
         try {
-
             sql.append("SELECT U FROM Segusuarios U");
             sql.append(" WHERE 1 = 1");
             if (elementos.containsKey("usuario")) {
@@ -39,7 +57,6 @@ public class SegusuariosBusqueda implements SegusuariosBusquedaLocal {
             if (elementos.containsKey("password")) {
                 sql.append(" AND u.clave = :password");
             }
-
             if (elementos.containsKey("estado")) {
                 sql.append(" AND u.estado = :estado");
             }
@@ -58,12 +75,17 @@ public class SegusuariosBusqueda implements SegusuariosBusquedaLocal {
             usuario = (Segusuarios) consulta.getSingleResult();
             return usuario;
         } catch (NoResultException e) {
+            // Registrar el caso en el que no se encuentra ningún resultado
+            LOGGER.log(Level.INFO, "No se encontró ningún usuario con los parámetros proporcionados: {0}", elementos);
             return null;
+        } catch (NullPointerException e) {
+            //Registra el caso de datos vacios
+            LOGGER.log(Level.SEVERE, "Ocurrió un error de dato nulo al buscar el usuario: " + e.getMessage(), e);
+            throw e;
         } catch (Exception e) {
-            e.printStackTrace(); // Imprime la traza de la excepción para depuración.
-            return null;
+            // Registrar cualquier otra excepción que ocurra
+            LOGGER.log(Level.SEVERE, "Ocurrió un error al buscar el usuario: " + e.getMessage(), e);
+            throw e;
         }
-
     }
-
 }

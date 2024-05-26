@@ -5,12 +5,14 @@ package com.contabilidad.seg.menu;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import com.sistema.contable.general.validaciones.ValidacionMensajes;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.TreeNode;
@@ -34,6 +36,10 @@ import org.primefaces.model.TreeNode;
 public class ContextMenuView implements Serializable {
 
 //<editor-fold defaultstate="collapsed" desc="DECLARACION DE VARIABLES">
+    /**
+     * Variable para manejo de mensajes
+     */
+    private final ValidacionMensajes validar = new ValidacionMensajes();
     /**
      * Lista de objetos Menu que representa el menú en la interfaz de usuario.
      */
@@ -64,10 +70,10 @@ public class ContextMenuView implements Serializable {
      */
     @PostConstruct
     public void init() {
-            try {
+        try {
             lstMenu = menuService.crearMenuPadre();
         } catch (Exception e) {
-            e.printStackTrace();
+            validar.manejarExcepcion(e, "Error al cargar el menu");
         }
     }
 
@@ -95,6 +101,11 @@ public class ContextMenuView implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="GET AND ">
+    
+    public ValidacionMensajes getValidar() {
+        return validar;
+    }
+
     /**
      * Obtiene la lista de objetos Menu.
      *

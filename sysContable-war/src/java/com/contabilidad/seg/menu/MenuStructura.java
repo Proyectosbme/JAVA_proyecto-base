@@ -1,18 +1,29 @@
 package com.contabilidad.seg.menu;
 
-
 import com.sistema.contable.seguridad.entidades.Segmenu;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Clase que representa la estructura de un menú.
+ */
 public class MenuStructura implements Serializable, Comparable<MenuStructura> {
  
-    private String name;     
-    private String size;     
-    private String type;    
-    private String url;
-    private Segmenu segMenu;
+    // Atributos de la estructura del menú
+    private String name;     // Nombre del menú
+    private String size;     // Tamaño del menú
+    private String type;     // Tipo del menú
+    private String url;      // URL del menú
+    private Segmenu segMenu; // Menú de seguridad asociado (entidad JPA)
      
+    /**
+     * Constructor de la clase MenuStructura.
+     * @param name Nombre del menú.
+     * @param size Tamaño del menú.
+     * @param type Tipo del menú.
+     * @param url URL del menú.
+     * @param segMenu Menú de seguridad asociado (entidad JPA).
+     */
     public MenuStructura(String name, String size, String type, String url, Segmenu segMenu) {
         this.name = name;
         this.size = size;
@@ -21,6 +32,8 @@ public class MenuStructura implements Serializable, Comparable<MenuStructura> {
         this.segMenu = segMenu;
     }
  
+    // Métodos getter y setter para los atributos
+    
     public String getName() {
         return name;
     }
@@ -61,8 +74,7 @@ public class MenuStructura implements Serializable, Comparable<MenuStructura> {
         this.segMenu = segMenu;
     }
     
- 
-    //Eclipse Generated hashCode and equals
+    // Eclipse Generated hashCode, equals, and toString methods
 
     @Override
     public int hashCode() {
@@ -103,11 +115,14 @@ public class MenuStructura implements Serializable, Comparable<MenuStructura> {
 
     @Override
     public String toString() {
-        return "Document{" + "name=" + name + ", size=" + size + ", type=" + type + ", url=" + url + '}';
+        return "MenuStructura{" + "name=" + name + ", size=" + size + ", type=" + type + ", url=" + url + '}';
     }
  
- 
- 
+    /**
+     * Método para comparar dos objetos MenuStructura basados en el nombre del menú.
+     * @param document El objeto MenuStructura a comparar.
+     * @return Un valor entero que indica el resultado de la comparación.
+     */
     public int compareTo(MenuStructura document) {
         return this.getName().compareTo(document.getName());
     }

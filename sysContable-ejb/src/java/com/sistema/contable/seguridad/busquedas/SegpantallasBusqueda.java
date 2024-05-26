@@ -34,7 +34,7 @@ public class SegpantallasBusqueda implements SegpantallasBusquedaLocal {
      * @throws Exception
      */
     @Override
-    public BigInteger maxCodPantalla(BigInteger codModulo) throws ValidacionesException, Exception {
+    public BigInteger maxCodPantalla(BigInteger codModulo) throws ValidacionesException, NullPointerException, Exception {
         if (codModulo == null) {
             throw new ValidacionesException("El código del módulo está vacío", "Seleccione un módulo");
         }
@@ -47,6 +47,8 @@ public class SegpantallasBusqueda implements SegpantallasBusquedaLocal {
             return result.toBigInteger();
         } catch (NoResultException e) {
             return BigInteger.ZERO;
+        } catch (NullPointerException ne) {
+            throw new NullPointerException("Error de datos nulos en obtener el codigo maximo de la pantalla");
         } catch (Exception e) {
             throw new Exception("Error al obtener el código máximo de pantalla", e);
         }
