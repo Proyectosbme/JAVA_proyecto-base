@@ -1,6 +1,6 @@
 package com.contabilidad.seg.login;
 
-import com.sistema.contable.general.validaciones.ValidacionMensajes;
+import com.sistema.gen.ValidacionMensajes;
 import com.sistema.contable.seguridad.busquedas.SegusuariosBusquedaLocal;
 import com.sistema.contable.seguridad.entidades.Segusuarios;
 import java.io.Serializable;
