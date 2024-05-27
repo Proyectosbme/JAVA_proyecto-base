@@ -17,9 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class ImpRpts
+ * Servlet implementation class ImpresionReporteServlet
  */
-public class ImpRpts extends HttpServlet {
+public class ImpresionReporteServlet extends HttpServlet {
 // Declaración de variables de instancia
 
     /**
@@ -75,7 +75,7 @@ public class ImpRpts extends HttpServlet {
                 default:
                     // Formato no compatible
                     PrintWriter out = response.getWriter();
-                    out.println("<h2>Formato de reporte no admitido</h2>");
+                    out.println("Formato de reporte no admitido");
                     out.close();
                     return;
             }
@@ -88,18 +88,18 @@ public class ImpRpts extends HttpServlet {
 
         } catch (NamingException | SQLException ex) {
             // Registra el error en el registro de errores
-            Logger.getLogger(ImpRpts.class.getName()).log(Level.SEVERE, "Error de base de datos", ex);
+            Logger.getLogger(ImpresionReporteServlet.class.getName()).log(Level.SEVERE, "Error de base de datos", ex);
             // Devuelve un mensaje de error al cliente
             PrintWriter out = response.getWriter();
-            out.println("<h2>Se produjo un error en la base de datos: " + ex.getMessage() + "</h2>");
+            out.println("Se produjo un error en la base de datos: " + ex.getMessage());
             out.close();
 
         } catch (Exception ex) {
             // Registra el error en el registro de errores
-            Logger.getLogger(ImpRpts.class.getName()).log(Level.SEVERE, "Error general", ex);
+            Logger.getLogger(ImpresionReporteServlet.class.getName()).log(Level.SEVERE, "Error general", ex);
             // Devuelve un mensaje de error al cliente
             PrintWriter out = response.getWriter();
-            out.println("<h2>Se produjo un error: " + ex.getMessage() + "</h2>");
+            out.println("Se produjo un error: " + ex.getMessage());
             out.close();
         }
     }
@@ -124,7 +124,7 @@ public class ImpRpts extends HttpServlet {
         // Se realizan comprobaciones de validez de los parámetros
         if (ds == null || ds.isEmpty() || url == null || url.isEmpty() || format == null || format.isEmpty() || parameters == null) {
             PrintWriter out = response.getWriter();
-            out.println("<h2>Parámetros de reporte inválidos</h2>");
+            out.println("Parámetros de reporte inválidos");
             out.close();
             return false;
         }

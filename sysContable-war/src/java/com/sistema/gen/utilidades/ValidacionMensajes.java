@@ -2,7 +2,7 @@
  * Clase ValidacionMensajes
  * Esta clase proporciona métodos para manejar y mostrar mensajes de error en un contexto de aplicación web.
  */
-package com.sistema.contable.general.validaciones;
+package com.sistema.gen.utilidades;
 
 import java.util.ArrayList;
 import java.util.List;
