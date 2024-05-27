@@ -8,7 +8,7 @@ package com.contabilidad.seg.menu;
 import com.sistema.contable.general.busquedas.GenBusquedadLocal;
 import com.sistema.contable.general.busquedas.GencorrelativosBusquedaLocal;
 import com.sistema.contable.general.procesos.GenProcesosLocal;
-import com.sistema.contable.general.validaciones.ValidacionMensajes;
+import com.sistema.gen.ValidacionMensajes;
 import com.sistema.contable.seguridad.busquedas.SegmenuBusquedaLocal;
 import com.sistema.contable.seguridad.busquedas.SegmoduloBusquedaLocal;
 import com.sistema.contable.seguridad.entidades.Segmenu;
@@ -280,7 +280,7 @@ public class MttMenu implements Serializable {
             if (menuSelect != null && menuSelect.getNommenu().isEmpty()) {
                 lstMsj.add("Ingrese el nombre del menu");
             }
-            if (menuSelect != null && menuSelect.getOrdenes()== null) {
+            if (menuSelect != null && menuSelect.getOrdenes() == null) {
                 lstMsj.add("Ingrese la jeraquia del menu");
             }
             if (menuSelect != null && menuSelect.getVersion().isEmpty()) {
@@ -506,28 +506,38 @@ public class MttMenu implements Serializable {
             validacionMensajes.manejarExcepcion(ex, "Error al eliminar el menu");
         }
     }
-    
-    public void imprimir(){
+
+    public void imprimir() {
         imprimirReportes("modulos", "DOCX");
     }
-     private void imprimirReportes(String reporte, String form) {
-        Map parameters = new HashMap();
+
+    private void imprimirReportes(String reporte, String form) {
+        // Crear y llenar el mapa de parámetros
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put("user", "user");
+
         try {
-            FacesContext fc = FacesContext.getCurrentInstance();
-            HttpServletRequest request = (HttpServletRequest) fc
-                    .getExternalContext().getRequest();
-            String url = request.getContextPath() + "/ImpRpts";
+            // Obtener el contexto de Faces y la solicitud HTTP
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+
+            // Configurar los atributos de sesión necesarios para el servlet
+            String servletUrl = request.getContextPath() + "/ImpresionReporteServlet";
             request.getSession().setAttribute("ds", "jdbc/_contabilidad");
-            request.getSession().setAttribute("url",
-                    "/reportes/" + reporte + ".jasper");
+            request.getSession().setAttribute("url", "/reportes/" + reporte + ".jasper");
             request.getSession().setAttribute("parameters", parameters);
             request.getSession().setAttribute("format", form);
 
-            String javascriptCode = "window.open('" + url + "','Rpt','location=0,menubar=0,"
-                    + "resizable=1,status=0,toolbar=0');";
+            // Generar el código JavaScript para abrir una nueva ventana del navegador con el reporte
+            String javascriptCode = String.format(
+                    "window.open('%s','Rpt','location=0,menubar=0,resizable=1,status=0,toolbar=0');",
+                    servletUrl
+            );
+
+            // Ejecutar el código JavaScript usando PrimeFaces
             PrimeFaces.current().executeScript(javascriptCode);
         } catch (Exception ex) {
+            // Imprimir la traza de la excepción para el diagnóstico de errores
             ex.printStackTrace();
         }
     }
