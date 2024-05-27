@@ -6,7 +6,7 @@
 
  
     <factory>
-        <exception-handler-factory>com.contabilidad.seg.exepciones.CustomExceptionHandlerFactory</exception-handler-factory>
+        <exception-handler-factory>com.sistema.seg.exepciones.CustomExceptionHandlerFactory</exception-handler-factory>
     </factory>
     <!-- Reglas de navegación-->
     <navigation-rule>

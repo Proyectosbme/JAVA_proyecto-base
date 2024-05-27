@@ -26,9 +26,14 @@
                                     icon="pi pi-trash"
                                     update="form" 
                                     action="#{mttenimientoModulos.limpiarBusqueda()}" />
+                         <p:menuitem value="Limpiar" 
+                                    icon="pi pi-trash"
+                                    action="#{mttenimientoModulos.imprimir()}" />
                     </p:menubar>
 
-                    <p:panelGrid  id="pnModulos" columns="4" layout="grid" styleClass="showcase-text-align-left">
+                    <p:panelGrid  id="pnModulos" columns="4" layout="grid" 
+                                  styleClass="showcase-text-align-left"
+                                   columnClasses="ui-g-lg-12 ui-g-md-12 ui-g-sm-6 ui-g-xs-6" >
                         <p:outputLabel for="txtNomMod" value="Nombre" />
                         <p:inputText id="txtNomMod" value="#{mttenimientoModulos.nomModulo}"
                                      onkeypress="return validarSoloLetras(event)"/>
