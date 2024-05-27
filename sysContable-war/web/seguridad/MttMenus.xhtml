@@ -13,7 +13,7 @@
             <h1 class="estilo-titulo">Mantenimiento de menus</h1>
             <p:tabView  prependId="false" >
                 <p:tab title="Detalle" >
-                    <div class="ui-g">
+                    <div class="ui-g" style="width: 100%">
                         <div class="ui-g-12">
                             <p:menubar>
                                 <p:menuitem value="Nuevo" 
@@ -30,7 +30,7 @@
                                             icon="pi pi-trash" 
                                             action="#{mttMenu.confirmarEliminarMenu()}"
                                             />
-                                 <p:menuitem value="imprimir" 
+                                <p:menuitem value="imprimir" 
                                             icon="pi pi-times" 
                                             action="#{mttMenu.imprimir()}"
                                             />
@@ -40,10 +40,8 @@
                                             action="#{mttMenu.limpiar()}"
                                             />
                             </p:menubar>
-
-
                         </div>
-                        <div class="ui-g-4">
+                        <div class="ui-g-xs-12 ui-g-sm-4 ui-g-md-4 ui-g-lg-4">
                             <p:tree id="menuTree"  value="#{mttMenu.root}" var="mt" selectionMode="single"  
                                     dynamic="false" highlight="true">
                                 <p:ajax event="select" update="miform:detalleMttMenu"
@@ -59,14 +57,11 @@
                                 </p:treeNode>
                             </p:tree>
                         </div>
-                        <div class="ui-g-8 ui-g-nopad">
-                            <p:panel id="detalleMttMenu">
+                        <div class="ui-g-xs-12 ui-g-sm-8 ui-g-md-8 ui-g-lg-8">
+                            <p:panel id="detalleMttMenu" style="width: 100% !important; max-width: 100%;">
                                 <p:panelGrid columns="2" layout="grid" 
-                                             styleClass="showcase-text-align-left" 
-                                             columnClasses="ui-g-12 ui-md-6 ui-lg-3, 
-                                             ui-g-12 ui-md-6 ui-lg-3" >
-
-
+                                             styleClass="showcase-text-align-left"
+                                             columnClasses="ui-g-12 ui-md-4 ui-lg-4">
                                     <p:outputLabel for="textNomModulo" value="Modulo" />
                                     <p:selectOneMenu id="textNomModulo" value="#{mttMenu.itemCodModulo}" >
                                         <p:ajax listener="#{mttMenu.obtenerPantallas()}" update="textNomPantalla textNombrePadre" />
@@ -95,10 +90,14 @@
                                     <p:outputLabel for="textDescripcionMenu" value="Descripcion" />
                                     <p:inputTextarea id="textDescripcionMenu"
                                                      value="#{mttMenu.menuSelect.dscmenu}"
-                                                     rows="10" cols="40"
-                                                     onkeypress="return validarSoloLetras(event)">
+                                                     rows="5" cols="25"
+                                                     counterTemplate="{0} characters remaining." 
+                                                     autoResize="false"
+                                                     onkeypress="return validarSoloLetras(event)"
+                                                     style="resize: both; max-width: 100%;
+                                                     background-color: rgba(0, 0, 0, 0.1);">
                                     </p:inputTextarea>
-                                    
+
                                     <p:outputLabel for="textOrden" value="Orden" />
                                     <p:inputText id="textOrden" value="#{mttMenu.menuSelect.ordenes}"
                                                  onkeypress="soloNumeros(event)"/>

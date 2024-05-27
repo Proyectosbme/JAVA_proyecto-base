@@ -9,65 +9,62 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <ui:fragment > 
-            <!-- Contenido del index -->
-            <div class='dashboard'>
-                <div class="dashboard-nav">
-                    <h:form id="menu" style="margin-top: -10px !important;">
-                        <p:panel id="menu" styleClass="custom-panel" style="border: black">
-                            <f:facet name="header">
-                                <div >Menu</div>
-                            </f:facet>
-                            <p:accordionPanel value="#{contextMenuView.lstMenu}" var="n" 
-                                              style="margin-left: -10px !important; margin-right: -10px !important;" 
-                                              styleClass="custom-accordion"
-                                              multiple="true"
-                                              activeIndex="null"> 
-                                <p:tab title="#{n.nombre}" >
-                                    <p:tree value="#{n.tree}" var="doc" selectionMode="single" 
-                                            selection="#{contextMenuView.selectedNode}"
-                                            style="margin-left: -25px !important;
-                                            margin-top: -10px !important;
-                                            margin-bottom: -8px !important;
-                                            border: none; background: transparent !important">
-                                        <p:ajax event="select" update="includePanel" 
-                                                listener="#{contextMenuView.onNodeSelect}"  />
-                                        <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">
-                                            <h:outputText value="#{doc.name}"/>
-                                        </p:treeNode>
-                                        <p:treeNode type="Submenu" icon="pi pi-file">
-                                            <h:outputText value="#{doc.name}" />
-                                        </p:treeNode>
-                                        <p:treeNode type="pantalla" icon="pi pi-th-large">
-                                            <h:outputText value="#{doc.name}" />
-                                        </p:treeNode>
-                                    </p:tree>
-                                </p:tab>
-                            </p:accordionPanel>
-                        </p:panel>
-
-                    </h:form>
-                </div>
-                <div class='dashboard-app'>
-                    <header class="dashboard-toolbar">
-                        <div class="menu-toggle">Menu</div>
-                        <div class="user-info">
-                            <span class="menu-label">Usuario #{loginBean.username}</span>
-                            <span class="menu-label">Fecha
-                                <p:outputLabel value="#{loginBean.fecha}" styleClass="small-text">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </p:outputLabel></span>
-                        </div>
-                        <p:commandButton value="Cerrar Sesión" action="#{loginBean.logout}" styleClass="logout-button" />
-                    </header>
-                    <div class='card-body'>
-                        <p:panel id="includePanel">
-                            <ui:include src="#{contextMenuView.currentPage}" />
-                        </p:panel>
+        <div class="ui-g">
+            <div class="ui-g-12" >
+                <header class="dashboard-toolbar">
+                    <div class="ui-g-9 menu-toggle" onclick="toggleMenu()">Menu</div>
+                    <div class="ui-g-2 user-info" style="text-align: right;">
+                        <span class="menu-label">Usuario #{loginBean.username}</span>
+                        <span class="menu-label">Fecha
+                            <p:outputLabel value="#{loginBean.fecha}" styleClass="small-text">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:outputLabel></span>
                     </div>
-                </div>
+                    <div class="ui-g-2 "  style="text-align: right;">
+                        <p:commandButton value="Cerrar Sesión" action="#{loginBean.logout}" styleClass="logout-button" />
+                    </div>
+                </header>
             </div>
-        </ui:fragment>
+            <div class="ui-g-3 menu-container" id="menuOcultar" >
+                <h:form id="menu">
+                    <p:panel id="menu" header="menu" styleClass="custom-panel" style="border: black">
+                        <p:accordionPanel value="#{contextMenuView.lstMenu}" var="n" 
+                                          style="margin-left: -10px !important; margin-right: -10px !important;" 
+                                          styleClass="custom-accordion" 
+                                          multiple="false"
+                                          activeIndex="null"> 
+                            <p:tab title="#{n.nombre}" >
+                                <p:tree value="#{n.tree}" var="doc" selectionMode="single" 
+                                        selection="#{contextMenuView.selectedNode}"
+                                        style="margin-left: -25px !important;
+                                        margin-top: -10px !important;
+                                        margin-bottom: -8px !important;
+                                        border: none; background: transparent !important">
+                                    <p:ajax event="select" update="includePanel" 
+                                            listener="#{contextMenuView.onNodeSelect}"  />
+                                    <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">
+                                        <h:outputText value="#{doc.name}"/>
+                                    </p:treeNode>
+                                    <p:treeNode type="Submenu" icon="pi pi-file">
+                                        <h:outputText value="#{doc.name}" />
+                                    </p:treeNode>
+                                    <p:treeNode type="pantalla" icon="pi pi-th-large">
+                                        <h:outputText value="#{doc.name}" />
+                                    </p:treeNode>
+                                </p:tree>
+                            </p:tab>
+                        </p:accordionPanel>
+                    </p:panel>
+
+                </h:form>
+            </div>
+            <div class="ui-g-9 content-container" id="contentOcultar">
+                <p:panel id="includePanel">
+                    <ui:include src="#{contextMenuView.currentPage}" />
+                </p:panel>
+            </div>
+        </div>
+        <h:outputScript library="js" name="funcionMenu.js" />
     </h:body>
 </html>
 

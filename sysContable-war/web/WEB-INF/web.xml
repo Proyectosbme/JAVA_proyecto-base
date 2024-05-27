@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+ http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <!-- Configuración del tema PrimeFaces -->
     <context-param>
         <param-name>primefaces.THEME</param-name>
@@ -42,7 +45,7 @@
     <!-- Servlet para el logout -->
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>com.contabilidad.seg.login.LogoutServlet</servlet-class>
+        <servlet-class>com.sistema.seg.login.LogoutServlet</servlet-class>
     </servlet>
     <!-- Configuración del timezone predeterminado para convertidores de fecha y hora -->
     <context-param>
@@ -52,7 +55,7 @@
     <!-- Filtro para restringir el acceso a ciertas páginas -->
     <filter>
         <filter-name>PageRestrictionFilter</filter-name>
-        <filter-class>com.contabilidad.seg.filtros.PageRestrictionFilter</filter-class>
+        <filter-class>com.sistema.seg.filtros.PageRestrictionFilter</filter-class>
     </filter>
     <!-- Mapeo del filtro de restricción de página -->
     <filter-mapping>
