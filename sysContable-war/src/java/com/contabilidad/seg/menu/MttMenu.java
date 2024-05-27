@@ -8,7 +8,7 @@ package com.contabilidad.seg.menu;
 import com.sistema.contable.general.busquedas.GenBusquedadLocal;
 import com.sistema.contable.general.busquedas.GencorrelativosBusquedaLocal;
 import com.sistema.contable.general.procesos.GenProcesosLocal;
-import com.sistema.gen.ValidacionMensajes;
+import com.sistema.gen.utilidades.ValidacionMensajes;
 import com.sistema.contable.seguridad.busquedas.SegmenuBusquedaLocal;
 import com.sistema.contable.seguridad.busquedas.SegmoduloBusquedaLocal;
 import com.sistema.contable.seguridad.entidades.Segmenu;

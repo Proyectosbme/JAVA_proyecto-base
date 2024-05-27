@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-         
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <!-- Configuración del tema PrimeFaces -->
     <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>nova-dark</param-value>
     </context-param>
-      <servlet>
-        <servlet-name>ImpRpts</servlet-name>
-        <servlet-class>recursos.ImpRpts</servlet-class>
+    <servlet>
+        <servlet-name>ImpresionReporteServlet</servlet-name>
+        <servlet-class>recursos.ImpresionReporteServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ImpRpts</servlet-name>
-        <url-pattern>/ImpRpts</url-pattern>
+        <servlet-name>ImpresionReporteServlet</servlet-name>
+        <url-pattern>/ImpresionReporteServlet</url-pattern>
     </servlet-mapping>
     <!-- Mapeo de tipos MIME para fuentes -->
     <mime-mapping>
@@ -33,40 +30,33 @@
         <extension>eot</extension>
         <mime-type>application/font-eot</mime-type>
     </mime-mapping>
-    
     <!-- Configuración del tiempo máximo de inactividad de sesión -->
     <session-config>
         <!-- Tiempo máximo de inactividad en minutos -->
         <session-timeout>1</session-timeout>
     </session-config>
-    
     <!-- Página de inicio -->
     <welcome-file-list>
         <welcome-file>login.xhtml</welcome-file>
     </welcome-file-list>
-    
     <!-- Servlet para el logout -->
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>com.contabilidad.seg.login.LogoutServlet</servlet-class>
     </servlet>
-    
     <!-- Configuración del timezone predeterminado para convertidores de fecha y hora -->
     <context-param>
         <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
         <param-value>true</param-value>
     </context-param>
-    
     <!-- Filtro para restringir el acceso a ciertas páginas -->
     <filter>
         <filter-name>PageRestrictionFilter</filter-name>
         <filter-class>com.contabilidad.seg.filtros.PageRestrictionFilter</filter-class>
     </filter>
-    
     <!-- Mapeo del filtro de restricción de página -->
     <filter-mapping>
         <filter-name>PageRestrictionFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
 </web-app>

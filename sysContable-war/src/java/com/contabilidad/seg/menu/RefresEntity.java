@@ -6,7 +6,7 @@
 package com.contabilidad.seg.menu;
 
 import com.sistema.contable.general.procesos.GenProcesosLocal;
-import com.sistema.gen.ValidacionMensajes;
+import com.sistema.gen.utilidades.ValidacionMensajes;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;

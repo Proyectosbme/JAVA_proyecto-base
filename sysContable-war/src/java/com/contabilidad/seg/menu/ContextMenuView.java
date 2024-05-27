@@ -5,7 +5,7 @@ package com.contabilidad.seg.menu;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import com.sistema.gen.ValidacionMensajes;
+import com.sistema.gen.utilidades.ValidacionMensajes;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
