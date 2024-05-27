@@ -18,7 +18,7 @@ import org.primefaces.PrimeFaces;
 import com.sistema.contable.seguridad.busquedas.SegmoduloBusquedaLocal;
 import com.sistema.contable.general.busquedas.GencorrelativosBusquedaLocal;
 import com.sistema.contable.general.procesos.GenProcesosLocal;
-import com.sistema.contable.general.validaciones.ValidacionMensajes;
+import com.sistema.gen.ValidacionMensajes;
 import com.sistema.contable.general.validaciones.ValidacionesException;
 import com.sistema.contable.seguridad.busquedas.SegpantallasBusquedaLocal;
 import com.sistema.contable.seguridad.entidades.Segpantallas;
