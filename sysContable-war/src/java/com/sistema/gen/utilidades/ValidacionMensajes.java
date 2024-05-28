@@ -12,6 +12,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.PrimeFaces;
 
+/**
+*Calse utiliza para validar mensjaes ala usuario
+ *
+ * @author BME_PERSONAL
+ */
 public class ValidacionMensajes {
 
     // Lista para almacenar los mensajes a mostrar
