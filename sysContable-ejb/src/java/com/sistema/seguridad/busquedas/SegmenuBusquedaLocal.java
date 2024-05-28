@@ -9,6 +9,7 @@ import com.sistema.seguridad.entidades.Segmenu;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.security.PermitAll;
 import javax.ejb.Local;
 
 /**
@@ -17,6 +18,28 @@ import javax.ejb.Local;
  */
 @Local
 public interface SegmenuBusquedaLocal {
+
+    public List<Segmenu> findByCodmenu(BigInteger codmenu)
+            throws NullPointerException, Exception;
+
+    /**
+     *
+     * @param codPerfil
+     * @return
+     * @throws NullPointerException
+     * @throws Exception
+     */
+    public List<Segmenu> findMenusNotByPerfil(BigInteger codPerfil)
+            throws NullPointerException, Exception;
+
+    /**
+     *
+     * @param codPerfil
+     * @return
+     * @throws NullPointerException
+     * @throws Exception
+     */
+    public List<Segmenu> findMenusByPerfil(BigInteger codPerfil) throws NullPointerException, Exception;
 
     /**
      * Busca los menús asociados a un perfil específico.

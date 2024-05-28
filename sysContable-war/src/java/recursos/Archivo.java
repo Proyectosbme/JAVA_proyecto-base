@@ -7,6 +7,7 @@ import java.io.InputStream;
 
 /**
  * Clase para manejar operaciones de archivo, como la lectura de archivos en un array de bytes.
+ * @author BME_PERSONAL
  */
 public class Archivo {
 

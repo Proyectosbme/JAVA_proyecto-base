@@ -247,6 +247,12 @@ body {
     font-size: 14px;
 }
 
+.custom-panel-header .ui-panel-titlebar {
+    background-color: #001F3F !important;
+    color: white !important;
+     font-weight: bold;
+}
+
 .custom-panel .ui-panel-titlebar {
     background-color: #001F3F !important;
     color: white !important;
@@ -351,12 +357,12 @@ body {
     flex: 1 !important;
 }
 
-.showcase-text-align-left{
+.panel-stilo{
     width: 100% !important; 
     max-width: 100% !important;
 }
 
-.showcase-text-align-left .ui-inputtext {
+.panel-stilo .ui-inputtext {
     border-radius: 8px; /* Define el radio de los bordes */
     border: 1px solid #336699; /* Define el borde y su color */
     background-color: rgba(0, 0, 0, 0.1); /* Define el color de fondo */
@@ -367,12 +373,12 @@ body {
 
 
 /* Estilo para cuando el input está enfocado */
-.showcase-text-align-left .ui-inputtext:focus {
+.panel-stilo .ui-inputtext:focus {
     outline: none; /* Quita el contorno predeterminado del foco */
     border-color: #6699cc; /* Cambia el color del borde cuando está enfocado */
 }
 
-.showcase-text-align-left .ui-selectonemenu {
+.panel-stilo .ui-selectonemenu {
     border-radius: 8px !important; /* Define el radio de los bordes */
     border: 1px solid #336699 !important; /* Define el borde y su color */
     background-color: #e6f2ff !important; /* Define el color de fondo */
@@ -381,7 +387,7 @@ body {
 }
 
 /* Estilo para cuando el selectOneMenu está desplegado */
-.showcase-text-align-left .ui-selectonemenu-trigger {
+.panel-stilo .ui-selectonemenu-trigger {
     background-color: #336699; /* Cambia el color de fondo del botón desplegable */
     color: #fff; /* Cambia el color del texto del botón desplegable */
     border-radius: 8px; /* Define el radio de los bordes */
@@ -389,15 +395,15 @@ body {
 }
 
 /* Estilo para cuando el selectOneMenu está enfocado */
-.showcase-text-align-left .ui-selectonemenu-focus {
+.panel-stilo .ui-selectonemenu-focus {
     border-color: #6699cc; /* Cambia el color del borde cuando está enfocado */
 }
 
-.showcase-text-align-left .ui-outputlabel {
+.panel-stilo .ui-outputlabel {
     font-weight: bold; /* Establece el texto en negrita */
     vertical-align: top; /* Alinea verticalmente con el inputText correspondiente */
 }
-.showcase-text-align-left .ui-panelgrid .ui-inputtextarea {
+.panel-stilo .ui-panelgrid .ui-inputtextarea {
     background-color: red !important; /* Gris pálido */
     border-radius: 8px !important;  /* Bordes redondeados */
     padding: 10px !important;  /* Espaciado interno */

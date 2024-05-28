@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class ImpresionReporteServlet
+ * @author BME_PERSONAL
  */
 public class ImpresionReporteServlet extends HttpServlet {
 // Declaración de variables de instancia

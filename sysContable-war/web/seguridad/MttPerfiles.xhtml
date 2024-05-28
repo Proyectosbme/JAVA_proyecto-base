@@ -1,12 +1,159 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:h="http://xmlns.jcp.org/jsf/html"
+       xmlns:p="http://primefaces.org/ui"
+       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <style>
+            .custom-picklist {
+                width: 100%;
+            }
+            .custom-picklist .ui-picklist-source-controls{}
+            .custom-picklist .ui-picklist-target-controls {
+                text-align: center;
+                background: #D6DBDF;
+            }
+            .custom-picklist .ui-picklist {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .custom-picklist .ui-picklist-list {
+                overflow: visible !important; /* Evitar scroll */
+                height: auto !important; /* Ajustar altura automáticamente */
+                max-height: none !important; /* Eliminar la altura máxima */
+            }
+
+            .custom-picklist .ui-picklist-source,
+            .custom-picklist .ui-picklist-target {
+                height: auto !important; /* Ajustar la altura automáticamente */
+                max-height: none !important; /* Eliminar la altura máxima */
+            }
+        </style>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <h:form id="formPerfiles">
+            <h1 class="estilo-titulo">Mantenimiento de menus</h1>
+            <p:tabView  prependId="false" dynamic="true"   style="border: none;" 
+                        activeIndex="#{mttPerfiles.indexTab}" >
+                <p:tab title="Busqueda" >
+                    <p:menubar>
+                        <p:menuitem value="Nuevo" 
+                                    icon="pi pi-plus" 
+                                    update="formPerfiles"
+                                    action="#{mttPerfiles.nuevoPerfil()}"
+                                    />
+                        <p:menuitem value="buscar" 
+                                    icon="pi pi-trash" 
+                                    update="formPerfiles:catadeta"
+                                    action="#{mttPerfiles.buscarPerfiles()}"
+                                    />
+                    </p:menubar>
+                    <p:panel id="detalleMttPerfil" style="width: 100% !important; max-width: 100%;">
+                        <p:panelGrid columns="4" layout="grid" 
+                                     styleClass="panel-stilo">
+                            <p:outputLabel for="textCodperfil" value="Codperfil" />
+                            <p:inputText id="textCodperfil" value="#{mttPerfiles.codPerfilBusq}" 
+                                         onkeypress="soloNumeros(event)"/>
+
+                            <p:outputLabel for="textNombrePerf" value="Nombre del perfil" />
+                            <p:inputText id="textNombrePerf" value="#{mttPerfiles.nombrePerfilBusq}" 
+                                         onkeypress="return validarSoloLetras(event)"/>
+                        </p:panelGrid>
+                        <p:dataTable id="catadeta" var="m" 
+                                     value="#{mttPerfiles.lstPerfilesBus}" 
+                                     rowKey="#{m.codperfil}"
+                                     paginator="true" 
+                                     rows="10"
+                                     paginatorPosition="bottom"
+                                     styleClass="excel-style"
+                                     selectionMode="single" 
+                                     selection="#{mttPerfiles.perfilSelect}">
+                            <p:ajax event="rowSelect"  listener="#{mttPerfiles.cargarDetaPerfil}" 
+                                    update="formPerfiles"/>
+                            <f:facet name="header">
+                                Perfiles
+                            </f:facet>
+                            <p:column headerText="Codigo">
+                                <h:outputText value="#{m.codperfil}" />
+                            </p:column>
+                            <p:column headerText="nombre">
+                                <h:outputText value="#{m.nombreperfil}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </p:tab>
+                <p:tab title="Detalle" >
+                    <p:panel header="Perfiles" styleClass="custom-panel-header">
+                        <p:menubar>
+                            <p:menuitem value="Nuevo" 
+                                        icon="pi pi-plus"
+                                        update="formPerfiles"
+                                        action="#{mttPerfiles.nuevoPerfil()}"
+                                        />
+                            <p:menuitem value="guardar" 
+                                        icon="pi pi-trash" 
+                                        update="formPerfiles:catadeta"
+                                        action="#{mttPerfiles.guardarPerfil()}"
+                                        />
+
+                        </p:menubar>
+                        <p:panelGrid columns="4" layout="grid" 
+                                     styleClass="panel-stilo">
+                            <p:outputLabel for="textCodperfil2" value="Codperfil" />
+                            <p:inputText id="textCodperfil2" value="#{mttPerfiles.codPerfilEditGuar}" 
+                                         disabled="true" onkeypress="soloNumeros(event)"/>
+
+                            <p:outputLabel for="textNombrePerf2" value="Nombre del perfil" />
+                            <p:inputText id="textNombrePerf2" value="#{mttPerfiles.nombrePerfilEditGuar}" 
+                                         onkeypress="return validarSoloLetras(event)"/>
+                        </p:panelGrid>
+                    </p:panel>
+                    <br></br>
+                    <p:panel header="Menus del perfil" styleClass="custom-panel-header">
+                        <h:panelGroup id="menusPanel">
+                            <p:pickList value="#{mttPerfiles.menus}" 
+                                        var="menu"
+                                        itemLabel="#{menu.nommenu}"  
+                                        converter="segmenuConverter"
+                                        itemValue="#{menu}" 
+                                        showSourceFilter="true"
+                                        showTargetFilter="true" 
+                                        filterMatchMode="contains" 
+                                        showCheckbox="true" responsive="true"
+                                        styleClass="custom-picklist"
+                                        effect="fade" >
+                                <f:facet name="sourceCaption">
+                                    <h:outputText value="Sin asignar" />
+                                </f:facet>
+                                <f:facet name="targetCaption">
+                                    <h:outputText value="Asignados" />
+                                </f:facet>
+                            </p:pickList>
+
+                        </h:panelGroup>
+                    </p:panel>
+                </p:tab>
+            </p:tabView>
+        </h:form>
+        <!--dialogo para los msj-->
+        <p:dialog id="busc" 
+                  header="Informacion" 
+                  widgetVar="dlgMensajes"
+                  width="70%" height="40%"
+                  modal="true"
+                  >
+            <p:messages 
+                id="msj"
+                showDetail="true" 
+                closable="false"
+                >
+                <p:autoUpdate />
+            </p:messages>
+        </p:dialog>
+
     </h:body>
 </html>
 

@@ -12,6 +12,10 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.*;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 
+/**
+ * 
+ * @author BME_PERSONAL
+ */
 public class ImpresionRpt {
 
     

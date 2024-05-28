@@ -35,6 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Segmenu.findAll", query = "SELECT s FROM Segmenu s")
+    ,@NamedQuery(name = "Segmenu.findByPerfil", query = "SELECT m FROM Segmenu m JOIN m.lstPerfiles p WHERE p.codperfil = :codperfil")
+    ,@NamedQuery(name = "Segmenu.findNotByPerfil", query = "SELECT m FROM Segmenu m WHERE :perfil NOT MEMBER OF m.lstPerfiles")
     , @NamedQuery(name = "Segmenu.findByCodmenu", query = "SELECT s FROM Segmenu s WHERE s.codmenu = :codmenu")
     , @NamedQuery(name = "Segmenu.findByNommenu", query = "SELECT s FROM Segmenu s WHERE s.nommenu = :nommenu")
     , @NamedQuery(name = "Segmenu.findByDscmenu", query = "SELECT s FROM Segmenu s WHERE s.dscmenu = :dscmenu")
@@ -216,5 +218,5 @@ public class Segmenu implements Serializable {
     public String toString() {
         return "com.sistema.comtable.seguridad.entidades.Segmenu[ codmenu=" + codmenu + " ]";
     }
-    
+
 }
