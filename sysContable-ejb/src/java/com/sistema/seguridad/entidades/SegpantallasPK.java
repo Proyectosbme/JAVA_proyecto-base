@@ -20,12 +20,10 @@ import javax.validation.constraints.NotNull;
 public class SegpantallasPK implements Serializable {
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODMOD")
+    @Column(name = "CODMOD",nullable = false)
     private BigInteger codmod;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODPANTALLA")
+    @Column(name = "CODPANTALLA",nullable = false)
     private BigInteger codpantalla;
 
     public SegpantallasPK() {

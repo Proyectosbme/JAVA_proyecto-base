@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -40,11 +39,9 @@ public class Segperfiles implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODPERFIL")
+    @Column(name = "CODPERFIL",nullable = false)
     private BigInteger codperfil;
-    @Size(max = 100)
-    @Column(name = "NOMBREPERFIL")
+    @Column(name = "NOMBREPERFIL",length = 100)
     private String nombreperfil;
     @ManyToMany(mappedBy = "lstPerfiles")
     private List<Segmenu> segmenuList;

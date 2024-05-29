@@ -39,11 +39,9 @@ public class Segpantallas implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected SegpantallasPK pantallasPK;
-    @Size(max = 100)
-    @Column(name = "NOMPANTALLA")
+    @Column(name = "NOMPANTALLA",length = 100)
     private String nompantalla;
-    @Size(max = 100)
-    @Column(name = "URLPANTALLA")
+    @Column(name = "URLPANTALLA",length = 100)
     private String urlpantalla;
     @OneToMany(mappedBy = "pantalla")
     private List<Segmenu> segmenuList;

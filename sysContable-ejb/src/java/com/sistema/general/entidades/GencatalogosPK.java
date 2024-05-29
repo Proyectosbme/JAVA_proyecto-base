@@ -20,12 +20,10 @@ import javax.validation.constraints.NotNull;
 public class GencatalogosPK implements Serializable {
 
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODCATALOGO")
+    @Column(name = "CODCATALOGO",nullable = false)
     private BigInteger codcatalogo;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODMODULO")
+    @Column(name = "CODMODULO",nullable = false)
     private BigInteger codmodulo;
 
     public GencatalogosPK() {

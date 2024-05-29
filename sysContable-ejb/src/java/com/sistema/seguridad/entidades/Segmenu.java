@@ -51,27 +51,21 @@ public class Segmenu implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODMENU")
+    @Column(name = "CODMENU",nullable = false)
     private BigInteger codmenu;
-    @Size(max = 100)
-    @Column(name = "NOMMENU")
+    @Column(name = "NOMMENU",length = 100)
     private String nommenu;
-    @Size(max = 100)
-    @Column(name = "DSCMENU")
+    @Column(name = "DSCMENU",length = 100)
     private String dscmenu;
     @Column(name = "JERARQUIA")
     private BigInteger jerarquia;
     @Column(name = "ORDENES")
     private BigInteger ordenes;
-    @Size(max = 100)
-    @Column(name = "URLICONO")
+    @Column(name = "URLICONO",length = 100)
     private String urlicono;
-    @Size(max = 100)
-    @Column(name = "VERSION")
+    @Column(name = "VERSION",length = 100)
     private String version;
-    @Size(max = 100)
-    @Column(name = "TIPO")
+    @Column(name = "TIPO",length = 100)
     private String tipo;
     @JoinTable(name = "SEGMENUXPERFIL", joinColumns = {
         @JoinColumn(name = "CODMENU", referencedColumnName = "CODMENU")}, inverseJoinColumns = {
