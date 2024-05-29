@@ -192,7 +192,7 @@ public class MttenimientoModulos implements Serializable {
             validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Modulo agregado correctamente");
             validar.mostrarMsj();
             this.setIndexTab(0);
-
+            PrimeFaces.current().executeScript("PF('addModulo').hide();");
             //ERRORES
         } catch (ValidacionesException ve) {
             validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, ve.getMensaje());
@@ -230,17 +230,34 @@ public class MttenimientoModulos implements Serializable {
      */
     public void eliminarModulo() {
         try {
-
+// Verificar si se ha seleccionado un módulo para eliminar
             if (eliminarModulo != null) {
+                // Verificar si el módulo contiene pantallas
+                if (eliminarModulo.getSegpantallasList() != null
+                        && !eliminarModulo.getSegpantallasList().isEmpty()) {
+                    // Mostrar un mensaje de error si el módulo contiene pantallas y salir del método
+                    validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "No se puede eliminar el módulo porque contiene pantallas");
+                    validar.mostrarMsj();
+                    return;
+                }
+
+                // Eliminar el módulo de la base de datos
                 genProcesos.remove(eliminarModulo);
+
+                // Eliminar el módulo de la lista de módulos
                 lstModulos.remove(eliminarModulo);
-                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Modulo eliminado con exito");
+
+                // Mostrar un mensaje de éxito
+                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Módulo eliminado con éxito");
             } else {
-                validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione un modulo");
+                // Mostrar un mensaje de error si no se ha seleccionado un módulo para eliminar
+                validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione un módulo");
             }
+
+            // Mostrar los mensajes al usuario
             validar.mostrarMsj();
         } catch (Exception e) {
-            validar.manejarExcepcion(e, "Erro en eliminacion del modulo");
+            validar.manejarExcepcion(e, "Error en eliminacion del modulo");
         }
     }
 
@@ -291,8 +308,8 @@ public class MttenimientoModulos implements Serializable {
             validar.mostrarMsj();
         } else {
 // Define un comparador para comparar los Segpantallas por el atributo codpantalla
-            Comparator<Segpantallas> comparator =
-                    Comparator.comparing(segpantallas -> segpantallas.getPantallasPK().getCodpantalla());
+            Comparator<Segpantallas> comparator
+                    = Comparator.comparing(segpantallas -> segpantallas.getPantallasPK().getCodpantalla());
 
 // Ordena la lista utilizando el comparador
             Collections.sort(this.selectecModulo.getSegpantallasList(), comparator);
@@ -321,14 +338,33 @@ public class MttenimientoModulos implements Serializable {
      */
     public void eliminarPantalla() {
         try {
-
+// Verificar si se ha seleccionado una pantalla para eliminar
             if (eliminarPantalla != null) {
+                // Verificar si la pantalla está asignada a algún menú
+                if (eliminarPantalla.getSegmenuList() != null && !eliminarPantalla.getSegmenuList().isEmpty()) {
+                    // Mostrar un mensaje de error si la pantalla está asignada a algún menú y salir del método
+                    validar.agregarMsj(ValidacionMensajes.Severidad.ERROR,
+                            "No se puede eliminar la pantalla porque está asignada a un menú");
+                    validar.mostrarMsj();
+                    return;
+                }
+
+                // Eliminar la pantalla de la base de datos
                 genProcesos.remove(eliminarPantalla);
-                selectecModulo.getSegpantallasList().remove(eliminarPantalla);
-                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Pantalla eliminada con exito");
+
+                // Eliminar la pantalla de la lista de pantallas del módulo
+                if (selectecModulo != null && selectecModulo.getSegpantallasList() != null) {
+                    selectecModulo.getSegpantallasList().remove(eliminarPantalla);
+                }
+
+                // Mostrar un mensaje de éxito
+                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Pantalla eliminada con éxito");
             } else {
+                // Mostrar un mensaje de error si no se ha seleccionado una pantalla para eliminar
                 validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione una pantalla");
             }
+
+            // Mostrar los mensajes al usuario
             validar.mostrarMsj();
         } catch (Exception e) {
             validar.manejarExcepcion(e, "Error al eliminar pantalla");
@@ -357,16 +393,39 @@ public class MttenimientoModulos implements Serializable {
      */
     public void editarPantalla() {
         try {
+            // Verificar si se ha seleccionado una pantalla para editar
             if (editPantalla != null) {
+                // Verificar si el nombre de la pantalla termina en .xhtml
+                if (!editPantalla.getUrlpantalla().endsWith(".xhtml")) {
+                    // Mostrar un mensaje de error si el nombre de la pantalla no termina en .xhtml
+                    validar.agregarMsj(ValidacionMensajes.Severidad.ERROR,
+                            "La url de la pantalla debe terminar en .xhtml");
+                    validar.mostrarMsj();
+                    return; // Terminar la ejecución del método si hay un error
+                }
+
+                // Editar la pantalla en la base de datos
                 genProcesos.edit(editPantalla);
-                selectecModulo.getSegpantallasList()
-                        .set(selectecModulo.getSegpantallasList().indexOf(editPantalla),
-                                editPantalla);
+
+                // Actualizar la pantalla editada en la lista de pantallas del módulo
+                if (selectecModulo != null && selectecModulo.getSegpantallasList() != null) {
+                    int index = selectecModulo.getSegpantallasList().indexOf(editPantalla);
+                    if (index != -1) {
+                        selectecModulo.getSegpantallasList().set(index, editPantalla);
+                    }
+                }
+
+                // Ocultar el diálogo de edición de pantalla
                 PrimeFaces.current().executeScript("PF('editPantalla').hide();");
-                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Pantalla editado con exito");
+
+                // Mostrar un mensaje de éxito
+                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Pantalla editada con éxito");
             } else {
+                // Mostrar un mensaje de error si no se ha seleccionado una pantalla para editar
                 validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione una pantalla");
             }
+
+            // Mostrar los mensajes al usuario
             validar.mostrarMsj();
         } catch (Exception e) {
             validar.manejarExcepcion(e, "Error al editar pantalla");

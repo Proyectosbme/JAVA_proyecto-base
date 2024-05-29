@@ -34,12 +34,14 @@ public class SegpantallasBusqueda implements SegpantallasBusquedaLocal {
      * @throws Exception
      */
     @Override
-    public BigInteger maxCodPantalla(BigInteger codModulo) throws ValidacionesException, NullPointerException, Exception {
+    public BigInteger maxCodPantalla(BigInteger codModulo)
+            throws ValidacionesException, NullPointerException, Exception {
         if (codModulo == null) {
             throw new ValidacionesException("El código del módulo está vacío", "Seleccione un módulo");
         }
         try {
-            String queryString = "SELECT NVL(MAX(s.CODPANTALLA), 0) FROM SEGPANTALLAS s WHERE s.CODMOD = :codModulo";
+            String queryString = "SELECT NVL(MAX(s.CODPANTALLA), 0) FROM SEGPANTALLAS s "
+                    + "WHERE s.CODMOD =?codModulo";
             Query query = em.createNativeQuery(queryString);
             query.setParameter("codModulo", codModulo);
 

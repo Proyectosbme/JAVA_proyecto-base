@@ -11,7 +11,7 @@
     <h:body>
         <h:form id="form">
             <h1 class="estilo-titulo">Mantenimiento de modulos</h1>
-            <p:tabView dynamic="true"   style="border: none;" 
+            <p:tabView dynamic="true"   prependId="false" style="border: none;" 
                        activeIndex="#{mttenimientoModulos.indexTab}">
                 <p:tab title="Busqueda" >
                     <p:menubar>
@@ -26,7 +26,7 @@
                                     icon="pi pi-trash"
                                     update="form" 
                                     action="#{mttenimientoModulos.limpiarBusqueda()}" />
-                         <p:menuitem value="Limpiar" 
+                        <p:menuitem value="Limpiar" 
                                     icon="pi pi-trash"
                                     action="#{mttenimientoModulos.imprimir()}" />
                     </p:menubar>
@@ -119,7 +119,8 @@
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton  value="Agregar" icon="pi pi-plus" onclick="PF('addPantalla').show();" />
+                        <p:commandButton  value="Agregar" icon="pi pi-plus" 
+                                          onclick="PF('addPantalla').show();" />
                     </p:panel>
                 </p:tab>
             </p:tabView>
@@ -169,7 +170,7 @@
                 <p:toolbar>
                     <f:facet name="left">
                         <p:commandButton  value="Agregar" icon="pi pi-plus" 
-                                          ajax="false"
+                                          update="form:singleDT "
                                           action="#{mttenimientoModulos.agregarModulo()}"/>
                     </f:facet>
                 </p:toolbar>
@@ -201,7 +202,7 @@
                 <p:toolbar>
                     <f:facet name="left">
                         <p:commandButton  value="Agregar" icon="pi pi-plus" 
-                                          ajax="false"
+                                          update="form:singleDT"
                                           action="#{mttenimientoModulos.editarModulo()}"/>
                     </f:facet>
                 </p:toolbar>
@@ -220,13 +221,13 @@
                   header="Editar Pantalla" 
                   widgetVar="editPantalla" 
                   minHeight="40"
-                  width="30%"
+                  width="60%"
                   modal="true">
             <h:form>
                 <p:toolbar>
                     <f:facet name="left">
                         <p:commandButton  value="Agregar" icon="pi pi-plus" 
-                                          ajax="false"
+                                           update="form:catadeta"
                                           action="#{mttenimientoModulos.editarPantalla()}"/>
                     </f:facet>
                 </p:toolbar>
@@ -254,7 +255,7 @@
             <h:form>
                 <p:commandButton value="Yes"  
                                  icon="pi pi-check" 
-                                 ajax="false"
+                                 update="form:catadeta"
                                  actionListener="#{mttenimientoModulos.eliminarPantalla()}"
                                  onclick="PF('deletePantaid').hide();"/>
                 <p:commandButton value="No" 
@@ -268,13 +269,13 @@
         <p:dialog header="Guardar pantalla" 
                   widgetVar="addPantalla" 
                   minHeight="40"
-                  width="30%"
+                  width="60%"
                   modal="true">
             <h:form>
                 <p:toolbar>
                     <f:facet name="left">
                         <p:commandButton  value="Agregar" icon="pi pi-plus" 
-                                          ajax="false"
+                                          update="form:catadeta"
                                           action="#{mttenimientoModulos.guardarPantalla()}"/>
                     </f:facet>
                 </p:toolbar>
