@@ -290,6 +290,12 @@ public class MttenimientoModulos implements Serializable {
             validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "El modulo no contiene pantallas");
             validar.mostrarMsj();
         } else {
+// Define un comparador para comparar los Segpantallas por el atributo codpantalla
+            Comparator<Segpantallas> comparator =
+                    Comparator.comparing(segpantallas -> segpantallas.getPantallasPK().getCodpantalla());
+
+// Ordena la lista utilizando el comparador
+            Collections.sort(this.selectecModulo.getSegpantallasList(), comparator);
             this.setIndexTab(1);
         }
     }
