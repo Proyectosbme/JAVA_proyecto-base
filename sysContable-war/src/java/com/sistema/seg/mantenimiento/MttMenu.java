@@ -362,6 +362,11 @@ public class MttMenu implements Serializable {
             parametros.put("codmod", itemCodModulo);
             List<Segmodulo> lstmodulos = segmoduloBusqueda.buscarModulo(parametros);
             for (Segmodulo md : lstmodulos) {
+                // Define un comparador para comparar los Segpantallas por el atributo codpantalla
+                Comparator<Segpantallas> comparator
+                        = Comparator.comparing(segpantallas -> segpantallas.getPantallasPK().getCodpantalla());
+                // Ordena la lista utilizando el comparador
+                Collections.sort(md.getSegpantallasList(), comparator);
                 for (Segpantallas pt : md.getSegpantallasList()) {
                     itemPantalla.add(new SelectItem(pt.getPantallasPK().getCodpantalla(),
                             pt.getNompantalla()));

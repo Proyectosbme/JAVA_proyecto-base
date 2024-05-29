@@ -24,6 +24,6 @@ public interface SegpantallasBusquedaLocal {
      * @throws NullPointerException retorna zero en
      * @throws Exception 
      */
-    public BigInteger maxCodPantalla(BigInteger codModulo)
-            throws ValidacionesException, Exception;
+     public BigInteger maxCodPantalla(BigInteger codModulo)
+            throws ValidacionesException, NullPointerException, Exception;
 }
