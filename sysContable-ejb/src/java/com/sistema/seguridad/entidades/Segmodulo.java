@@ -38,11 +38,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Segmodulo.findByUrldirecc", query = "SELECT s FROM Segmodulo s WHERE s.urldirecc = :urldirecc")})
 public class Segmodulo implements Serializable {
 
-    @Size(max = 100)
-    @Column(name = "NOMMODULO")
+    @Column(name = "NOMMODULO",length = 100)
     private String nommodulo;
-    @Size(max = 100)
-    @Column(name = "URLDIRECC")
+    @Column(name = "URLDIRECC",length = 100)
     private String urldirecc;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "segmodulo", fetch = FetchType.LAZY)
     private List<Gencatalogos> gencatalogosList;
@@ -51,8 +49,7 @@ public class Segmodulo implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "CODMOD")
+    @Column(name = "CODMOD",nullable = false)
     private BigInteger codmod;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "segmodulo")
     private List<Segpantallas> segpantallasList;

@@ -39,11 +39,9 @@ public class Gencatalogos implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected GencatalogosPK gencatalogosPK;
-    @Size(max = 100)
-    @Column(name = "DESCRIPCION")
+    @Column(name = "DESCRIPCION",length = 100)
     private String descripcion;
-    @Size(max = 100)
-    @Column(name = "NOMBRE")
+    @Column(name = "NOMBRE",length = 100)
     private String nombre;
     @JoinColumn(name = "CODMODULO", referencedColumnName = "CODMOD", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

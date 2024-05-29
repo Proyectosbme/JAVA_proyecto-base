@@ -40,12 +40,9 @@ public class Segusuarios implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "CODUSER")
+    @Column(name = "CODUSER",nullable = false,length = 100)
     private String coduser;
-    @Size(max = 100)
-    @Column(name = "CLAVE")
+    @Column(name = "CLAVE",length = 100)
     private String clave;
     @Column(name = "DURACLAVE")
     private BigInteger duraclave;

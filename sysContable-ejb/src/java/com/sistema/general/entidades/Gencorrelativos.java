@@ -37,9 +37,7 @@ public class Gencorrelativos implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "NOMBRE")
+    @Column(name = "NOMBRE",nullable = false)
     private String nombre;
     @Column(name = "NUMINIC")
     private BigInteger numinic;
