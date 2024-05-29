@@ -6,7 +6,6 @@
        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
        xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
     </h:head>
     <h:body>
         <h:form id="miform">
@@ -41,9 +40,11 @@
                                             />
                             </p:menubar>
                         </div>
-                        <div class="ui-g-xs-12 ui-g-sm-4 ui-g-md-4 ui-g-lg-4">
+                        <div style="width: 35%;
+                             float: left;
+                             box-sizing: border-box;">
                             <p:tree id="menuTree"  value="#{mttMenu.root}" var="mt" selectionMode="single"  
-                                    dynamic="false" highlight="true">
+                                    dynamic="false" highlight="true" style="width: 100%">
                                 <p:ajax event="select" update="miform:detalleMttMenu"
                                         listener="#{mttMenu.onNodeSelect}" />
                                 <p:treeNode  expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder" >
@@ -57,49 +58,39 @@
                                 </p:treeNode>
                             </p:tree>
                         </div>
-                        <div class="ui-g-xs-12 ui-g-sm-8 ui-g-md-8 ui-g-lg-8">
-                            <p:panel id="detalleMttMenu" style="width: 100% !important; max-width: 100%;">
-                                <p:panelGrid columns="2" layout="grid" 
+                        <div class=" ui-fluid" style="width: 65%;
+                             float: left;
+                             box-sizing: border-box;">
+                                <p:panelGrid id="detalleMttMenu" columns="2" layout="grid"
                                              styleClass="panel-stilo">
                                     <p:outputLabel for="textNomModulo" value="Modulo" />
-                                    <p:selectOneMenu id="textNomModulo" value="#{mttMenu.itemCodModulo}" >
+                                    <p:selectOneMenu id="textNomModulo" value="#{mttMenu.itemCodModulo}">
                                         <p:ajax listener="#{mttMenu.obtenerPantallas()}" update="textNomPantalla textNombrePadre" />
-                                        <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                                        <f:selectItem itemLabel="Seleccione" itemValue="" />
                                         <f:selectItems value="#{mttMenu.itemModulo}" />
                                     </p:selectOneMenu>
 
                                     <p:outputLabel for="textNombre" value="Nombre del menu" />
-                                    <p:inputText id="textNombre" value="#{mttMenu.menuSelect.nommenu}" 
-                                                 onkeypress="return validarSoloLetras(event)"/>
-
+                                    <p:inputText id="textNombre" value="#{mttMenu.menuSelect.nommenu}" onkeypress="return validarSoloLetras(event)" />
 
                                     <p:outputLabel for="textNomPantalla" value="Pantalla" />
                                     <p:selectOneMenu id="textNomPantalla" value="#{mttMenu.itemCodPantalla}">
-                                        <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                                        <f:selectItem itemLabel="Seleccione" itemValue="" />
                                         <f:selectItems value="#{mttMenu.itemPantalla}" />
                                     </p:selectOneMenu>
 
-
                                     <p:outputLabel for="textNombrePadre" value="Menu padre" />
                                     <p:selectOneMenu id="textNombrePadre" value="#{mttMenu.itemCodMenu}">
-                                        <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                                        <f:selectItem itemLabel="Seleccione" itemValue="" />
                                         <f:selectItems value="#{mttMenu.itmPadre}" />
                                     </p:selectOneMenu>
 
                                     <p:outputLabel for="textDescripcionMenu" value="Descripcion" />
-                                    <p:inputTextarea id="textDescripcionMenu"
-                                                     value="#{mttMenu.menuSelect.dscmenu}"
-                                                     rows="5" cols="25"
-                                                     counterTemplate="{0} characters remaining." 
-                                                     autoResize="false"
-                                                     onkeypress="return validarSoloLetras(event)"
-                                                     style="resize: both; max-width: 100%;
-                                                     background-color: rgba(0, 0, 0, 0.1);">
+                                    <p:inputTextarea id="textDescripcionMenu" value="#{mttMenu.menuSelect.dscmenu}" rows="5" cols="25" counterTemplate="{0} characters remaining." autoResize="false" onkeypress="return validarSoloLetras(event)" style="resize: both; max-width: 100%; background-color: rgba(0, 0, 0, 0.1);">
                                     </p:inputTextarea>
 
                                     <p:outputLabel for="textOrden" value="Orden" />
-                                    <p:inputText id="textOrden" value="#{mttMenu.menuSelect.ordenes}"
-                                                 onkeypress="soloNumeros(event)"/>
+                                    <p:inputText id="textOrden" value="#{mttMenu.menuSelect.ordenes}" onkeypress="soloNumeros(event)" />
 
                                     <p:outputLabel for="textIcono" value="Icono" />
                                     <p:inputText id="textIcono" value="#{mttMenu.menuSelect.urlicono}" />
@@ -107,7 +98,6 @@
                                     <p:outputLabel for="textVersion" value="Version" />
                                     <p:inputText id="textVersion" value="#{mttMenu.menuSelect.version}" />
                                 </p:panelGrid>
-                            </p:panel>
                         </div>
                     </div>
                 </p:tab>
