@@ -249,7 +249,9 @@ public class MttMenu implements Serializable {
             for (Segmodulo md : lstmodulos) {
                 itemModulo.add(new SelectItem(md.getCodmod(), md.getNommodulo()));
             }
-
+            validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.INFO,
+                    "Nuevo menu, ingreso la informacion necesaria");
+            validacionMensajes.mostrarMsj();
             // Mostrar mensajes
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error en metodo de nuevo menu", ex);
@@ -329,7 +331,7 @@ public class MttMenu implements Serializable {
                 } else {
                     genProcesos.edit(menuSelect);
                 }
-             //   this.menuSelect = new Segmenu();
+                //   this.menuSelect = new Segmenu();
 
                 this.crearMenuPadre();
                 esNuevo = false;
@@ -474,13 +476,34 @@ public class MttMenu implements Serializable {
      * Abre un popup para confirmar la eliminacion del menu
      */
     public void confirmarEliminarMenu() {
-        if (menuSelect != null && menuSelect.getCodmenu() != null) {
-            PrimeFaces.current().executeScript("PF('deleteMenu').show();");
-        } else {
-            validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.ERROR,
-                    "Seleccione un menu a elimianr");
-            validacionMensajes.mostrarMsj();
+        try {
+            List<String> msjError = new ArrayList<>();
+            //MENU NO ES NULLO O VACIO
+            if (menuSelect == null || menuSelect.getCodmenu() == null) {
+                msjError.add("ERROR: Seleccione un menú a eliminar");
+            } else {
 
+                if (menuSelect.getLstPerfiles() != null && !menuSelect.getLstPerfiles().isEmpty()) {
+                    msjError.add("ERROR: Hay perfiles que tienen asignado el menú");
+                }
+
+                List<Segmenu> lstMenuHijos = segmenuBusqueda.buscarSubMenu(menuSelect.getCodmenu());
+                if (lstMenuHijos != null && !lstMenuHijos.isEmpty()) {
+                    msjError.add("ERROR: No se puede eliminar, elimine los submenús primero");
+                }
+            }
+            if (!msjError.isEmpty()) {
+                validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.ERROR,
+                        "Complete lo siguientes enunciados");
+                for (String msj : msjError) {
+                    validacionMensajes.agregarMsj(ValidacionMensajes.Severidad.WARN, msj);
+                }
+                validacionMensajes.mostrarMsj();
+                return;
+            }
+            PrimeFaces.current().executeScript("PF('deleteMenu').show();");
+        } catch (Exception ex) {
+            validacionMensajes.manejarExcepcion(ex, "Error al eliminar menu");
         }
     }
 

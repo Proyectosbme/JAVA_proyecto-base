@@ -30,10 +30,10 @@ public class SegmenuBusqueda implements SegmenuBusquedaLocal {
     private EntityManager em;
 
     /**
-     *
-     * @param codPerfil
-     * @return
-     * @throws java.lang.Exception
+     * Meotod que buysca los menus que pertenenecen al perfil
+     * @param codPerfil codigo del perfil para bsuacr emnu
+     * @return retorna una lis ade segmenu
+     * @throws java.lang.Exception excepcion que puede lanzar
      */
     @Override
     public List<Segmenu> findMenusByPerfil(BigInteger codPerfil)
@@ -50,6 +50,13 @@ public class SegmenuBusqueda implements SegmenuBusquedaLocal {
         }
     }
 
+    /**
+     * Metodo que busca el menu por su codigo de menu
+     * @param codmenu codigo del menu a buscar
+     * @return retorna una lista de menus
+     * @throws NullPointerException excepcion por datos nulos
+     * @throws Exception  excepcion general
+     */
     @Override
     public List<Segmenu> findByCodmenu(BigInteger codmenu)
             throws NullPointerException, Exception {
@@ -67,11 +74,11 @@ public class SegmenuBusqueda implements SegmenuBusquedaLocal {
         }
     }
 
-    /**
-     *
-     * @param codPerfil
-     * @return
-     * @throws java.lang.Exception
+   /**
+     * Meotod que buysca los menus que no pertenenecen al perfil
+     * @param codPerfil codigo del perfil para bsuacr emnu
+     * @return retorna una lis ade segmenu
+     * @throws java.lang.Exception excepcion que puede lanzar
      */
     @Override
     public List<Segmenu> findMenusNotByPerfil(BigInteger codPerfil)
