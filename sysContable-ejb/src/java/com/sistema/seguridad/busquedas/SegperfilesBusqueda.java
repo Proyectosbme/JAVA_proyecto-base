@@ -9,6 +9,7 @@ import com.sistema.seguridad.entidades.Segperfiles;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
+import javax.persistence.CacheRetrieveMode;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -56,6 +57,7 @@ public class SegperfilesBusqueda implements SegperfilesBusquedaLocal {
             if (parametros.containsKey("nombreperfil")) {
                 result.setParameter("nombreperfil", "%" + parametros.get("nombreperfil") + "%");
             }
+            result.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
             return result.getResultList();
         } catch (NoResultException e) {
             return null;// Retornar una lista vacía si no hay resultados

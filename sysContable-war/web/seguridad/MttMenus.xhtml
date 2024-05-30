@@ -21,7 +21,7 @@
                                             action="#{mttMenu.nuevo()}"
                                             />
                                 <p:menuitem value="Guardar" 
-                                            icon="pi pi-plus" 
+                                            icon="pi pi-save" 
                                             update="miform:menuTree"
                                             action="#{mttMenu.guardarMenu()}"
                                             />
@@ -30,13 +30,8 @@
                                             action="#{mttMenu.confirmarEliminarMenu()}"
                                             />
                                 <p:menuitem value="imprimir" 
-                                            icon="pi pi-times" 
+                                            icon="pi pi-print" 
                                             action="#{mttMenu.imprimir()}"
-                                            />
-                                <p:menuitem value="limpiar" 
-                                            icon="pi pi-times" 
-                                            update="miform"
-                                            action="#{mttMenu.limpiar()}"
                                             />
                             </p:menubar>
                         </div>
@@ -91,9 +86,6 @@
 
                                     <p:outputLabel for="textOrden" value="Orden" />
                                     <p:inputText id="textOrden" value="#{mttMenu.menuSelect.ordenes}" onkeypress="soloNumeros(event)" />
-
-                                    <p:outputLabel for="textIcono" value="Icono" />
-                                    <p:inputText id="textIcono" value="#{mttMenu.menuSelect.urlicono}" />
 
                                     <p:outputLabel for="textVersion" value="Version" />
                                     <p:inputText id="textVersion" value="#{mttMenu.menuSelect.version}" />

@@ -8,8 +8,70 @@
     <h:head>
     </h:head>
     <h:body>
-        <h:form>
-            <h5>Responsive Grid</h5>
+         <h1 class="estilo-titulo">Mantenimiento de usuarios</h1>
+        <h:form id="formUsuarios">
+           
+            <p:tabView  prependId="false" >
+                <p:tab title="Busqueda">
+                    <p:menubar>
+                        <p:menuitem value="Nuevo" 
+                                    icon="pi pi-plus" 
+                                    action="#{mttenimientoModulos.iniciarModulo()}"/>
+                    </p:menubar>
+                        <p:panelGrid  id="pnModulos" columns="4" layout="grid" 
+                                  styleClass="panel-stilo">
+                        <p:outputLabel for="txtNomMod" value="Nombre" />
+                        <p:inputText id="txtNomMod" value="#{mttenimientoModulos.nomModulo}"
+                                     onkeypress="return validarSoloLetras(event)"/>
+
+                        <p:outputLabel for="txtCodmod" value="Codigo" />
+                        <p:inputText id="txtCodmod" value="#{mttenimientoModulos.codModulo}"
+                                     onkeypress="soloNumeros(event)"/>
+                    </p:panelGrid>
+                        <p:dataTable id="singleDT" var="m" value="#{mttenimientoModulos.lstModulos}" 
+                                 rowKey="#{m.codmod}"
+                                 paginator="true" 
+                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rows="10"
+                                 styleClass="excel-style"
+                                 paginatorPosition="bottom"
+                                 selectionMode="single" 
+                                 selection="#{mttenimientoModulos.selectecModulo}">
+                        <p:ajax event="rowSelect"  listener="#{mttenimientoModulos.cargarPantallas}" 
+                                update="form"/>
+                        <f:facet name="header" >
+                            MODULOS 
+                        </f:facet>
+
+                        <p:column headerText="Codigo">
+                            <h:outputText value="#{m.codmod}" />
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{m.nommodulo}" />
+                        </p:column>
+                        <p:column  headerText="EDITAR" 
+                                   style="width:47px;text-align: center">
+                            <p:commandButton  icon="pi pi-pencil" 
+                                              update="editmodA"
+                                              title="Icon Only" 
+                                              action="#{mttenimientoModulos.asigEditarModulo(m)}" >
+                            </p:commandButton>
+                        </p:column>
+                        <p:column headerText="ELIMINAR" 
+                                  style="width:67px; text-align: center">
+                            <p:commandButton  icon="pi pi-trash" 
+                                              update="deleteModid"
+                                              title="Icon Only" 
+                                              action="#{mttenimientoModulos.asigModEliminar(m)}" >
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="Detalle">
+                    
+                </p:tab>
+            </p:tabView>
+            
             <div class="p-grid">
                 <div class="p-col">
                     <p:panel header="prueba" styleClass="custom-panel-header">

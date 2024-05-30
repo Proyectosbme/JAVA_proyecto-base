@@ -42,7 +42,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Segmenu.findByDscmenu", query = "SELECT s FROM Segmenu s WHERE s.dscmenu = :dscmenu")
     , @NamedQuery(name = "Segmenu.findByJerarquia", query = "SELECT s FROM Segmenu s WHERE s.jerarquia = :jerarquia")
     , @NamedQuery(name = "Segmenu.findByOrdenes", query = "SELECT s FROM Segmenu s WHERE s.ordenes = :ordenes")
-    , @NamedQuery(name = "Segmenu.findByUrlicono", query = "SELECT s FROM Segmenu s WHERE s.urlicono = :urlicono")
     , @NamedQuery(name = "Segmenu.findByVersion", query = "SELECT s FROM Segmenu s WHERE s.version = :version")
     , @NamedQuery(name = "Segmenu.findByTipo", query = "SELECT s FROM Segmenu s WHERE s.tipo = :tipo")})
 public class Segmenu implements Serializable {
@@ -61,8 +60,6 @@ public class Segmenu implements Serializable {
     private BigInteger jerarquia;
     @Column(name = "ORDENES")
     private BigInteger ordenes;
-    @Column(name = "URLICONO",length = 100)
-    private String urlicono;
     @Column(name = "VERSION",length = 100)
     private String version;
     @Column(name = "TIPO",length = 100)
@@ -129,15 +126,6 @@ public class Segmenu implements Serializable {
     public void setOrdenes(BigInteger ordenes) {
         this.ordenes = ordenes;
     }
-
-    public String getUrlicono() {
-        return urlicono;
-    }
-
-    public void setUrlicono(String urlicono) {
-        this.urlicono = urlicono;
-    }
-
     public String getVersion() {
         return version;
     }

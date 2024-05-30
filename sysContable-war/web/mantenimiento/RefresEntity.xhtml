@@ -13,18 +13,16 @@
             <h1 class="estilo-titulo">Mantenimiento de entidades</h1>
             <p:tabView dynamic="true">
                 <p:tab title="Mantenimiento" >
-                    <p:panelGrid>
-                        <p:menubar>
-                            <p:menuitem value="Refrescar" 
-                                        icon="pi pi-briefcase" 
-                                        action="#{refresEntity.refresEntity()}" />
-                        </p:menubar>
-                    </p:panelGrid>
+                    <p:menubar>
+                        <p:menuitem value="Refrescar" 
+                                    icon="pi pi-spin pi-spinner" 
+                                    action="#{refresEntity.refresEntity()}" />
+                    </p:menubar>
                 </p:tab>
             </p:tabView>
         </h:form>
-        
-         <!--dialogo para los msj-->
+
+        <!--dialogo para los msj-->
         <p:dialog id="busc" 
                   header="Informacion" 
                   widgetVar="dlgMensajes"
