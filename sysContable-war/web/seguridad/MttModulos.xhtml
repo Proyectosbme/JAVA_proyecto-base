@@ -20,15 +20,12 @@
                                     action="#{mttenimientoModulos.iniciarModulo()}"/>
                         <p:menuitem value="Buscar"
                                     update="form"
-                                    icon="pi pi-search-plus" 
+                                    icon="pi pi-search" 
                                     action="#{mttenimientoModulos.buscarModulo()}" />
                         <p:menuitem value="Limpiar" 
                                     icon="pi pi-trash"
                                     update="form" 
                                     action="#{mttenimientoModulos.limpiarBusqueda()}" />
-                        <p:menuitem value="Limpiar" 
-                                    icon="pi pi-trash"
-                                    action="#{mttenimientoModulos.imprimir()}" />
                     </p:menubar>
 
                     <p:panelGrid  id="pnModulos" columns="4" layout="grid" 

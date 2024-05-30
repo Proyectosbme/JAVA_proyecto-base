@@ -553,11 +553,4 @@ public class MttenimientoModulos implements Serializable {
 //</editor-fold>
 //</editor-fold>
 
-    public void imprimir() {
-        // imprimirReportes("modulos", "DOCX");
-        Map parametros = new HashMap();
-        parametros.put("user", "user");
-        ImpresionReporte.imprimirReporte("report1", "/reportes/", null, "PDF");
-    }
-
 }

@@ -167,6 +167,9 @@ public class MttPerfiles implements Serializable {
         }
     }
 
+    /**
+     * Crea e inicializa las variables para crear un nuevo perfil
+     */
     public void nuevoPerfil() {
         try {
             if (this.getIndexTab() == 0) {
@@ -187,6 +190,9 @@ public class MttPerfiles implements Serializable {
 
     }
 
+    /**
+     * Guarda el perfil creado o una actulizacion
+     */
     public void guardarPerfil() {
         try {
             String msj = "Perfil actulizado correctamente";
@@ -203,7 +209,7 @@ public class MttPerfiles implements Serializable {
                 }
 
             }
-           if (perfilSelect == null || perfilSelect.getCodperfil() == null) {
+            if (perfilSelect == null || perfilSelect.getCodperfil() == null) {
                 validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Seleccione un perfil,"
                         + " o cree un perfil nuevo");
                 validar.mostrarMsj();
@@ -214,14 +220,22 @@ public class MttPerfiles implements Serializable {
                     validar.mostrarMsj();
                     return;
                 }
-                
+
                 List<Segmenu> lstMenuTodos = genbusqueda.buscarTodos(Segmenu.class);
                 Map parametros = new HashMap();
                 parametros.put("perfil", perfilSelect);
                 parametros.put("menusAsignados", menus.getTarget());
                 parametros.put("todos", lstMenuTodos);
                 segProcesos.guardarMenuSeleccionado(parametros);
-
+                
+                //buscar perfil con las modificaciones
+                Map param = new HashMap();
+                param.put("codperfil", perfilSelect.getCodperfil());
+                List<Segperfiles> lstPerfilBuscaG = busPerfilLocal.buscarPerfiles(param);
+                lstPerfilBuscaG.forEach((perf) -> {
+                    perfilSelect = perf;
+                });
+               
                 this.cargarMenus(perfilSelect);
 
                 this.esNuevo = false;
@@ -235,6 +249,13 @@ public class MttPerfiles implements Serializable {
         }
     }
 
+    /**
+     * Carga el menu segun el perfil que se le envia
+     *
+     * @param perfilSelect
+     * @throws NullPointerException
+     * @throws Exception
+     */
     public void cargarMenus(Segperfiles perfilSelect) throws NullPointerException, Exception {
         try {
             //menus que pertenecen al perfil
@@ -252,6 +273,43 @@ public class MttPerfiles implements Serializable {
             throw e;
         } catch (Exception e) {
             throw e;
+        }
+    }
+
+    public void eliminarPerfil() {
+        try {
+            List<String> lstMsj = new ArrayList<>();
+
+            if (esNuevo) {
+                lstMsj.add("El perfil no a sido guardado, No es necesario eliminarlos");
+            } else {
+                if (perfilSelect != null) {
+                    if (!perfilSelect.getSegmenuList().isEmpty()) {
+                        lstMsj.add("El perfil tiene menus asignados");
+                    }
+                    if (!perfilSelect.getSegusuariosList().isEmpty()) {
+                        lstMsj.add("Usuarios tienen el perfil asignado");
+                    }
+                } else {
+                    lstMsj.add("Seleccione un perfil a eliminar");
+                }
+            }
+
+            if (!lstMsj.isEmpty()) {
+                validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Error el perfil no se puede eliminar por:");
+                lstMsj.forEach((msj) -> {
+                    validar.agregarMsj(ValidacionMensajes.Severidad.WARN, msj);
+                });
+                validar.mostrarMsj();
+                return;
+            }
+            genProcesos.remove(perfilSelect);
+            lstPerfilesBus = busPerfilLocal.buscarPerfiles(new HashMap());
+            this.setIndexTab(0);
+            validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "El perfil a sido eliminado con excito");
+            validar.mostrarMsj();
+        } catch (Exception ex) {
+            validar.manejarExcepcion(ex, "Error al eliminar el perfil");
         }
     }
 //</editor-fold>
@@ -309,7 +367,25 @@ public class MttPerfiles implements Serializable {
         this.perfilSelect = perfilSelect;
     }
 //</editor-fold>
+//<editor-fold defaultstate="collapsed" desc="Editar">
+
+    public String getNombrePerfilEditGuar() {
+        return nombrePerfilEditGuar;
+    }
+
+    public void setNombrePerfilEditGuar(String nombrePerfilEditGuar) {
+        this.nombrePerfilEditGuar = nombrePerfilEditGuar;
+    }
+
+    public BigInteger getCodPerfilEditGuar() {
+        return codPerfilEditGuar;
+    }
+
+    public void setCodPerfilEditGuar(BigInteger codPerfilEditGuar) {
+        this.codPerfilEditGuar = codPerfilEditGuar;
+    }
 //</editor-fold>
+//<editor-fold defaultstate="collapsed" desc="Menus para perfil">
 
     public List<Segmenu> getLstMenuPerfil() {
         return lstMenuPerfil;
@@ -334,21 +410,7 @@ public class MttPerfiles implements Serializable {
     public void setMenus(DualListModel<Segmenu> menus) {
         this.menus = menus;
     }
+//</editor-fold>
 
-    public String getNombrePerfilEditGuar() {
-        return nombrePerfilEditGuar;
-    }
-
-    public void setNombrePerfilEditGuar(String nombrePerfilEditGuar) {
-        this.nombrePerfilEditGuar = nombrePerfilEditGuar;
-    }
-
-    public BigInteger getCodPerfilEditGuar() {
-        return codPerfilEditGuar;
-    }
-
-    public void setCodPerfilEditGuar(BigInteger codPerfilEditGuar) {
-        this.codPerfilEditGuar = codPerfilEditGuar;
-    }
-
+//</editor-fold>
 }

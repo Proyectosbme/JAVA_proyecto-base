@@ -10,7 +10,7 @@
     </h:head>
     <h:body>
         <h:form id="formPerfiles">
-            <h1 class="estilo-titulo">Mantenimiento de menus</h1>
+            <h1 class="estilo-titulo">Mantenimiento de perfiles</h1>
             <p:tabView  prependId="false" dynamic="true"   style="border: none;" 
                         activeIndex="#{mttPerfiles.indexTab}" >
                 <p:tab title="Busqueda" >
@@ -21,7 +21,7 @@
                                     action="#{mttPerfiles.nuevoPerfil()}"
                                     />
                         <p:menuitem value="buscar" 
-                                    icon="pi pi-trash" 
+                                    icon="pi pi-search" 
                                     update="formPerfiles:catadeta"
                                     action="#{mttPerfiles.buscarPerfiles()}"
                                     />
@@ -69,9 +69,14 @@
                                         action="#{mttPerfiles.nuevoPerfil()}"
                                         />
                             <p:menuitem value="guardar" 
-                                        icon="pi pi-trash" 
+                                        icon="pi pi-save" 
                                         update="formPerfiles:catadeta"
                                         action="#{mttPerfiles.guardarPerfil()}"
+                                        />
+                             <p:menuitem value="Eliminar" 
+                                        icon="pi pi-trash" 
+                                        update="formPerfiles:catadeta"
+                                        action="#{mttPerfiles.eliminarPerfil()}"
                                         />
 
                         </p:menubar>
