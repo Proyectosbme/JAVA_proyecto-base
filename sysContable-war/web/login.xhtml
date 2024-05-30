@@ -13,14 +13,14 @@
     <h:body>
         <h:form>
             <div class="login-container">
-                <h2>Login</h2>
-                <h:outputLabel for="username">Username:</h:outputLabel>
+                <h2>Acceso</h2>
+                <h:outputLabel for="username">Nombre de usuario:</h:outputLabel>
                 <h:inputText id="username" value="#{loginBean.username}"/>
                 <br/>
-                <h:outputLabel for="password">Password:</h:outputLabel>
+                <h:outputLabel for="password">Contraseña</h:outputLabel>
                 <h:inputSecret id="password" value="#{loginBean.password}"/>
                 <br/>
-                <h:commandButton value="Login" action="#{loginBean.login}" />
+                <h:commandButton value="Acceso" action="#{loginBean.login}" />
             </div>
         </h:form>
         <h:form>
