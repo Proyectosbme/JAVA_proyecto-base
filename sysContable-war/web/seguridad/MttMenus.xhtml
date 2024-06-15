@@ -43,23 +43,24 @@
                              float: left;
                              box-sizing: border-box;">
                             <p:tree id="menuTree"  value="#{mttMenu.root}" var="mt" selectionMode="single"  
-                                    dynamic="false" highlight="true" style="width: 100%">
+                                    dynamic="false" highlight="true" style="width: 100%; color: blue;">
                                 <p:ajax event="select" update="miform:detalleMttMenu"
                                         listener="#{mttMenu.onNodeSelect}" />
                                 <p:treeNode  expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder" >
-                                    <h:outputText value="#{mt.name}" />
+                                    <h:outputText value="#{mt.name}" style="color: blue;font-weight: bold " />
                                 </p:treeNode>
                                 <p:treeNode type="Submenu" icon="pi pi-file" >
-                                    <h:outputText value="#{mt.name}" />
+                                    <h:outputText value="#{mt.name}"  style="color: blue;font-weight: bold "/>
                                 </p:treeNode>
                                 <p:treeNode type="pantalla" icon="pi pi-th-large">
-                                    <h:outputText value="#{mt.name}" />
+                                    <h:outputText value="#{mt.name}" style="color: blue;" />
                                 </p:treeNode>
                             </p:tree>
                         </div>
                         <div class=" ui-fluid" style="width: 65%;
                              float: left;
                              box-sizing: border-box;">
+                             
                                 <p:panelGrid id="detalleMttMenu" columns="2" layout="grid"
                                              styleClass="panel-stilo">
                                     <p:outputLabel for="textNomModulo" value="Modulo" />
@@ -85,7 +86,12 @@
                                     </p:selectOneMenu>
 
                                     <p:outputLabel for="textDescripcionMenu" value="Descripcion" />
-                                    <p:inputTextarea id="textDescripcionMenu" value="#{mttMenu.menuSelect.dscmenu}" rows="5" cols="25" counterTemplate="{0} characters remaining." autoResize="false" onkeypress="return validarSoloLetras(event)" style="resize: both; max-width: 100%; background-color: rgba(0, 0, 0, 0.1);">
+                                    <p:inputTextarea id="textDescripcionMenu" value="#{mttMenu.menuSelect.dscmenu}" 
+                                                     rows="5" cols="25" 
+                                                     counterTemplate="{0} characters remaining." 
+                                                     autoResize="false" 
+                                                     onkeypress="return validarSoloLetras(event)" 
+                                                     style="resize: both; max-width: 100%; background-color: var(--primary-50); border-color: var(--primary-200);">
                                     </p:inputTextarea>
 
                                     <p:outputLabel for="textOrden" value="Orden" />
