@@ -7,6 +7,9 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
+        <style>
+           
+        </style>
     </h:head>
     <h:body>
         <div class="ui-g">
@@ -14,7 +17,7 @@
                 <header class="dashboard-toolbar">
                     <div class="ui-g-9 menu-toggle" onclick="toggleMenu()">Menu</div>
                     <div class="ui-g-2 user-info" style="text-align: right;">
-                        <span class="menu-label">Usuario #{loginBean.username}</span>
+                        <span class="menu-label">Usuario: #{loginBean.username}</span>
                         <span class="menu-label">Fecha
                             <p:outputLabel value="#{loginBean.fecha}" styleClass="small-text">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -25,14 +28,14 @@
                     </div>
                 </header>
             </div>
-            <div class="ui-g-3 menu-container" id="menuOcultar" >
-                <h:form id="menu">
-                    <p:panel id="menu" header="menu" styleClass="custom-panel" style="border: black">
+            <div class="ui-g-3" id="menuOcultar" style="padding-top: 33px; padding-left: 0px; padding-right: 0" >
+                <h:form id="menu" >
+                    <p:panel id="menu" header="menu" styleClass="custom-panel">
                         <p:accordionPanel value="#{contextMenuView.lstMenu}" var="n" 
-                                          style="margin-left: -10px !important; margin-right: -10px !important;" 
-                                          styleClass="custom-accordion" 
                                           multiple="false"
-                                          activeIndex="null"> 
+                                          activeIndex="null"
+                                          styleClass="custom-accordion"
+                                          style="margin-top: -13px; margin-bottom: -13px"> 
                             <p:tab title="#{n.nombre}" >
                                 <p:tree value="#{n.tree}" var="doc" selectionMode="single" 
                                         selection="#{contextMenuView.selectedNode}"
@@ -58,7 +61,7 @@
 
                 </h:form>
             </div>
-            <div class="ui-g-9 content-container" id="contentOcultar">
+            <div class="ui-g-9" id="contentOcultar" style=" padding-left: 0; padding-right: 0">
                 <p:panel id="includePanel">
                     <ui:include src="#{contextMenuView.currentPage}" />
                 </p:panel>

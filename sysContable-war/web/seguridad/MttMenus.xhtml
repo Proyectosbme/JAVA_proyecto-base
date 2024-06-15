@@ -12,25 +12,29 @@
             <h1 class="estilo-titulo">Mantenimiento de menus</h1>
             <p:tabView  prependId="false" >
                 <p:tab title="Detalle" >
-                    <div class="ui-g" style="width: 100%">
-                        <div class="ui-g-12">
-                            <p:menubar>
+                    <div class="ui-g" >
+                        <div class="ui-g-12" style="width: 100%; padding: 0 !important;">
+                            <p:menubar styleClass="custom-menubar">
                                 <p:menuitem value="Nuevo" 
                                             icon="pi pi-plus" 
                                             update="miform"
+                                             styleClass="custom-menuitem"
                                             action="#{mttMenu.nuevo()}"
                                             />
                                 <p:menuitem value="Guardar" 
                                             icon="pi pi-save" 
                                             update="miform:menuTree"
+                                             styleClass="custom-menuitem"
                                             action="#{mttMenu.guardarMenu()}"
                                             />
                                 <p:menuitem value="eliminar" 
                                             icon="pi pi-trash" 
+                                             styleClass="custom-menuitem"
                                             action="#{mttMenu.confirmarEliminarMenu()}"
                                             />
                                 <p:menuitem value="imprimir" 
                                             icon="pi pi-print" 
+                                             styleClass="custom-menuitem"
                                             action="#{mttMenu.imprimir()}"
                                             />
                             </p:menubar>

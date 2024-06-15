@@ -16,14 +16,12 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import org.primefaces.PrimeFaces;
 import com.sistema.seguridad.busquedas.SegmoduloBusquedaLocal;
-import com.sistema.general.busquedas.GencorrelativosBusquedaLocal;
 import com.sistema.general.procesos.GenProcesosLocal;
 import com.sistema.gen.utilidades.ValidacionMensajes;
 import com.sistema.general.validaciones.ValidacionesException;
 import com.sistema.seguridad.busquedas.SegpantallasBusquedaLocal;
 import com.sistema.seguridad.entidades.Segpantallas;
 import com.sistema.seguridad.entidades.SegpantallasPK;
-import com.sistema.gen.utilidades.ImpresionReporte;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,8 +41,6 @@ public class MttenimientoModulos implements Serializable {
 //<editor-fold defaultstate="collapsed" desc="DECLARACIÓN DE VARIABLES">
     @EJB
     private GenProcesosLocal genProcesos;
-    @EJB
-    private GencorrelativosBusquedaLocal busGenCors;
     @EJB
     private SegmoduloBusquedaLocal busquedaModulo;
     @EJB
@@ -182,7 +178,7 @@ public class MttenimientoModulos implements Serializable {
             }
             //PROCESOS
             BigInteger correlati;
-            correlati = busGenCors.obtenerCorrelativo("GENCORSMODULO");
+            correlati = genbusqueda.obtenerCorrelativo("GENCORSMODULO");
 
             moduloAgregar.setCodmod(correlati);
             moduloAgregar.setNommodulo(moduloAgregar.getNommodulo().toUpperCase());

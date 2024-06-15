@@ -6,23 +6,30 @@
        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
        xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-    
+       <style>
+        /* reset on the showcase style*/
+        body .ui-panelgrid .ui-panelgrid-cell {
+            background-color: transparent;
+        }
+    </style>
     </h:head>
     <h:body>
         <h:form id="formPerfiles">
             <h1 class="estilo-titulo">Mantenimiento de perfiles</h1>
-            <p:tabView  prependId="false" dynamic="true"   style="border: none;" 
+            <p:tabView  prependId="false" dynamic="true"  
                         activeIndex="#{mttPerfiles.indexTab}" >
                 <p:tab title="Busqueda" >
-                    <p:menubar>
+                    <p:menubar styleClass="custom-menubar">
                         <p:menuitem value="Nuevo" 
                                     icon="pi pi-plus" 
                                     update="formPerfiles"
+                                    styleClass="custom-menuitem"
                                     action="#{mttPerfiles.nuevoPerfil()}"
                                     />
                         <p:menuitem value="buscar" 
                                     icon="pi pi-search" 
                                     update="formPerfiles:catadeta"
+                                    styleClass="custom-menuitem"
                                     action="#{mttPerfiles.buscarPerfiles()}"
                                     />
                     </p:menubar>
@@ -43,14 +50,11 @@
                                      paginator="true" 
                                      rows="10"
                                      paginatorPosition="bottom"
-                                     styleClass="excel-style"
                                      selectionMode="single" 
+                                     styleClass="style-table"
                                      selection="#{mttPerfiles.perfilSelect}">
                             <p:ajax event="rowSelect"  listener="#{mttPerfiles.cargarDetaPerfil}" 
                                     update="formPerfiles"/>
-                            <f:facet name="header">
-                                Perfiles
-                            </f:facet>
                             <p:column headerText="Codigo">
                                 <h:outputText value="#{m.codperfil}" />
                             </p:column>
@@ -61,39 +65,51 @@
                     </p:panel>
                 </p:tab>
                 <p:tab title="Detalle" >
-                    <p:panel header="Perfiles" styleClass="custom-panel-header">
-                        <p:menubar>
-                            <p:menuitem value="Nuevo" 
-                                        icon="pi pi-plus"
-                                        update="formPerfiles"
-                                        action="#{mttPerfiles.nuevoPerfil()}"
-                                        />
-                            <p:menuitem value="guardar" 
-                                        icon="pi pi-save" 
-                                        update="formPerfiles:catadeta"
-                                        action="#{mttPerfiles.guardarPerfil()}"
-                                        />
-                             <p:menuitem value="Eliminar" 
-                                        icon="pi pi-trash" 
-                                        update="formPerfiles:catadeta"
-                                        action="#{mttPerfiles.eliminarPerfil()}"
-                                        />
+                    <p:menubar styleClass="custom-menubar">
+                        <p:menuitem value="Nuevo" 
+                                    icon="pi pi-plus"
+                                    update="formPerfiles"
+                                    styleClass="custom-menuitem"
+                                    action="#{mttPerfiles.nuevoPerfil()}"
+                                    />
+                        <p:menuitem value="guardar" 
+                                    icon="pi pi-save" 
+                                    update="formPerfiles:catadeta"
+                                    styleClass="custom-menuitem"
+                                    action="#{mttPerfiles.guardarPerfil()}"
+                                    />
+                        <p:menuitem value="Eliminar" 
+                                    icon="pi pi-trash" 
+                                    update="formPerfiles:catadeta"
+                                    styleClass="custom-menuitem"
+                                    action="#{mttPerfiles.eliminarPerfil()}"
+                                    />
 
-                        </p:menubar>
-                        <p:panelGrid columns="4" layout="grid" 
-                                     styleClass="panel-stilo">
-                            <p:outputLabel for="textCodperfil2" value="Codperfil" />
-                            <p:inputText id="textCodperfil2" value="#{mttPerfiles.codPerfilEditGuar}" 
-                                         disabled="true" onkeypress="soloNumeros(event)"/>
+                    </p:menubar>
+                    <div >
+                        <p:panelGrid columns="1"
+                                     layout="grid"
+                                     styleClass="my-panelgrid ui-panelgrid-blank ui-fluid"
+                                     style="border:0px none; background-color:transparent;">
 
-                            <p:outputLabel for="textNombrePerf2" value="Nombre del perfil" />
-                            <p:inputText id="textNombrePerf2" value="#{mttPerfiles.nombrePerfilEditGuar}" 
-                                         onkeypress="return validarSoloLetras(event)"/>
-                        </p:panelGrid>
-                    </p:panel>
-                    <br></br>
-                    <p:panel header="Menus del perfil" styleClass="custom-panel-header">
-                        <h:panelGroup id="menusPanel">
+
+                            <p:row id="my-row-id2" styleClass="my-heading-row" style="font-weight: bold;">
+                                Detalle del perfil
+                            </p:row>
+                            <p:panelGrid columns="4"
+                                         >
+                                <p:outputLabel for="@next" value="Codperfil" />
+                                <p:inputText id="textCodperfil2" value="#{mttPerfiles.codPerfilEditGuar}" 
+                                             disabled="true" onkeypress="soloNumeros(event)"/>
+
+                                <p:outputLabel for="@next" value="Nombre del perfil" />
+                                <p:inputText id="textNombrePerf2" value="#{mttPerfiles.nombrePerfilEditGuar}" 
+                                             onkeypress="return validarSoloLetras(event)"/>
+                            </p:panelGrid>
+                            <p:row id="my-row-id" styleClass="my-heading-row" style="font-weight: bold">
+                                Menus del perfil
+                            </p:row>
+
                             <p:pickList value="#{mttPerfiles.menus}" 
                                         var="menu"
                                         itemLabel="#{menu.nommenu}"  
@@ -112,9 +128,8 @@
                                     <h:outputText value="Asignados" />
                                 </f:facet>
                             </p:pickList>
-
-                        </h:panelGroup>
-                    </p:panel>
+                        </p:panelGrid>
+                    </div>
                 </p:tab>
             </p:tabView>
         </h:form>
