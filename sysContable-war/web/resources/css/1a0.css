@@ -7,6 +7,10 @@ and open the template in the editor.
     Created on : 06-09-2024, 01:52:31 PM
     Author     : BME_PERSONAL
 */
+form{
+      color: var(--primary-500) !important;
+    border-color: var(--primary-500) !important;
+}
 .custom-panel-header .ui-panel-titlebar {
     background-color: #001F3F !important;
     color: white !important;
@@ -120,6 +124,7 @@ Para el encabezado del accordeon
     font-size: 18px;
     color: blue ;
     text-align: right;
+    padding: 0;
     /* Otros estilos... */
 }
 .custom-menubar {
@@ -345,7 +350,6 @@ Para el encabezado del accordeon
 }
 
 .panel-stilo .ui-outputlabel {
-    font-weight: bold; /* Establece el texto en negrita */
     vertical-align: top; /* Alinea verticalmente con el inputText correspondiente */
     color: blue !important;
 }

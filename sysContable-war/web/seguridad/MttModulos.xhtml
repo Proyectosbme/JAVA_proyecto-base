@@ -36,12 +36,12 @@
                                     styleClass="custom-menuitem"
                                     action="#{mttenimientoModulos.limpiarBusqueda()}" />
                     </p:menubar>
-
+                    <p:focus context="pnModulos"/>
                     <p:panelGrid  id="pnModulos" columns="4" layout="grid" 
                                   styleClass="panel-stilo">
                         <p:outputLabel for="txtNomMod" value="Nombre" />
                         <p:inputText id="txtNomMod" value="#{mttenimientoModulos.nomModulo}"
-                                     onkeypress="return validarSoloLetras(event)"/>
+                                     onkeypress="return validarSoloLetras(event)" />
 
                         <p:outputLabel for="txtCodmod" value="Codigo" />
                         <p:inputText id="txtCodmod" value="#{mttenimientoModulos.codModulo}"
