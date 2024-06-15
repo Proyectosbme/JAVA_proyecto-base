@@ -1,0 +1,440 @@
+
+.ui-datatable.style-table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+}
+
+.ui-datatable.style-table th, 
+.ui-datatable.style-table td {
+    border: 1px solid #aaa !important;
+    padding: -8px !important;
+    height: 10px !important; /* Alto de las celdas */
+
+}
+
+.ui-datatable.style-table th {
+    background-color: grey !important; /* Azul marino */
+    color: #fff !important;
+}
+
+/* Estilo para las filas impares */
+.ui-datatable.style-table tbody tr:nth-child(odd) td {
+    background-color: white !important; /* Cambia el color de fondo de las celdas impares aquí */
+    color: black !important; /* Cambia el color del texto de las celdas impares aquí */
+}
+
+/* Estilo para las filas pares */
+.ui-datatable.style-table tbody tr:nth-child(even) td {
+    background-color: #D6DBDF !important; /* Cambia el color de fondo de las celdas pares aquí */
+    color: black !important; /* Cambia el color del texto de las celdas pares aquí */
+}
+
+/* Estilo para el hover en todas las filas */
+.ui-datatable.style-table tbody tr:hover td {
+    background-color: #e6f2ff !important; /* Cambia el color de fondo en hover para todas las filas */
+    color: black !important; /* Cambia el color del texto en hover para todas las filas */
+}
+
+/* Estilo para la fila seleccionada */
+.ui-datatable.style-table tbody tr.ui-state-highlight td {
+    background-color: #3760FF !important; /* Cambia el color de fondo al seleccionar */
+    font-weight: bold !important; /* Hace que el texto sea negrita al seleccionar */
+    color: white !important; /* Cambia el color del texto al seleccionar */
+}
+/* Estilo para los botones dentro de las columnas */
+.ui-datatable.style-table .ui-button {
+    background-color: grey !important; /* Cambia el color de fondo de los botones a negro */
+    color: white !important; /* Cambia el color del texto (icono) de los botones a blanco */
+    padding: 0 !important;
+    margin: 0 !important;    
+}
+
+/* Estilo para el icono dentro de los botones */
+.ui-datatable.style-table .ui-button .pi {
+    color: white !important; /* Cambia el color del icono a blanco */
+}
+
+:root {
+    --font-family-sans-serif: "Open Sans", -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-family-sans-serif);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: white ; 
+    text-align: left;
+}
+
+.card {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: white ; 
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0;
+}
+
+.ui-paginator-bottom.style-table .ui-paginator-pages {
+    float: right !important;
+}
+
+.ui-paginator-bottom.style-table .ui-paginator-rpp-options {
+    float: left;
+    margin-right: 10px;
+}
+
+
+.menu-toggle {
+    width: 10px;
+    height: 10px;
+    margin-top: -20px !important;
+}
+
+.user-info {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: right !important;
+}
+
+.small-text {
+    font-size: smaller;
+}
+
+
+
+.menu-label {
+    font-size: 12px;
+}
+
+.logout-button {
+    background: grey !important;
+}
+
+.menu-toggle:active::before {
+    content: "\2630";
+    color: blue;
+}
+
+.menu-toggle::before {
+    content: "\2630";
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.dashboard-toolbar {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    color: white;
+    background-color: #001F3F; /* Azul marino */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.messages {
+    color: #222 !important;
+    padding: 10px !important;
+    border-radius: 4px !important;
+    margin-bottom: 10px !important;
+    width: 100% !important;
+}
+
+.messages .ui-message-detail {
+    color: #222 !important;
+}
+
+.ui-messages-info {
+    width: 100% !important;
+    background-color: #e4f2fd !important;/**COLOR BUENO CELESTE PALIDO*/
+    border-color: #88bde6 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.ui-messages-warn {
+    background-color: #fff8b3 !important; /* Amarillo pálido */
+    border-color: #ffd700 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.ui-messages-error {
+    background-color: #ffcccb !important; /* Rojo pálido */
+    border-color: #ff3333 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.ui-messages-fatal {
+    background-color: #d3d3d3 !important; /* Gris pálido */
+    border-color: #ff0000 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+.ui-growl-message {
+    font-size: 14px;
+}
+
+.custom-panel-header .ui-panel-titlebar {
+    background-color: #001F3F !important;
+    color: white !important;
+    font-weight: bold;
+}
+
+.custom-panel .ui-panel-titlebar {
+    background-color: #001F3F !important;
+    color: white !important;
+    text-align: center !important;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 19px;
+    border: 1px solid white !important; /* Cambia el color y el estilo según sea necesario */
+    border-radius: 10px !important;
+}
+
+.custom-accordion .ui-accordion-header {
+    background: gray  !important;
+    font-weight: bold !important;
+    color: white !important;
+    border-radius: 10px !important;
+    height: 35px !important;    
+    line-height: 10px !important; /* Centra verticalmente */
+}
+
+.custom-accordion .ui-accordion-header .ui-icon {
+    /* Oculta la flecha predeterminada */
+    color: white !important; /* Por ejemplo, blanco */
+}
+
+
+.custom-accordion .ui-accordion-content {
+    /*  background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.5)) !important;*/
+    background: #D6DBDF !important;;
+    transition: background-color 0.3s ease;
+    border-right: 1px solid black !important;
+    border-left: 1px solid black !important;
+    border-top: transparent !important;
+    border-bottom: 1px solid black !important;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.custom-panel:hover {
+    background: linear-gradient(to bottom, rgba(173, 216, 230, 0.8), rgba(173, 216, 230, 0.5)) !important;
+}
+
+.sin-bordes {
+    border: none !important;
+    margin: -10px !important;
+    padding: 0 !important;
+    border-color: white !important;
+}
+
+.custom-accordion .ui-accordion-header.ui-state-active {
+    background: gray !important;
+    border-radius: 1px !important;
+    border-right: 1px solid black !important;
+    border-left: 1px solid black !important;
+    border-top: 1px solid black !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    border-bottom: transparent !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.custom-accordion .ui-accordion-header.ui-state-active .ui-icon {
+    /* Cambia el color de la flecha aquí */
+    color: black !important; /* Por ejemplo, blanco */
+}
+
+.ui-tree .ui-treenode-content {
+    background-color: transparent !important;
+    color: black !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    background-color: #3760FF !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+}
+
+.ui-dialog .ui-dialog-title {
+    color: white;
+}
+
+.ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close .ui-icon {
+    color: white !important;
+}
+
+.ui-dialog .ui-dialog-content {
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
+
+
+.responsive-label-input {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.label-left {
+    margin-right: 10px !important;
+}
+
+.input-right {
+    flex: 1 !important;
+}
+
+.panel-stilo{
+    width: 100% !important; 
+    max-width: 100% !important;
+}
+
+.panel-stilo .ui-inputtext {
+    border-radius: 8px; /* Define el radio de los bordes */
+    border: 1px solid #336699; /* Define el borde y su color */
+    background-color: rgba(0, 0, 0, 0.1); /* Define el color de fondo */
+    padding: 8px; /* Añade espacio interno para el contenido */
+    color: #333; /* Define el color del texto */
+    width: 100%;
+}
+
+
+/* Estilo para cuando el input está enfocado */
+.panel-stilo .ui-inputtext:focus {
+    outline: none; /* Quita el contorno predeterminado del foco */
+    border-color: #6699cc; /* Cambia el color del borde cuando está enfocado */
+}
+.panel-stilo .ui-selectonemenu {
+    border-radius: 8px !important; /* Define el radio de los bordes */
+    border: 1px solid #336699 !important; /* Define el borde y su color */
+    background-color: #e6f2ff !important; /* Define el color de fondo */
+    color: #333 !important; /* Define el color del texto */
+    max-width: 100% !important;
+    width: 100%; /* Asegura que el ancho del select se ajuste al contenedor */
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    overflow: hidden; /* Oculta el texto que se sale del contenedor */
+    text-overflow: ellipsis; /* Muestra '...' si el texto es muy largo */
+}
+
+/* Estilo para cuando el selectOneMenu está desplegado */
+.panel-stilo .ui-selectonemenu-trigger {
+    background-color: #336699; /* Cambia el color de fondo del botón desplegable */
+    color: #fff; /* Cambia el color del texto del botón desplegable */
+    border-radius: 8px; /* Define el radio de los bordes */
+    border: 1px solid #336699; /* Define el borde y su color */
+}
+
+/* Estilo para cuando el selectOneMenu está enfocado */
+.panel-stilo .ui-panelgrid .ui-selectonemenu-focus {
+    border-color: #6699cc; /* Cambia el color del borde cuando está enfocado */
+}
+
+/* Asegura que los elementos del menú desplegable no excedan el tamaño del contenedor */
+.panel-stilo .ui-panelgrid .ui-selectonemenu-label {
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    overflow: hidden; /* Oculta el texto que se sale del contenedor */
+    text-overflow: ellipsis; /* Muestra '...' si el texto es muy largo */
+    max-width: 100%; /* Asegura que el ancho del texto no exceda el contenedor */
+}
+
+/* Estilo para los elementos del menú desplegable */
+.panel-stilo .ui-panelgrid .ui-selectonemenu-item {
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    overflow: hidden; /* Oculta el texto que se sale del contenedor */
+    text-overflow: ellipsis; /* Muestra '...' si el texto es muy largo */
+    max-width: 100%; /* Asegura que el ancho del texto no exceda el contenedor */
+    display: block; /* Asegura que cada elemento se muestre como bloque */
+}
+
+/* Asegura que el contenedor del menú desplegable no exceda el tamaño del select */
+.panel-stilo .ui-panelgrid .ui-selectonemenu {
+    max-width: 100%; /* Asegura que el ancho del panel no exceda el select */
+}
+
+.panel-stilo .ui-outputlabel {
+    font-weight: bold; /* Establece el texto en negrita */
+    vertical-align: top; /* Alinea verticalmente con el inputText correspondiente */
+}
+.panel-stilo .ui-panelgrid .ui-inputtextarea {
+    background-color: red !important; /* Gris pálido */
+    border-radius: 8px !important;  /* Bordes redondeados */
+    padding: 10px !important;  /* Espaciado interno */
+    border: 1px solid #ccc !important;  /* Borde gris claro */
+    font-family: Arial, sans-serif !important;  /* Fuente predeterminada */
+    font-size: 14px !important; /* Tamaño de fuente */
+    box-sizing: border-box !important;  /* Incluye padding y border en el tamaño total */
+    resize: none !important;  /* Desactiva el redimensionamiento manual */
+}
+
+.estilo-titulo {
+    /* Estilos generales */
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: blue ;
+    text-align: right;
+    margin-bottom: -5px;
+    /* Otros estilos... */
+}
+
+/* Estilos base */
+.ui-g {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.menu-container {
+    margin-top: 45px;
+    border-radius: 10px;
+}
+
+.content-container {
+    margin-top: 40px;
+}
+
+.custom-picklist {
+    width: 100%;
+}
+.custom-picklist .ui-picklist-source-controls{}
+.custom-picklist .ui-picklist-target-controls {
+    text-align: center;
+    background: #D6DBDF;
+}
+.custom-picklist .ui-picklist {
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-picklist .ui-picklist-list {
+    overflow: visible !important; /* Evitar scroll */
+    height: auto !important; /* Ajustar altura automáticamente */
+    max-height: none !important; /* Eliminar la altura máxima */
+}
+
+.custom-picklist .ui-picklist-source,
+.custom-picklist .ui-picklist-target {
+    height: auto !important; /* Ajustar la altura automáticamente */
+    max-height: none !important; /* Eliminar la altura máxima */
+}
+
+
+

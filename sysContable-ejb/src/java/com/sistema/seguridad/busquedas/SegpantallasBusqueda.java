@@ -40,13 +40,13 @@ public class SegpantallasBusqueda implements SegpantallasBusquedaLocal {
             throw new ValidacionesException("El código del módulo está vacío", "Seleccione un módulo");
         }
         try {
-            String queryString = "SELECT NVL(MAX(s.CODPANTALLA), 0) FROM SEGPANTALLAS s "
-                    + "WHERE s.CODMOD =?codModulo";
+            String queryString = "SELECT  MAX(s.CODPANTALLA)  FROM SEGPANTALLAS s "
+                    + "WHERE s.CODMOD =?1";
             Query query = em.createNativeQuery(queryString);
-            query.setParameter("codModulo", codModulo);
+            query.setParameter(1, codModulo);
 
-            BigDecimal result = (BigDecimal) query.getSingleResult();
-            return result.toBigInteger();
+            Long result = (Long) query.getSingleResult();
+            return new BigInteger(result.toString());
         } catch (NoResultException e) {
             return BigInteger.ZERO;
         } catch (NullPointerException ne) {

@@ -10,10 +10,6 @@
                     <file>${reference.sysContable-ejb.dist}</file>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.primefaces-8.0.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
                     <file>${file.reference.jasperreports-5.5.0.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
@@ -63,6 +59,10 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.poi-3.7-20101029.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.primefaces-13.0.0.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

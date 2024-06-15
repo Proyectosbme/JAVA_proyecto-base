@@ -7,24 +7,33 @@
        xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
+        <style>
+            /* reset on the showcase style*/
+            body .ui-panelgrid .ui-panelgrid-cell {
+                background-color: transparent;
+            }
+        </style>
     </h:head>
     <h:body>
         <h:form id="form">
             <h1 class="estilo-titulo">Mantenimiento de modulos</h1>
-            <p:tabView dynamic="true"   prependId="false" style="border: none;" 
+            <p:tabView dynamic="true"   prependId="false" 
                        activeIndex="#{mttenimientoModulos.indexTab}">
                 <p:tab title="Busqueda" >
-                    <p:menubar>
+                    <p:menubar styleClass="custom-menubar">
                         <p:menuitem value="Nuevo" 
                                     icon="pi pi-plus" 
+                                    styleClass="custom-menuitem"
                                     action="#{mttenimientoModulos.iniciarModulo()}"/>
                         <p:menuitem value="Buscar"
                                     update="form"
                                     icon="pi pi-search" 
+                                    styleClass="custom-menuitem"
                                     action="#{mttenimientoModulos.buscarModulo()}" />
                         <p:menuitem value="Limpiar" 
                                     icon="pi pi-trash"
                                     update="form" 
+                                    styleClass="custom-menuitem"
                                     action="#{mttenimientoModulos.limpiarBusqueda()}" />
                     </p:menubar>
 
@@ -41,20 +50,15 @@
                     <p:dataTable id="singleDT" var="m" value="#{mttenimientoModulos.lstModulos}" 
                                  rowKey="#{m.codmod}"
                                  paginator="true" 
-                                 paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rows="10"
-                                 styleClass="excel-style"
                                  paginatorPosition="bottom"
                                  selectionMode="single" 
+                                 styleClass="style-table"
                                  selection="#{mttenimientoModulos.selectecModulo}">
                         <p:ajax event="rowSelect"  listener="#{mttenimientoModulos.cargarPantallas}" 
                                 update="form"/>
-                        <f:facet name="header" >
-                            MODULOS 
-                        </f:facet>
-
                         <p:column headerText="Codigo">
-                            <h:outputText value="#{m.codmod}" />
+                            <h:outputText value="#{m.codmod}"  />
                         </p:column>
                         <p:column headerText="Nombre">
                             <h:outputText value="#{m.nommodulo}" />
@@ -78,21 +82,21 @@
                     </p:dataTable>
                 </p:tab>
                 <p:tab title="Detalle">
-                    <p:panel  styleClass="panel-pantalla">
-                        <f:facet  name="header">
-                            <h:outputText value=  "MODULO : #{mttenimientoModulos.selectecModulo.nommodulo}"/>
-                        </f:facet>
+                    <p:panelGrid columns="1"
+                                 layout="grid"
+                                 styleClass="my-panelgrid ui-panelgrid-blank ui-fluid"
+                                 style="border:0px none; background-color:transparent;">
+                        <p:row id="my-row-id2" styleClass="my-heading-row" style="font-weight: bold;">
+                            MODULO : #{mttenimientoModulos.selectecModulo.nommodulo}
+                        </p:row>
                         <p:dataTable id="catadeta" var="m" 
                                      value="#{mttenimientoModulos.selectecModulo.segpantallasList}" 
                                      rowKey="#{m.segmodulo.codmod}"
                                      paginator="true" 
                                      rows="10"
                                      paginatorPosition="bottom"
-                                     styleClass="excel-style"
+                                     styleClass="style-table"
                                      selectionMode="single" >
-                            <f:facet name="header">
-                                Pantalla del modulo
-                            </f:facet>
                             <p:column headerText="nombre">
                                 <h:outputText value="#{m.nompantalla}" />
                             </p:column>
@@ -118,7 +122,7 @@
                         </p:dataTable>
                         <p:commandButton  value="Agregar" icon="pi pi-plus" 
                                           onclick="PF('addPantalla').show();" />
-                    </p:panel>
+                    </p:panelGrid>
                 </p:tab>
             </p:tabView>
         </h:form>
@@ -224,7 +228,7 @@
                 <p:toolbar>
                     <f:facet name="left">
                         <p:commandButton  value="Agregar" icon="pi pi-plus" 
-                                           update="form:catadeta"
+                                          update="form:catadeta"
                                           action="#{mttenimientoModulos.editarPantalla()}"/>
                     </f:facet>
                 </p:toolbar>

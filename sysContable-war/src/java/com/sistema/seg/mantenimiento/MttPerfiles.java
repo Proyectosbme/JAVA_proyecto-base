@@ -7,7 +7,6 @@ package com.sistema.seg.mantenimiento;
 
 import com.sistema.gen.utilidades.ValidacionMensajes;
 import com.sistema.general.busquedas.GenBusquedadLocal;
-import com.sistema.general.busquedas.GencorrelativosBusquedaLocal;
 import com.sistema.general.procesos.GenProcesosLocal;
 import com.sistema.seguridad.busquedas.SegmenuBusquedaLocal;
 import com.sistema.seguridad.busquedas.SegperfilesBusquedaLocal;
@@ -34,9 +33,6 @@ import org.primefaces.model.DualListModel;
 @Named(value = "mttPerfiles")
 @SessionScoped
 public class MttPerfiles implements Serializable {
-
-    @EJB
-    private GencorrelativosBusquedaLocal gencorrelativosBusqueda;
 
     @EJB
     private GenProcesosLocal genProcesos;
@@ -197,7 +193,7 @@ public class MttPerfiles implements Serializable {
         try {
             String msj = "Perfil actulizado correctamente";
             if (this.esNuevo) {
-                this.perfilSelect.setCodperfil(gencorrelativosBusqueda.obtenerCorrelativo("PERFILES"));
+                this.perfilSelect.setCodperfil(genbusqueda.obtenerCorrelativo("PERFILES"));
                 if (this.nombrePerfilEditGuar != null && !this.nombrePerfilEditGuar.trim().isEmpty()) {
                     this.perfilSelect.setNombreperfil(this.nombrePerfilEditGuar);
                     genProcesos.create(perfilSelect);

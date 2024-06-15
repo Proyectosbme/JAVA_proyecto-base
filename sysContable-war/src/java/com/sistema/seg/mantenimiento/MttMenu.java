@@ -7,7 +7,6 @@ package com.sistema.seg.mantenimiento;
 
 import com.sistema.seg.menu.MenuStructura;
 import com.sistema.general.busquedas.GenBusquedadLocal;
-import com.sistema.general.busquedas.GencorrelativosBusquedaLocal;
 import com.sistema.general.procesos.GenProcesosLocal;
 import com.sistema.gen.utilidades.ValidacionMensajes;
 import com.sistema.seguridad.busquedas.SegmenuBusquedaLocal;
@@ -51,8 +50,6 @@ public class MttMenu implements Serializable {
 
     @EJB
     private GenBusquedadLocal genbusqueda; // Bean para realizar búsquedas generales
-    @EJB
-    private GencorrelativosBusquedaLocal gencorrelativosBusqueda; // Bean para buscar correlativos
     @EJB
     private GenProcesosLocal genProcesos; // Bean para realizar procesos generales
     @EJB
@@ -307,7 +304,7 @@ public class MttMenu implements Serializable {
                 Segpantallas pantalla = new Segpantallas(itemCodModulo, itemCodPantalla);
                 if (esNuevo) {
                     msjUser = "Menu agregado con exito";
-                    BigInteger codMenu = gencorrelativosBusqueda.obtenerCorrelativo("GENCORSMENU");
+                    BigInteger codMenu = genbusqueda.obtenerCorrelativo("GENCORSMENU");
                     menuSelect.setCodmenu(codMenu);
                 }
                 if (itemCodMenu != null) {

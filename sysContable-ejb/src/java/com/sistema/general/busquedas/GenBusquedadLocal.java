@@ -30,7 +30,7 @@ public interface GenBusquedadLocal<T> {
      * @param entityClass la clase de la entidad
      * @return una lista de todas las entidades de la tabla
      */
-    public <T> List<T> buscarTodos(Class<T> entityClass)throws NullPointerException, Exception;
+    public <T> List<T> buscarTodos(Class<T> entityClass) throws NullPointerException, Exception;
 
     /**
      * Cuenta el número de filas de una tabla.
@@ -38,5 +38,19 @@ public interface GenBusquedadLocal<T> {
      * @param entityClass la clase de la entidad
      * @return el número de filas de la tabla
      */
-    public BigInteger contarFilas(Class<?> entityClass)throws NullPointerException, Exception;
+    public BigInteger contarFilas(Class<?> entityClass) throws NullPointerException, Exception;
+
+    /**
+     * Obtiene el siguiente valor de correlativo para una entidad especificada.
+     *
+     * @param nombreEntidad el nombre de la entidad para la cual se desea
+     * obtener el correlativo
+     * @return el siguiente valor de correlativo
+     * @throws ValidacionesException si no se encuentra la entidad en la base de
+     * datos
+     * @throws NullPointerException si se produce una excepción de puntero nulo
+     * @throws Exception si se produce una excepción no controlada
+     */
+    public BigInteger obtenerCorrelativo(String nombreEntidad)
+            throws NullPointerException, Exception;
 }

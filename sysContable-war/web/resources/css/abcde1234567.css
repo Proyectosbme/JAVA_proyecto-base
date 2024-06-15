@@ -1,0 +1,362 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 06-09-2024, 01:52:31 PM
+    Author     : BME_PERSONAL
+*/
+.custom-panel-header .ui-panel-titlebar {
+    background-color: #001F3F !important;
+    color: white !important;
+    font-weight: bold;
+
+}
+
+.custom-panel .ui-panel-titlebar {
+    background-color: #001F3F !important;
+    color: white !important;
+    text-align: center !important;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 19px;
+    border: 1px solid white !important; /* Cambia el color y el estilo según sea necesario */
+    border-radius: 10px !important;
+    padding-bottom: -8px !important;
+}
+
+
+.dashboard-toolbar {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    color: white;
+    background-color: #001F3F; /* Azul marino */
+    justify-content: space-between;
+    align-items: center;
+}
+.menu-toggle {
+    margin-top: -10px !important;
+}
+.menu-toggle:active::before {
+    content: "\2630";
+    color: blue;
+}
+
+.menu-toggle::before {
+    content: "\2630";
+    color: white;
+}
+.user-info {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: right !important;
+}
+.menu-label {
+    font-size: 12px;
+}
+/* 
+Para el encabezado del accordeon
+*/
+.custom-accordion .ui-accordion-header {
+    font-weight: bold !important;
+    border-radius: 10px !important;
+    height: 35px !important;    
+    line-height: 3px !important; /* Centra verticalmente */
+    color: var(--primary-500) !important;
+    border-color: var(--primary-500) !important;
+    margin-left: -15px !important;
+    margin-right: -15px !important;
+
+}
+/**Para el incono del acordeon
+*/
+.custom-accordion .ui-accordion-header .ui-icon {
+    /* Oculta la flecha predeterminada */
+    color:  var(--primary-500) !important; /* Por ejemplo, blanco */
+}
+/*para el contenido del accordeon*/
+.custom-accordion .ui-accordion-content {
+    transition: background-color 0.3s ease;
+    margin-left: -15px !important;
+    margin-right: -15px !important;
+    margin-top: -10px !important;
+    margin-bottom: -10px !important;
+
+}
+/*cuando el acordeon esta desplegado*/
+.custom-accordion .ui-accordion-header.ui-state-active {
+    border-radius: 1px !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    border-bottom: transparent !important;
+    color: black !important;
+    background: var(--primary-300) !important;
+
+}
+
+/**detalle del icono cuand ose seleccione*/
+.custom-accordion .ui-accordion-header.ui-state-active .ui-icon {
+    /* Cambia el color de la flecha aquí */
+    color: black !important; /* Por ejemplo, blanco */
+}
+
+.ui-tree .ui-treenode-content {
+    background-color: transparent !important;
+    color: black !important;
+    padding-left: 0px;
+
+}
+
+.estilo-titulo {
+    /* Estilos generales */
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    color: blue ;
+    text-align: right;
+    /* Otros estilos... */
+}
+.custom-menubar {
+    background-color: transparent !important;
+    height: 45px !important;
+    align-content: center !important;
+    margin: 2px !important;
+    border-color: var(--primary-500) !important;
+    border-radius: 10px !important;
+
+}
+
+
+.custom-menubar .ui-menuitem-text {
+    color: var(--primary-500) !important;
+}
+
+.custom-menubar .ui-menuitem-icon {
+    color: var(--primary-500) !important;
+}
+.custom-menuitem {
+    border: 1px solid !important;
+    border-color: var(--primary-500) !important;
+    border-radius: 10px !important;
+    margin: 2px !important;
+    height: 30px !important;
+    align-content: center !important;
+    background: transparent !important;
+    color: var(--primary-500) !important;
+    padding: 15px !important;
+}
+
+/* Estilo para los elementos del menú al hacer hover */
+.custom-menuitem:hover {
+    background: #cce5ff !important;
+    margin: 2px !important;
+}
+
+
+.custom-menuitem.ui-state-hover {
+    background: var(--primary-100) !important;
+    color: black !important;
+    margin: 2px !important;
+}
+
+
+/* Estilo para el texto de los elementos del menú al hacer hover */
+.custom-menuitem:hover .ui-menuitem-text {
+    color: black !important;
+}
+
+/* Estilo para el icono de los elementos del menú al hacer hover */
+.custom-menuitem:hover .ui-menuitem-icon {
+    color: black !important;
+}
+
+.ui-datatable.style-table th, 
+.ui-datatable.style-table td {
+    border: 1px solid !important;
+    border-color: var(--primary-500) !important;
+    padding-bottom: 0 !important;
+    padding-top:  0 !important;
+
+
+}
+
+.ui-datatable.style-table th {
+    background-color: var(--primary-300) !important; /* Azul marino */
+    color: white !important;
+    height: 35px !important;
+}
+
+/* Estilo para las filas impares */
+.ui-datatable.style-table tbody tr:nth-child(odd) td {
+    background-color:transparent!important;  /* Cambia el color de fondo de las celdas impares aquí */
+    color: black !important; /* Cambia el color del texto de las celdas impares aquí */
+    height: 25px !important;
+}
+
+/* Estilo para las filas pares */
+.ui-datatable.style-table tbody tr:nth-child(even) td {
+    background-color:var(--primary-100) !important; /* Cambia el color de fondo de las celdas pares aquí */
+    color: black !important; /* Cambia el color del texto de las celdas pares aquí */
+    height: 25px !important;
+}
+
+/* Estilo para el hover en todas las filas */
+.ui-datatable.style-table tbody tr:hover td {
+    background-color:var(--bluegray-100) !important; /* Cambia el color de fondo en hover para todas las filas */
+    color: black !important; /* Cambia el color del texto en hover para todas las filas */
+    border: 1px solid blue !important;
+}
+
+/* Estilo para la fila seleccionada */
+.ui-datatable.style-table tbody tr.ui-state-highlight td {
+    background-color: var(--bluegray-200) !important; /* Cambia el color de fondo al seleccionar */
+    font-weight: bold !important; /* Hace que el texto sea negrita al seleccionar */
+    color: black !important; /* Cambia el color del texto al seleccionar */
+}
+/* Estilo para los botones dentro de las columnas */
+.ui-datatable.style-table .ui-button {
+    background: transparent !important; 
+    color: black !important; /* Cambia el color del texto (icono) de los botones a blanco */
+    height: 25px !important;
+    border: none !important; 
+}
+
+/* Estilo para el icono dentro de los botones */
+.ui-datatable.style-table .ui-button .pi {
+    color: black !important; /* Cambia el color del icono a blanco */
+    height: 25px !important;
+
+}
+
+.custom-picklist {
+    width: 100%;
+}
+.custom-picklist .ui-picklist-source-controls{}
+.custom-picklist .ui-picklist-target-controls {
+    text-align: center;
+    background: #D6DBDF;
+}
+.custom-picklist .ui-picklist {
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-picklist .ui-picklist-list {
+    overflow: visible !important; /* Evitar scroll */
+    height: auto !important; /* Ajustar altura automáticamente */
+    max-height: none !important; /* Eliminar la altura máxima */
+}
+
+.custom-picklist .ui-picklist-source,
+.custom-picklist .ui-picklist-target {
+    height: auto !important; /* Ajustar la altura automáticamente */
+    max-height: none !important; /* Eliminar la altura máxima */
+}
+
+/* reset on the showcase style*/
+
+/* Estilo para los elementos de panelgrid */
+.my-panelgrid {
+    background-color: transparent !important;;
+}
+
+/* example use of styles for your form */
+.my-heading-row {
+    background-color: var(--surface-c) !important;;
+    font-weight: bold !important;;
+}
+
+.panel-stilo{
+    width: 100% !important; 
+    max-width: 100% !important;
+}
+
+.panel-stilo .ui-inputtext {
+    border-radius: 8px; /* Define el radio de los bordes */
+    border: 1px solid  !important; /*Define el borde y su color */
+    border-color: var(--primary-200) !important;
+    background-color: var(--primary-50) !important; /* Define el color de fondo */
+    padding: 8px; /* Añade espacio interno para el contenido */
+    color: #333; /* Define el color del texto */
+    width: 100%;
+}
+
+
+/* Estilo para cuando el input está enfocado */
+.panel-stilo .ui-inputtext:focus {
+    outline: none; /* Quita el contorno predeterminado del foco */
+    border-color: var(--primary-300); /* Cambia el color del borde cuando está enfocado */
+    border: 1px !important;
+}
+.panel-stilo .ui-selectonemenu {
+    border-radius: 8px !important; /* Define el radio de los bordes */
+    border: 1px solid #336699 !important;
+    border-color: var(--primary-100) !important;
+    background-color: var(--primary-50) !important;
+    color: #333 !important; /* Define el color del texto */
+    max-width: 100% !important;
+    width: 100%; /* Asegura que el ancho del select se ajuste al contenedor */
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    overflow: hidden; /* Oculta el texto que se sale del contenedor */
+    text-overflow: ellipsis; /* Muestra '...' si el texto es muy largo */
+}
+
+/* Estilo para cuando el selectOneMenu está desplegado */
+.panel-stilo .ui-selectonemenu-trigger {
+    border-color: var(--primary-100) !important;
+    background-color: var(--primary-50) !important;
+    color: #fff; /* Cambia el color del texto del botón desplegable */
+    border-radius: 8px; /* Define el radio de los bordes */
+    border: 1px solid #336699; /* Define el borde y su color */
+}
+
+/* Estilo para cuando el selectOneMenu está enfocado */
+.panel-stilo .ui-panelgrid .ui-selectonemenu-focus {
+    border-color: var(--primary-100) !important;
+    background-color: var(--primary-50) !important; border-color: var(--primary-400) ; /* Cambia el color del borde cuando está enfocado */
+}
+
+/* Asegura que los elementos del menú desplegable no excedan el tamaño del contenedor */
+.panel-stilo .ui-panelgrid .ui-selectonemenu-label {
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    overflow: hidden; /* Oculta el texto que se sale del contenedor */
+    text-overflow: ellipsis; /* Muestra '...' si el texto es muy largo */
+    max-width: 100%; /* Asegura que el ancho del texto no exceda el contenedor */
+}
+
+/* Estilo para los elementos del menú desplegable */
+.panel-stilo .ui-panelgrid .ui-selectonemenu-item {
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    overflow: hidden; /* Oculta el texto que se sale del contenedor */
+    text-overflow: ellipsis; /* Muestra '...' si el texto es muy largo */
+    max-width: 100%; /* Asegura que el ancho del texto no exceda el contenedor */
+    display: block; /* Asegura que cada elemento se muestre como bloque */
+}
+
+/* Asegura que el contenedor del menú desplegable no exceda el tamaño del select */
+.panel-stilo .ui-panelgrid .ui-selectonemenu {
+    max-width: 100%; /* Asegura que el ancho del panel no exceda el select */
+}
+
+.panel-stilo .ui-outputlabel {
+    font-weight: bold; /* Establece el texto en negrita */
+    vertical-align: top; /* Alinea verticalmente con el inputText correspondiente */
+    color: blue !important;
+}
+.panel-stilo .ui-panelgrid .ui-inputtextarea {
+    border-radius: 10px !important;  /* Bordes redondeados */
+    padding: 10px !important;  /* Espaciado interno */
+    border: 1px solid !important;
+    font-family: Arial, sans-serif !important;  /* Fuente predeterminada */
+    font-size: 14px !important; /* Tamaño de fuente */
+    box-sizing: border-box !important;  /* Incluye padding y border en el tamaño total */
+    resize: none !important;  /* Desactiva el redimensionamiento manual */
+    border-color: var(--primary-100) !important;
+    background-color: var(--primary-50) !important;
+}

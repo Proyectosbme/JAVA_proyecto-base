@@ -8,17 +8,17 @@
     <h:head>
     </h:head>
     <h:body>
-         <h1 class="estilo-titulo">Mantenimiento de usuarios</h1>
+        <h1 class="estilo-titulo">Mantenimiento de usuarios</h1>
         <h:form id="formUsuarios">
-           
+
             <p:tabView  prependId="false" >
                 <p:tab title="Busqueda">
                     <p:menubar>
-                        <p:menuitem value="Nuevo" 
+                        <p:menuitem value="Buscar" 
                                     icon="pi pi-plus" 
                                     action="#{mttenimientoModulos.iniciarModulo()}"/>
                     </p:menubar>
-                        <p:panelGrid  id="pnModulos" columns="4" layout="grid" 
+                    <p:panelGrid  id="pnModulos" columns="4" layout="grid" 
                                   styleClass="panel-stilo">
                         <p:outputLabel for="txtNomMod" value="Nombre" />
                         <p:inputText id="txtNomMod" value="#{mttenimientoModulos.nomModulo}"
@@ -28,17 +28,17 @@
                         <p:inputText id="txtCodmod" value="#{mttenimientoModulos.codModulo}"
                                      onkeypress="soloNumeros(event)"/>
                     </p:panelGrid>
-                        <p:dataTable id="singleDT" var="m" value="#{mttenimientoModulos.lstModulos}" 
+                    <p:dataTable id="singleDT" var="m" value="#{mttenimientoModulos.lstModulos}" 
                                  rowKey="#{m.codmod}"
                                  paginator="true" 
                                  paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rows="10"
-                                 styleClass="excel-style"
+                                 styleClass="style-table"
                                  paginatorPosition="bottom"
                                  selectionMode="single" 
                                  selection="#{mttenimientoModulos.selectecModulo}">
                         <p:ajax event="rowSelect"  listener="#{mttenimientoModulos.cargarPantallas}" 
-                                update="form"/>
+                                />
                         <f:facet name="header" >
                             MODULOS 
                         </f:facet>
@@ -49,55 +49,94 @@
                         <p:column headerText="Nombre">
                             <h:outputText value="#{m.nommodulo}" />
                         </p:column>
-                        <p:column  headerText="EDITAR" 
-                                   style="width:47px;text-align: center">
-                            <p:commandButton  icon="pi pi-pencil" 
-                                              update="editmodA"
-                                              title="Icon Only" 
-                                              action="#{mttenimientoModulos.asigEditarModulo(m)}" >
-                            </p:commandButton>
-                        </p:column>
-                        <p:column headerText="ELIMINAR" 
-                                  style="width:67px; text-align: center">
-                            <p:commandButton  icon="pi pi-trash" 
-                                              update="deleteModid"
-                                              title="Icon Only" 
-                                              action="#{mttenimientoModulos.asigModEliminar(m)}" >
-                            </p:commandButton>
-                        </p:column>
+
                     </p:dataTable>
                 </p:tab>
                 <p:tab title="Detalle">
-                    
+                    <div class="card">
+                        <h5>Responsive Grid</h5>
+                        <style>
+                            /* reset on the showcase style*/
+                            body .ui-panelgrid .ui-panelgrid-cell {
+                                background-color: transparent;
+                            }
+
+                            /* example use of styles for your form */
+                            .my-heading-row {
+                                background-color: var(--surface-c);
+                                font-weight: bold;
+                            }
+                        </style>
+
+                        <!--
+                        Note: Rows and columns can have style, styleClass, and id.
+                        Note: A column with a defined styleClass will ignore the styleClass specified in the columnClasses list.
+                        Note: Note the use of ui-fluid to ensure that components are sized correctly and the use of ui-panelgrid-blank to remove borders.
+                        -->
+                        <p:panelGrid columns="4"
+                                     columnClasses="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-4"
+                                     layout="grid"
+                                     styleClass="ui-panelgrid-blank ui-fluid"
+                                     style="border:0px none; background-color:transparent;">
+
+                            <p:row styleClass="my-heading-row">
+                                Biographic
+                            </p:row>
+
+                            <p:outputLabel for="@next" value="First Name"/>
+                            <p:inputText/>
+
+                            <p:outputLabel for="@next" value="Last Name"/>
+                            <p:inputText/>
+
+                            <p:outputLabel for="@next" value="Phone"/>
+                            <p:inputText/>
+
+                            <p:outputLabel for="@next" value="Email"/>
+                            <p:inputText/>
+
+                            <p:outputLabel for="@next" value="Address"/>
+                            <p:inputTextarea rows="3"/>
+
+                            <p:row id="my-row-id" styleClass="my-heading-row" style="font-weight: bold">
+                                Vehicle
+                            </p:row>
+
+                            <p:outputLabel for="@next" value="Manufacturer"/>
+                            <p:inputText/>
+
+                            <p:outputLabel for="@next" value="Series"/>
+                            <p:inputText/>
+
+                            <p:outputLabel for="@next" value="Color"/>
+                            <p:inputText/>
+
+                            <p:outputLabel for="idReg" value="Registration Number"/>
+                            <p:column style="background-color: lightcoral">
+                                <p:inputText id="idReg"/>
+                            </p:column>
+
+                            <p:row>
+                                <p:column styleClass="ui-grid-col-12">
+                                    <p>It should be noted that the use of @next is not possible for the
+                                        <u>Registration Number</u> outputLabel and the <u>for</u> attribute
+                                        should utilize an ID as shown in the example. The other outputLabel and inputText fields do not require this
+                                        as they are the natural next element whereas
+                                        <u>Registration Number</u> is encapsulated in a column.</p>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column styleClass="ui-grid-col-12">
+                                    <p:commandButton value="Accept" styleClass="mr-2" style="width: auto"/>
+                                    <p:commandButton value="Reject" styleClass="mr-2" style="width: auto"/>
+                                    <p:commandButton value="Refer" style="width: auto" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </div>
                 </p:tab>
             </p:tabView>
-            
-            <div class="p-grid">
-                <div class="p-col">
-                    <p:panel header="prueba" styleClass="custom-panel-header">
-                        <h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
-                                      His beloved son Michael has just come home from the war, but does not intend to become part of his father's business.
-                                      Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family,
-                                      kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
-                    </p:panel>
-                </div>
-                <div class="p-col">
-                    <p:panel header="Godfather">
-                        <h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
-                                      His beloved son Michael has just come home from the war, but does not intend to become part of his father's business.
-                                      Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family,
-                                      kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
-                    </p:panel>
-                </div>
-                <div class="p-col">
-                    <p:panel header="Godfather">
-                        <h:outputText value="The story begins as Don Vito Corleone, the head of a New York Mafia family, oversees his daughter's wedding.
-                                      His beloved son Michael has just come home from the war, but does not intend to become part of his father's business.
-                                      Through Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family,
-                                      kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family." />
-                    </p:panel>
-                </div>
-            </div>
         </h:form>
 
     </h:body>
