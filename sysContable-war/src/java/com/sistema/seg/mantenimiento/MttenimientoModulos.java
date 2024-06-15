@@ -131,11 +131,17 @@ public class MttenimientoModulos implements Serializable {
     public void buscarModulo() {
         try {
             Map parametros = new HashMap();
-            if (this.nomModulo != null && !this.nomModulo.isEmpty()) {
+            if (this.nomModulo != null && !this.nomModulo.trim().isEmpty()) {
                 parametros.put("nonmodulo", this.nomModulo);
             }
             if (this.codModulo != null) {
                 parametros.put("codmod", this.codModulo);
+            }
+             lstModulos.clear();
+            if(parametros.isEmpty()){
+                validar.agregarMsj(ValidacionMensajes.Severidad.WARN, "Ingrese parametros de busqueda");
+                validar.mostrarMsj();
+                return;
             }
             lstModulos = busquedaModulo.buscarModulo(parametros);
             if (lstModulos.isEmpty()) {
