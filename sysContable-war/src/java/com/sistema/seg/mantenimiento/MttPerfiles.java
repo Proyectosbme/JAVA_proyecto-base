@@ -131,9 +131,13 @@ public class MttPerfiles implements Serializable {
                 parametros.put("codperfil", this.codPerfilBusq);
 
             }
+            if(parametros.isEmpty()){
+              validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "No se encontraron resultados");  
+               validar.mostrarMsj();
+            }
             lstPerfilesBus = busPerfilLocal.buscarPerfiles(parametros);
             if (lstPerfilesBus != null && lstPerfilesBus.isEmpty()) {
-                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "No se encontraron rezultados");
+                validar.agregarMsj(ValidacionMensajes.Severidad.WARN, "No se encontraron resultados");
                 validar.mostrarMsj();
             }
 
@@ -191,7 +195,7 @@ public class MttPerfiles implements Serializable {
      */
     public void guardarPerfil() {
         try {
-            String msj = "Perfil actulizado correctamente";
+            String msj = "Perfil actualizado correctamente";
             if (this.esNuevo) {
                 this.perfilSelect.setCodperfil(genbusqueda.obtenerCorrelativo("PERFILES"));
                 if (this.nombrePerfilEditGuar != null && !this.nombrePerfilEditGuar.trim().isEmpty()) {
