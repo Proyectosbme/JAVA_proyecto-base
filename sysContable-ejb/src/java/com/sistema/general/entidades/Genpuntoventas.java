@@ -20,8 +20,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -57,7 +55,7 @@ public class Genpuntoventas implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechac;
     @OneToMany(mappedBy = "puntoventa", fetch = FetchType.LAZY)
-    private List<Genpersonas> genpersonasList;
+    private List<Genpersonas> lstPersonas;
 
     public Genpuntoventas() {
     }
@@ -107,12 +105,12 @@ public class Genpuntoventas implements Serializable {
     }
 
     @XmlTransient
-    public List<Genpersonas> getGenpersonasList() {
-        return genpersonasList;
+    public List<Genpersonas> getLstPersonas() {
+        return lstPersonas;
     }
 
-    public void setGenpersonasList(List<Genpersonas> genpersonasList) {
-        this.genpersonasList = genpersonasList;
+    public void setLstPersonas(List<Genpersonas> lstPersonas) {
+        this.lstPersonas = lstPersonas;
     }
 
     @Override

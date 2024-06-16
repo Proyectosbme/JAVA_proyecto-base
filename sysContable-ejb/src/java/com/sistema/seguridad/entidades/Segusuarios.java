@@ -5,19 +5,19 @@
  */
 package com.sistema.seguridad.entidades;
 
+import com.sistema.general.entidades.Genpersonas;
 import java.io.Serializable;
 import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,28 +33,29 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Segusuarios.findByClave", query = "SELECT s FROM Segusuarios s WHERE s.clave = :clave")
     , @NamedQuery(name = "Segusuarios.findByDuraclave", query = "SELECT s FROM Segusuarios s WHERE s.duraclave = :duraclave")
     , @NamedQuery(name = "Segusuarios.findByEstado", query = "SELECT s FROM Segusuarios s WHERE s.estado = :estado")
-    , @NamedQuery(name = "Segusuarios.findByCodper", query = "SELECT s FROM Segusuarios s WHERE s.codper = :codper")
+    , @NamedQuery(name = "Segusuarios.findByCodper", query = "SELECT s FROM Segusuarios s WHERE s.persona.corrper = :codper")
     , @NamedQuery(name = "Segusuarios.findByTipo", query = "SELECT s FROM Segusuarios s WHERE s.tipo = :tipo")})
 public class Segusuarios implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "CODUSER",nullable = false,length = 100)
+    @Column(name = "CODUSER", nullable = false, length = 100)
     private String coduser;
-    @Column(name = "CLAVE",length = 100)
+    @Column(name = "CLAVE", length = 100)
     private String clave;
     @Column(name = "DURACLAVE")
     private BigInteger duraclave;
     @Column(name = "ESTADO")
     private BigInteger estado;
-    @Column(name = "CODPER")
-    private BigInteger codper;
     @Column(name = "TIPO")
     private Short tipo;
     @JoinColumn(name = "CODPERFIL", referencedColumnName = "CODPERFIL")
     @ManyToOne
     private Segperfiles SegPerfiles;
+    @JoinColumn(name = "CODPER", referencedColumnName = "CORRPER")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Genpersonas persona;
 
     public Segusuarios() {
     }
@@ -93,14 +94,6 @@ public class Segusuarios implements Serializable {
 
     public void setEstado(BigInteger estado) {
         this.estado = estado;
-    }
-
-    public BigInteger getCodper() {
-        return codper;
-    }
-
-    public void setCodper(BigInteger codper) {
-        this.codper = codper;
     }
 
     public Short getTipo() {
@@ -143,5 +136,13 @@ public class Segusuarios implements Serializable {
     public String toString() {
         return "com.sistema.comtable.seguridad.entidades.Segusuarios[ coduser=" + coduser + " ]";
     }
-    
+
+    public Genpersonas getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Genpersonas persona) {
+        this.persona = persona;
+    }
+
 }

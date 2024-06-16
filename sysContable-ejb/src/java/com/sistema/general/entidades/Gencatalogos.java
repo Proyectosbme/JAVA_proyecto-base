@@ -21,7 +21,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -49,7 +48,7 @@ public class Gencatalogos implements Serializable {
     @JoinColumn(name = "CODMODULO", referencedColumnName = "CODMOD", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Segmodulo segmodulo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gencatalogo", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "catalogo", fetch = FetchType.LAZY)
     private List<Gencatdeta> lstCatDeta;
 
     public Gencatalogos() {
