@@ -1,4 +1,4 @@
-package com.sistema.general.busquedas;
+package com.sistema.general.negocio;
 
 import com.sistema.general.entidades.Gencorrelativos;
 import com.sistema.general.validaciones.ValidacionesException;
@@ -21,7 +21,7 @@ import javax.persistence.criteria.Root;
  * @param <T> el tipo de entidad
  */
 @Stateless
-public class Genbusqueda<T> implements GenBusquedadLocal<T> {
+public class GenBusqueda<T> implements GenBusquedadLocal<T> {
 
     @PersistenceContext(unitName = "sysContable-ejbPU")
     /**
@@ -35,7 +35,7 @@ public class Genbusqueda<T> implements GenBusquedadLocal<T> {
     /**
      * Maneja los errores
      */
-    private static final Logger LOGGER = Logger.getLogger(Genbusqueda.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GenBusqueda.class.getName());
 
     /**
      * Busca una entidad por su clave primaria.

@@ -6,11 +6,9 @@
 package com.sistema.seg.mantenimiento;
 
 import com.sistema.seg.menu.MenuStructura;
-import com.sistema.general.busquedas.GenBusquedadLocal;
-import com.sistema.general.procesos.GenProcesosLocal;
+import com.sistema.general.negocio.GenBusquedadLocal;
+import com.sistema.general.negocio.GenProcesosLocal;
 import com.sistema.gen.utilidades.ValidacionMensajes;
-import com.sistema.seguridad.busquedas.SegmenuBusquedaLocal;
-import com.sistema.seguridad.busquedas.SegmoduloBusquedaLocal;
 import com.sistema.seguridad.entidades.Segmenu;
 import com.sistema.seguridad.entidades.Segmodulo;
 import com.sistema.seguridad.entidades.Segpantallas;
@@ -36,6 +34,7 @@ import org.primefaces.PrimeFaces;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import com.sistema.seguridad.negocio.SegBusquedaLocal;
 
 /**
  * Controlador para la gestión de menús. Permite crear, modificar y eliminar
@@ -53,9 +52,7 @@ public class MttMenu implements Serializable {
     @EJB
     private GenProcesosLocal genProcesos; // Bean para realizar procesos generales
     @EJB
-    private SegmoduloBusquedaLocal segmoduloBusqueda; // Bean para buscar módulos de seguridad
-    @EJB
-    private SegmenuBusquedaLocal segmenuBusqueda; // Bean para buscar menús de seguridad
+    private SegBusquedaLocal segBusqueda; // Bean para buscar menús de seguridad
 
     /**
      * Manejador de mensajes de validación y errores.
@@ -159,7 +156,7 @@ public class MttMenu implements Serializable {
             parametros.put("jerarquia", BigInteger.ZERO);
 
             // Busca todos los menús principales
-            lstSegmenu = segmenuBusqueda.buscarTodosMenu(parametros);
+            lstSegmenu = segBusqueda.buscarTodosMenu(parametros);
 
             // Crea el nodo raíz del árbol de menús
             root = new DefaultTreeNode(new MenuStructura("Menus", "-", "Modulos", "-", null), null);
@@ -191,7 +188,7 @@ public class MttMenu implements Serializable {
     public void crearSubMenu(TreeNode node, Segmenu menu) throws NullPointerException, Exception {
         try {
 
-            lstSegmenuSub = segmenuBusqueda.buscarSubMenu(menu.getCodmenu());
+            lstSegmenuSub = segBusqueda.buscarSubMenu(menu.getCodmenu());
             if (!lstSegmenuSub.isEmpty()) {
                 for (Segmenu sm : lstSegmenuSub) {
                     if (sm.getPantalla() == null
@@ -310,7 +307,7 @@ public class MttMenu implements Serializable {
                 if (itemCodMenu != null) {
                     Map parametros = new HashMap();
                     parametros.put("codmenu", itemCodMenu);
-                    List<Segmenu> lstMenu = segmenuBusqueda.buscarTodosMenu(parametros);
+                    List<Segmenu> lstMenu = segBusqueda.buscarTodosMenu(parametros);
                     if (lstMenu != null && !lstMenu.isEmpty()) {
                         for (Segmenu segm : lstMenu) {
                             menuSelect.setMenuPadre(segm);
@@ -357,7 +354,7 @@ public class MttMenu implements Serializable {
             itemPantalla = new ArrayList<>();
             Map parametros = new HashMap();
             parametros.put("codmod", itemCodModulo);
-            List<Segmodulo> lstmodulos = segmoduloBusqueda.buscarModulo(parametros);
+            List<Segmodulo> lstmodulos = segBusqueda.buscarModulo(parametros);
             for (Segmodulo md : lstmodulos) {
                 // Define un comparador para comparar los Segpantallas por el atributo codpantalla
                 Comparator<Segpantallas> comparator
@@ -382,7 +379,7 @@ public class MttMenu implements Serializable {
             itmPadre = new ArrayList<>();
             itmPadre.add(new SelectItem(BigInteger.ZERO, "RAIZ"));
             List<Segmenu> lstMenusCargar = new ArrayList<>();
-            lstMenusCargar = segmenuBusqueda.busMenuRaiz(itemCodModulo);
+            lstMenusCargar = segBusqueda.busMenuRaiz(itemCodModulo);
             for (Segmenu sm : lstMenusCargar) {
                 int contador = 0;
                 String mPadre = "RAIZ";
@@ -489,7 +486,7 @@ public class MttMenu implements Serializable {
                     msjError.add("ERROR: Hay perfiles que tienen asignado el menú");
                 }
 
-                List<Segmenu> lstMenuHijos = segmenuBusqueda.buscarSubMenu(menuSelect.getCodmenu());
+                List<Segmenu> lstMenuHijos = segBusqueda.buscarSubMenu(menuSelect.getCodmenu());
                 if (lstMenuHijos != null && !lstMenuHijos.isEmpty()) {
                     msjError.add("ERROR: No se puede eliminar, elimine los submenús primero");
                 }

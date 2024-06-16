@@ -6,13 +6,11 @@
 package com.sistema.seg.mantenimiento;
 
 import com.sistema.gen.utilidades.ValidacionMensajes;
-import com.sistema.general.busquedas.GenBusquedadLocal;
-import com.sistema.general.procesos.GenProcesosLocal;
-import com.sistema.seguridad.busquedas.SegmenuBusquedaLocal;
-import com.sistema.seguridad.busquedas.SegperfilesBusquedaLocal;
+import com.sistema.general.negocio.GenBusquedadLocal;
+import com.sistema.general.negocio.GenProcesosLocal;
 import com.sistema.seguridad.entidades.Segmenu;
 import com.sistema.seguridad.entidades.Segperfiles;
-import com.sistema.seguridad.procesos.SegProcesosLocal;
+import com.sistema.seguridad.negocio.SegProcesosLocal;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -23,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import org.primefaces.model.DualListModel;
+import com.sistema.seguridad.negocio.SegBusquedaLocal;
 
 /**
  * Clase que se ocupara para el mantenimiento de perfiles, en la cual se
@@ -35,6 +34,9 @@ import org.primefaces.model.DualListModel;
 public class MttPerfiles implements Serializable {
 
     @EJB
+    private SegBusquedaLocal segBusqueda;
+
+    @EJB
     private GenProcesosLocal genProcesos;
 
     @EJB
@@ -43,11 +45,6 @@ public class MttPerfiles implements Serializable {
     @EJB
     private SegProcesosLocal segProcesos;
 
-    @EJB
-    private SegmenuBusquedaLocal segmenuBusqueda;
-
-    @EJB
-    private SegperfilesBusquedaLocal busPerfilLocal;
 
     //EJB
 //<editor-fold defaultstate="collapsed" desc="DECLARACION DE VARIABLES">
@@ -138,7 +135,7 @@ public class MttPerfiles implements Serializable {
                 return;
 
             }
-            lstPerfilesBus = busPerfilLocal.buscarPerfiles(parametros);
+            lstPerfilesBus = segBusqueda.buscarPerfiles(parametros);
             if (lstPerfilesBus != null && lstPerfilesBus.isEmpty()) {
                 validar.agregarMsj(ValidacionMensajes.Severidad.WARN, "No se encontraron resultados");
                 validar.mostrarMsj();
@@ -234,7 +231,7 @@ public class MttPerfiles implements Serializable {
                 //buscar perfil con las modificaciones
                 Map param = new HashMap();
                 param.put("codperfil", perfilSelect.getCodperfil());
-                List<Segperfiles> lstPerfilBuscaG = busPerfilLocal.buscarPerfiles(param);
+                List<Segperfiles> lstPerfilBuscaG = segBusqueda.buscarPerfiles(param);
                 lstPerfilBuscaG.forEach((perf) -> {
                     perfilSelect = perf;
                 });
@@ -263,9 +260,9 @@ public class MttPerfiles implements Serializable {
         try {
             //menus que pertenecen al perfil
             if (perfilSelect != null && perfilSelect.getCodperfil() != null) {
-                lstMenuPerfil = segmenuBusqueda.findMenusByPerfil(perfilSelect.getCodperfil());
+                lstMenuPerfil = segBusqueda.findMenusByPerfil(perfilSelect.getCodperfil());
                 //menus que no pertenecen al perfil
-                lstMenuNoPerfil = segmenuBusqueda.findMenusNotByPerfil(perfilSelect.getCodperfil());
+                lstMenuNoPerfil = segBusqueda.findMenusNotByPerfil(perfilSelect.getCodperfil());
                 //cargar a la seleccion
             } else {
                 lstMenuPerfil = new ArrayList<>();
@@ -307,7 +304,7 @@ public class MttPerfiles implements Serializable {
                 return;
             }
             genProcesos.remove(perfilSelect);
-            lstPerfilesBus = busPerfilLocal.buscarPerfiles(new HashMap());
+            lstPerfilesBus = segBusqueda.buscarPerfiles(new HashMap());
             this.setIndexTab(0);
             validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "El perfil a sido eliminado con excito");
             validar.mostrarMsj();

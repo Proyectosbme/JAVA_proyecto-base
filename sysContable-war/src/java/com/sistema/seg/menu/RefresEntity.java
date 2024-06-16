@@ -5,7 +5,7 @@
  */
 package com.sistema.seg.menu;
 
-import com.sistema.general.procesos.GenProcesosLocal;
+import com.sistema.general.negocio.GenProcesosLocal;
 import com.sistema.gen.utilidades.ValidacionMensajes;
 import java.io.Serializable;
 import javax.ejb.EJB;

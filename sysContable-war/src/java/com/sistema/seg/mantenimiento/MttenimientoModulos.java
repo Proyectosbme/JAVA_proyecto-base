@@ -5,7 +5,7 @@ que se encarga de manejar el mantenimiento de módulos Y SUS PANTALLAS
  */
 package com.sistema.seg.mantenimiento;
 
-import com.sistema.general.busquedas.GenBusquedadLocal;
+import com.sistema.general.negocio.GenBusquedadLocal;
 import com.sistema.seguridad.entidades.Segmodulo;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -15,13 +15,12 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import org.primefaces.PrimeFaces;
-import com.sistema.seguridad.busquedas.SegmoduloBusquedaLocal;
-import com.sistema.general.procesos.GenProcesosLocal;
+import com.sistema.general.negocio.GenProcesosLocal;
 import com.sistema.gen.utilidades.ValidacionMensajes;
 import com.sistema.general.validaciones.ValidacionesException;
-import com.sistema.seguridad.busquedas.SegpantallasBusquedaLocal;
 import com.sistema.seguridad.entidades.Segpantallas;
 import com.sistema.seguridad.entidades.SegpantallasPK;
+import com.sistema.seguridad.negocio.SegBusquedaLocal;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,13 +37,13 @@ import java.util.Map;
 @SessionScoped
 public class MttenimientoModulos implements Serializable {
 
+  
+
 //<editor-fold defaultstate="collapsed" desc="DECLARACIÓN DE VARIABLES">
     @EJB
     private GenProcesosLocal genProcesos;
-    @EJB
-    private SegmoduloBusquedaLocal busquedaModulo;
-    @EJB
-    private SegpantallasBusquedaLocal segpantallasBusqueda;
+   @EJB
+    private SegBusquedaLocal segBusqueda;
     @EJB
     private GenBusquedadLocal genbusqueda;
 
@@ -143,7 +142,7 @@ public class MttenimientoModulos implements Serializable {
                 validar.mostrarMsj();
                 return;
             }
-            lstModulos = busquedaModulo.buscarModulo(parametros);
+            lstModulos = segBusqueda.buscarModulo(parametros);
             if (lstModulos.isEmpty()) {
                 validar.agregarMsj(ValidacionMensajes.Severidad.WARN, "No se encontraron resultados");
                 validar.mostrarMsj();
@@ -447,7 +446,7 @@ public class MttenimientoModulos implements Serializable {
             if (lstMsj.isEmpty()) {
                 addPantalla.setSegmodulo(selectecModulo);
                 BigInteger corPantalla
-                        = segpantallasBusqueda.maxCodPantalla(selectecModulo.getCodmod());
+                        = segBusqueda.maxCodPantalla(selectecModulo.getCodmod());
                 SegpantallasPK pkPantalla = new SegpantallasPK(selectecModulo.getCodmod(),
                         corPantalla.add(new BigInteger("5")));
                 addPantalla.setPantallasPK(pkPantalla);

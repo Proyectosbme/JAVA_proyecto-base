@@ -1,8 +1,8 @@
 package com.sistema.seg.login;
 
 import com.sistema.gen.utilidades.ValidacionMensajes;
-import com.sistema.seguridad.busquedas.SegusuariosBusquedaLocal;
 import com.sistema.seguridad.entidades.Segusuarios;
+import com.sistema.seguridad.negocio.SegBusquedaLocal;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
@@ -24,8 +24,9 @@ import javax.servlet.http.HttpSession;
 public class LoginBean implements Serializable {
 
     @EJB
-    private SegusuariosBusquedaLocal segusuariosBusqueda;
-    
+    private SegBusquedaLocal segBusqueda;
+
+      
     @Inject
     private SessionManager sessionManager;
 
@@ -79,7 +80,7 @@ public class LoginBean implements Serializable {
 
     private void validaDatosUsuario(Map<String, String> elementos) {
         try {
-            usuario = this.segusuariosBusqueda.buscarUsuarios(elementos);
+            usuario = this.segBusqueda.buscarUsuarios(elementos);
 
             if (usuario == null) {
                 validarMsj.agregarMsj(ValidacionMensajes.Severidad.ERROR, "El usuario no existe");

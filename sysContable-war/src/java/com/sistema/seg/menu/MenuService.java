@@ -10,10 +10,10 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import com.sistema.seguridad.busquedas.SegmenuBusquedaLocal;
 import com.sistema.seguridad.entidades.Segusuarios;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import com.sistema.seguridad.negocio.SegBusquedaLocal;
 
 /**
  * MenuService es una clase que proporciona servicios relacionados con el menú
@@ -30,7 +30,7 @@ public class MenuService implements Serializable {
 
     // Inyección del EJB que maneja las búsquedas relacionadas con el menú.
     @EJB
-    private SegmenuBusquedaLocal segmenuFacade;
+    private SegBusquedaLocal segmenuFacade;
 
     // Lista de objetos Segmenu que representa los menús.
     private List<Segmenu> lstSegmenu = new ArrayList<>();
