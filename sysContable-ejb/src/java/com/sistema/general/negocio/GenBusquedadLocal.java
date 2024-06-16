@@ -1,4 +1,4 @@
-package com.sistema.general.busquedas;
+package com.sistema.general.negocio;
 
 import java.math.BigInteger;
 import java.util.List;
