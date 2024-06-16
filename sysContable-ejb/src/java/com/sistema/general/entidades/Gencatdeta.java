@@ -46,7 +46,7 @@ public class Gencatdeta implements Serializable {
         @JoinColumn(name = "CODCAT", referencedColumnName = "CODCATALOGO", insertable = false, updatable = false)
         , @JoinColumn(name = "CODMOD", referencedColumnName = "CODMODULO", insertable = false, updatable = false)})
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Gencatalogos gencatalogo;
+    private Gencatalogos catalogo;
 
     public Gencatdeta() {
     }
@@ -83,12 +83,12 @@ public class Gencatdeta implements Serializable {
         this.valor = valor;
     }
 
-    public Gencatalogos getGencatalogo() {
-        return gencatalogo;
+    public Gencatalogos getCatalogo() {
+        return catalogo;
     }
 
-    public void setGencatalogo(Gencatalogos gencatalogo) {
-        this.gencatalogo = gencatalogo;
+    public void setCatalogo(Gencatalogos catalogo) {
+        this.catalogo = catalogo;
     }
 
     @Override
