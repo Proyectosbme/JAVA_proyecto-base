@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author BME_PERSONAL
  */
 @Entity
-@Table(name = "GENCORRELATIVOS")
+@Table(name = "gencorrelativos")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Gencorrelativos.findAll", query = "SELECT g FROM Gencorrelativos g")

@@ -19,8 +19,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -29,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author BME_PERSONAL
  */
 @Entity
-@Table(name = "SEGMODULO")
+@Table(name = "segmodulo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Segmodulo.findAll", query = "SELECT s FROM Segmodulo s")
@@ -38,21 +36,20 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Segmodulo.findByUrldirecc", query = "SELECT s FROM Segmodulo s WHERE s.urldirecc = :urldirecc")})
 public class Segmodulo implements Serializable {
 
-    @Column(name = "NOMMODULO",length = 100)
-    private String nommodulo;
-    @Column(name = "URLDIRECC",length = 100)
-    private String urldirecc;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "segmodulo", fetch = FetchType.LAZY)
-    private List<Gencatalogos> gencatalogosList;
-
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(name = "CODMOD",nullable = false)
+    @Column(name = "CODMOD", nullable = false)
     private BigInteger codmod;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "segmodulo")
     private List<Segpantallas> segpantallasList;
+    @Column(name = "NOMMODULO", length = 100)
+    private String nommodulo;
+    @Column(name = "URLDIRECC", length = 100)
+    private String urldirecc;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "segmodulo", fetch = FetchType.LAZY)
+    private List<Gencatalogos> gencatalogosList;
 
     public Segmodulo() {
     }
@@ -68,7 +65,6 @@ public class Segmodulo implements Serializable {
     public void setCodmod(BigInteger codmod) {
         this.codmod = codmod;
     }
-
 
     @XmlTransient
     public List<Segpantallas> getSegpantallasList() {
@@ -128,5 +124,5 @@ public class Segmodulo implements Serializable {
     public void setGencatalogosList(List<Gencatalogos> gencatalogosList) {
         this.gencatalogosList = gencatalogosList;
     }
-    
+
 }
