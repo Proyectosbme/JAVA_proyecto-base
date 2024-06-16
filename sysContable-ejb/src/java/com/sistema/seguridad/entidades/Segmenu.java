@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author BME_PERSONAL
  */
 @Entity
-@Table(name = "SEGMENU")
+@Table(name = "segmenu")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Segmenu.findAll", query = "SELECT s FROM Segmenu s")
@@ -62,7 +62,7 @@ public class Segmenu implements Serializable {
     private String version;
     @Column(name = "TIPO",length = 100)
     private String tipo;
-    @JoinTable(name = "SEGMENUXPERFIL", joinColumns = {
+    @JoinTable(name = "segmenuxperfil", joinColumns = {
         @JoinColumn(name = "CODMENU", referencedColumnName = "CODMENU")}, inverseJoinColumns = {
         @JoinColumn(name = "CODPERFIL", referencedColumnName = "CODPERFIL")})
     @ManyToMany

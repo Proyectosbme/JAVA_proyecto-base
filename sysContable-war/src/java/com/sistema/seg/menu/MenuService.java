@@ -1,6 +1,7 @@
 package com.sistema.seg.menu;
 
 import com.sistema.seguridad.entidades.Segmenu;
+import com.sistema.seguridad.entidades.Segusuarios;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import com.sistema.seguridad.entidades.Segusuarios;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import com.sistema.seguridad.negocio.SegBusquedaLocal;

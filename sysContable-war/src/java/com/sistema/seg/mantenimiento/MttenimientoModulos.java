@@ -6,7 +6,6 @@ que se encarga de manejar el mantenimiento de módulos Y SUS PANTALLAS
 package com.sistema.seg.mantenimiento;
 
 import com.sistema.general.negocio.GenBusquedadLocal;
-import com.sistema.seguridad.entidades.Segmodulo;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -18,6 +17,7 @@ import org.primefaces.PrimeFaces;
 import com.sistema.general.negocio.GenProcesosLocal;
 import com.sistema.gen.utilidades.ValidacionMensajes;
 import com.sistema.general.validaciones.ValidacionesException;
+import com.sistema.seguridad.entidades.Segmodulo;
 import com.sistema.seguridad.entidades.Segpantallas;
 import com.sistema.seguridad.entidades.SegpantallasPK;
 import com.sistema.seguridad.negocio.SegBusquedaLocal;

@@ -5,11 +5,9 @@
  */
 package com.sistema.seguridad.negocio;
 
-import com.sistema.general.negocio.GenProcesosLocal;
 import com.sistema.seguridad.entidades.Segmenu;
 import com.sistema.seguridad.entidades.Segperfiles;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;

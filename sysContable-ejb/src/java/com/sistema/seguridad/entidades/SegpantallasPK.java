@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package com.sistema.seguridad.entidades;
-
 import java.io.Serializable;
 import java.math.BigInteger;
 import javax.persistence.Basic;

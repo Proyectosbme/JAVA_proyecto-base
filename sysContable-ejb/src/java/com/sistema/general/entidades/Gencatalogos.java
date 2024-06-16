@@ -8,6 +8,8 @@ package com.sistema.general.entidades;
 import com.sistema.seguridad.entidades.Segmodulo;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.List;
+import javax.persistence.CascadeType;
 ///555
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -17,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author BME_PERSONAL
  */
 @Entity
-@Table(name = "GENCATALOGOS")
+@Table(name = "gencatalogos")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Gencatalogos.findAll", query = "SELECT g FROM Gencatalogos g")
@@ -39,13 +42,15 @@ public class Gencatalogos implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected GencatalogosPK gencatalogosPK;
-    @Column(name = "DESCRIPCION",length = 100)
+    @Column(name = "DESCRIPCION", length = 100)
     private String descripcion;
-    @Column(name = "NOMBRE",length = 100)
+    @Column(name = "NOMBRE", length = 100)
     private String nombre;
     @JoinColumn(name = "CODMODULO", referencedColumnName = "CODMOD", insertable = false, updatable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Segmodulo segmodulo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gencatalogo", fetch = FetchType.LAZY)
+    private List<Gencatdeta> lstCatDeta;
 
     public Gencatalogos() {
     }
@@ -90,6 +95,14 @@ public class Gencatalogos implements Serializable {
         this.segmodulo = segmodulo;
     }
 
+    public List<Gencatdeta> getLstCatDeta() {
+        return lstCatDeta;
+    }
+
+    public void setLstCatDeta(List<Gencatdeta> lstCatDeta) {
+        this.lstCatDeta = lstCatDeta;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -114,5 +127,5 @@ public class Gencatalogos implements Serializable {
     public String toString() {
         return "com.sistema.contable.general.entidades.Gencatalogos[ gencatalogosPK=" + gencatalogosPK + " ]";
     }
-    
+
 }
