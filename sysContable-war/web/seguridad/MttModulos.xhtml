@@ -121,9 +121,9 @@
                                 </p:commandButton>
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton  value="Agregar" icon="pi pi-plus" 
-                                          onclick="PF('addPantalla').show();" />
                     </p:panelGrid>
+                     <p:commandButton  value="Agregar" icon="pi pi-plus" 
+                                          onclick="PF('addPantalla').show();" />
                 </p:tab>
             </p:tabView>
         </h:form>
@@ -169,21 +169,15 @@
                   width="30%"
                   modal="true">
             <h:form>
-                 <p:menubar styleClass="custom-menubar">
-                    <p:menuitem value="Agregar" 
-                                icon="pi pi-plus" 
-                                 update="form:singleDT "
-                                styleClass="custom-menuitem"
-                                action="#{mttenimientoModulos.agregarModulo()}"/>
-                </p:menubar>
-                <p:panelGrid columns="2" layout="grid" 
-                              styleClass="panel-stilo"
-                             >
-                            <p:outputLabel for="lbNombre" value="Nombre :" />
-                            <p:inputText id="lbNombre" 
-                                         value="#{mttenimientoModulos.moduloAgregar.nommodulo}" 
-                                         onkeypress="return validarSoloLetras(event)"/>
-                </p:panelGrid>
+                <p:focus context="idAdmodulo"/>
+                <h:panelGrid id="idAdmodulo" columns="2" cellpadding="7" styleClass="panel-stilo" >
+                    <p:outputLabel for="lbNombre" value="Nombre :" />
+                    <p:inputText id="lbNombre" 
+                                 value="#{mttenimientoModulos.moduloAgregar.nommodulo}" 
+                                 onkeypress="return validarSoloLetras(event)"/>
+                </h:panelGrid>
+                <p:commandButton value="Agregar"  update="form:singleDT " styleClass="mt-3"
+                                 icon="pi pi-plus"  action="#{mttenimientoModulos.agregarModulo()}"/>
             </h:form>
         </p:dialog>
 
@@ -193,43 +187,26 @@
                   widgetVar="editModulo" 
                   minHeight="40"
                   width="30%"
-                  modal="true"
-                  >
-            <h:form >
-                <p:menubar styleClass="custom-menubar">
-                    <p:menuitem value="Agregar" 
-                                icon="pi pi-plus" 
-                                update="form:singleDT"
-                                styleClass="custom-menuitem"
-                                action="#{mttenimientoModulos.editarModulo()}"/>
-                </p:menubar>
-                <p:panelGrid columns="2" layout="grid" 
-                             styleClass="panel-stilo"
-                             >
+                  modal="true">
+            <h:form>
+                <h:panelGrid columns="2" cellpadding="7" styleClass="panel-stilo" >
                     <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />  
                     <p:inputText id="lbNombre" value="#{mttenimientoModulos.selectecModulo.nommodulo}" 
                                  styleClass="input-right"
                                  onkeypress="return validarSoloLetras(event)"/>
-                </p:panelGrid>
+                </h:panelGrid>
+                <p:commandButton value="Agregar"  update="form:singleDT " styleClass="mt-3"
+                                 icon="pi pi-plus"  action="#{mttenimientoModulos.editarModulo()}"/>
             </h:form>
         </p:dialog>
         <p:dialog id="editPantalla"
                   header="Editar Pantalla" 
                   widgetVar="editPantalla" 
                   minHeight="40"
-                  width="60%"
+                  width="40%"
                   modal="true">
             <h:form>
-                 <p:menubar styleClass="custom-menubar">
-                    <p:menuitem value="Agregar" 
-                                icon="pi pi-plus" 
-                                update="form:catadeta"
-                                styleClass="custom-menuitem"
-                               action="#{mttenimientoModulos.editarPantalla()}"/>
-                </p:menubar>
-                <p:panelGrid columns="2" layout="grid" 
-                             styleClass="panel-stilo"
-                             >
+                <h:panelGrid columns="2" cellpadding="7" styleClass="panel-stilo" >
                     <p:outputLabel for="lbNombre" value="Nombre :" styleClass="label-left" />
                     <p:inputText id="lbNombre" value="#{mttenimientoModulos.editPantalla.nompantalla}" 
                                  styleClass="input-right" onkeypress="return validarSoloLetras(event)"/>
@@ -237,7 +214,9 @@
                     <p:inputText id="lbUrl" 
                                  value="#{mttenimientoModulos.editPantalla.urlpantalla}" 
                                  styleClass="input-right" onkeypress="return validarSoloLetras(event)"/>
-                </p:panelGrid>
+                </h:panelGrid>
+                <p:commandButton value="Agregar"  update="form:catadeta" styleClass="mt-3"
+                                 icon="pi pi-plus"  action="#{mttenimientoModulos.editarPantalla()}"/>
             </h:form>
         </p:dialog>
         <p:confirmDialog  global="true" 
@@ -267,16 +246,7 @@
                   width="60%"
                   modal="true">
             <h:form>
-                  <p:menubar styleClass="custom-menubar">
-                    <p:menuitem value="Agregar" 
-                                icon="pi pi-plus" 
-                                update="form:catadeta"
-                                styleClass="custom-menuitem"
-                               action="#{mttenimientoModulos.guardarPantalla()}"/>
-                </p:menubar>
-                <p:panelGrid columns="2" layout="grid" 
-                             styleClass="panel-stilo"
-                             >
+                <h:panelGrid columns="2" cellpadding="7" styleClass="panel-stilo" >
                     <p:outputLabel for="lbNombrePan" value="Nombre :" 
                                    styleClass="label-left" />
                     <p:inputText id="lbNombrePan"
@@ -289,8 +259,11 @@
                                  value="#{mttenimientoModulos.addPantalla.urlpantalla}" 
                                  styleClass="input-right"
                                  />
-                </p:panelGrid>
+                </h:panelGrid>
+                <p:commandButton value="Agregar"    update="form:catadeta" styleClass="mt-3"
+                                 icon="pi pi-plus"  action="#{mttenimientoModulos.guardarPantalla()}"/>
             </h:form>
+
         </p:dialog>
     </h:body>
 </html>

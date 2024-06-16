@@ -122,6 +122,7 @@ public class MttPerfiles implements Serializable {
     public void buscarPerfiles() {
         try {
             Map parametros = new HashMap();
+            lstPerfilesBus.clear();
             if (this.nombrePerfilBusq != null
                     && !this.nombrePerfilBusq.trim().isEmpty()) {
                 parametros.put("nombreperfil", this.nombrePerfilBusq);
@@ -131,9 +132,11 @@ public class MttPerfiles implements Serializable {
                 parametros.put("codperfil", this.codPerfilBusq);
 
             }
-            if(parametros.isEmpty()){
-              validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "No se encontraron resultados");  
-               validar.mostrarMsj();
+            if (parametros.isEmpty()) {
+                validar.agregarMsj(ValidacionMensajes.Severidad.ERROR, "No se encontraron resultados");
+                validar.mostrarMsj();
+                return;
+
             }
             lstPerfilesBus = busPerfilLocal.buscarPerfiles(parametros);
             if (lstPerfilesBus != null && lstPerfilesBus.isEmpty()) {
@@ -227,7 +230,7 @@ public class MttPerfiles implements Serializable {
                 parametros.put("menusAsignados", menus.getTarget());
                 parametros.put("todos", lstMenuTodos);
                 segProcesos.guardarMenuSeleccionado(parametros);
-                
+
                 //buscar perfil con las modificaciones
                 Map param = new HashMap();
                 param.put("codperfil", perfilSelect.getCodperfil());
@@ -235,7 +238,7 @@ public class MttPerfiles implements Serializable {
                 lstPerfilBuscaG.forEach((perf) -> {
                     perfilSelect = perf;
                 });
-               
+
                 this.cargarMenus(perfilSelect);
 
                 this.esNuevo = false;

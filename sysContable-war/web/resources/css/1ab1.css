@@ -243,6 +243,7 @@ Para el encabezado del accordeon
 
 .custom-picklist {
     width: 100%;
+    color: blue !important;
 }
 .custom-picklist .ui-picklist-source-controls{}
 .custom-picklist .ui-picklist-target-controls {
