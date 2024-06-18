@@ -5,8 +5,10 @@ import com.sistema.seguridad.entidades.Segusuarios;
 import com.sistema.seguridad.negocio.SegBusquedaLocal;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +28,6 @@ public class LoginBean implements Serializable {
     @EJB
     private SegBusquedaLocal segBusqueda;
 
-      
     @Inject
     private SessionManager sessionManager;
 
@@ -56,7 +57,11 @@ public class LoginBean implements Serializable {
                 this.validaDatosUsuario(elementos);
 
                 if (validarMsj.getMessages().isEmpty()) {
+                    try{
                     this.guardarSession();
+                    }catch(IllegalStateException e){
+                         return "login";
+                    }
                     return "index"; // Redirigir al usuario a la página de inicio
                 } else {
                     validarMsj.mostrarMsj();
@@ -80,8 +85,11 @@ public class LoginBean implements Serializable {
 
     private void validaDatosUsuario(Map<String, String> elementos) {
         try {
-            usuario = this.segBusqueda.buscarUsuarios(elementos);
-
+            List<Segusuarios> lstUsuarios = new ArrayList();
+            lstUsuarios = this.segBusqueda.buscarUsuarios(elementos);
+            if (!lstUsuarios.isEmpty()) {
+                usuario = lstUsuarios.get(0);
+            }
             if (usuario == null) {
                 validarMsj.agregarMsj(ValidacionMensajes.Severidad.ERROR, "El usuario no existe");
             } else if (usuario.getEstado().compareTo(BigInteger.ONE) != 0) {
@@ -94,15 +102,21 @@ public class LoginBean implements Serializable {
         }
     }
 
-    private void guardarSession() {
-        // Obtener la sesión actual
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        // Establecer un atributo en la sesión para indicar que el usuario está autenticado
-        session.setAttribute("loggedIn", true);
-        session.setAttribute("usuario", usuario);
-        
-        // Añadir la sesión al SessionManager, invalidando cualquier sesión anterior del mismo usuario
-        sessionManager.addSession(usuario.getCoduser(), session);
+    private void guardarSession() throws IllegalStateException {
+        try {
+            // Obtener la sesión actual
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            // Establecer un atributo en la sesión para indicar que el usuario está autenticado
+            session.setAttribute("loggedIn", true);
+            session.setAttribute("usuario", usuario);
+            // Verifica si la sesión aún no ha expirado
+            session.getLastAccessedTime();
+            // Añadir la sesión al SessionManager, invalidando cualquier sesión anterior del mismo usuario
+            sessionManager.addSession(usuario.getCoduser(), session);
+        } catch (IllegalStateException e) {
+            throw e;
+        }
+
     }
 
     public String logout() {

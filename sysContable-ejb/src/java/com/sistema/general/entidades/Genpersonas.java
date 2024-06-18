@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -43,12 +44,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Genpersonas.findByUserc", query = "SELECT g FROM Genpersonas g WHERE g.userc = :userc")
     , @NamedQuery(name = "Genpersonas.findByUserm", query = "SELECT g FROM Genpersonas g WHERE g.userm = :userm")
     , @NamedQuery(name = "Genpersonas.findByNomcom", query = "SELECT g FROM Genpersonas g WHERE g.nomcom = :nomcom")
-    , @NamedQuery(name = "Genpersonas.findByCodtipoper", query = "SELECT g FROM Genpersonas g WHERE g.codtipoper = :codtipoper")
-    , @NamedQuery(name = "Genpersonas.findByCattipoper", query = "SELECT g FROM Genpersonas g WHERE g.cattipoper = :cattipoper")
-    , @NamedQuery(name = "Genpersonas.findByCortipoper", query = "SELECT g FROM Genpersonas g WHERE g.cortipoper = :cortipoper")
     , @NamedQuery(name = "Genpersonas.findByRezsocial", query = "SELECT g FROM Genpersonas g WHERE g.rezsocial = :rezsocial")
     , @NamedQuery(name = "Genpersonas.findByNomcomercial", query = "SELECT g FROM Genpersonas g WHERE g.nomcomercial = :nomcomercial")})
 public class Genpersonas implements Serializable {
+
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -79,12 +78,6 @@ public class Genpersonas implements Serializable {
     private String userm;
     @Column(name = "NOMCOM",length = 500)
     private String nomcom;
-    @Column(name = "CODTIPOPER")
-    private BigInteger codtipoper;
-    @Column(name = "CATTIPOPER")
-    private BigInteger cattipoper;
-    @Column(name = "CORTIPOPER")
-    private BigInteger cortipoper;
     @Column(name = "REZSOCIAL",length = 500)
     private String rezsocial;
     @Column(name = "NOMCOMERCIAL",length = 500)
@@ -92,6 +85,12 @@ public class Genpersonas implements Serializable {
     @JoinColumn(name = "PUNTOVENTA", referencedColumnName = "CORRPVENTA")
     @ManyToOne(fetch = FetchType.LAZY)
     private Genpuntoventas puntoventa;
+    @JoinColumns({
+        @JoinColumn(name = "MODTIPOPER", referencedColumnName = "CODMOD")
+        , @JoinColumn(name = "CATTIPOPER", referencedColumnName = "CODCAT")
+        , @JoinColumn(name = "CORTIPOPER", referencedColumnName = "CODCOR")})
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Gencatdeta gDetaTipoPersona;
 
     public Genpersonas() {
     }
@@ -196,30 +195,6 @@ public class Genpersonas implements Serializable {
         this.nomcom = nomcom;
     }
 
-    public BigInteger getCodtipoper() {
-        return codtipoper;
-    }
-
-    public void setCodtipoper(BigInteger codtipoper) {
-        this.codtipoper = codtipoper;
-    }
-
-    public BigInteger getCattipoper() {
-        return cattipoper;
-    }
-
-    public void setCattipoper(BigInteger cattipoper) {
-        this.cattipoper = cattipoper;
-    }
-
-    public BigInteger getCortipoper() {
-        return cortipoper;
-    }
-
-    public void setCortipoper(BigInteger cortipoper) {
-        this.cortipoper = cortipoper;
-    }
-
     public String getRezsocial() {
         return rezsocial;
     }
@@ -244,6 +219,14 @@ public class Genpersonas implements Serializable {
         this.puntoventa = puntoventa;
     }
 
+    
+    public Gencatdeta getgDetaTipoPersona() {
+        return gDetaTipoPersona;
+    }
+
+    public void setgDetaTipoPersona(Gencatdeta gDetaTipoPersona) {
+        this.gDetaTipoPersona = gDetaTipoPersona;
+    }
     @Override
     public int hashCode() {
         int hash = 0;
@@ -268,5 +251,4 @@ public class Genpersonas implements Serializable {
     public String toString() {
         return "com.sistema.general.entidades.Genpersonas[ corrper=" + corrper + " ]";
     }
-    
 }

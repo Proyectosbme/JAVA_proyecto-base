@@ -62,16 +62,16 @@ public class ValidacionMensajes {
         FacesMessage facesMessage = null;
         switch (severidad) {
             case INFO:
-                facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, null, msj);
+                facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, null,"Infor: "+ msj);
                 break;
             case WARN:
-                facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, null, msj);
+                facesMessage = new FacesMessage(FacesMessage.SEVERITY_WARN, null,"Warning: "+ msj);
                 break;
             case FATAL:
-                facesMessage = new FacesMessage(FacesMessage.SEVERITY_FATAL, null, msj);
+                facesMessage = new FacesMessage(FacesMessage.SEVERITY_FATAL, null,"Fatal: "+ msj);
                 break;
             case ERROR:
-                facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, null, msj);
+                facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, null,"Error: "+ msj);
                 break;
         }
         if (facesMessage != null) {
