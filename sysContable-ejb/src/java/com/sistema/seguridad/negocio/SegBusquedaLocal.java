@@ -154,5 +154,5 @@ public interface SegBusquedaLocal {
      * @throws NullPointerException si los parámetros proporcionados son nulos.
      * @throws Exception si ocurre cualquier otro error durante la búsqueda.
      */
-    public Segusuarios buscarUsuarios(Map elementos) throws NullPointerException,Exception;
+    public List<Segusuarios> buscarUsuarios(Map elementos) throws NullPointerException,Exception;
 }

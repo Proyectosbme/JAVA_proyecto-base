@@ -33,10 +33,11 @@ public class SegBusqueda implements SegBusquedaLocal {
 
     @PersistenceContext(unitName = "sysContable-ejbPU")
     private EntityManager em;
-     private static final Logger LOGGER = Logger.getLogger(SegBusqueda.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SegBusqueda.class.getName());
 
     /**
      * Meotod que buysca los menus que pertenenecen al perfil
+     *
      * @param codPerfil codigo del perfil para bsuacr emnu
      * @return retorna una lis ade segmenu
      * @throws java.lang.Exception excepcion que puede lanzar
@@ -58,10 +59,11 @@ public class SegBusqueda implements SegBusquedaLocal {
 
     /**
      * Metodo que busca el menu por su codigo de menu
+     *
      * @param codmenu codigo del menu a buscar
      * @return retorna una lista de menus
      * @throws NullPointerException excepcion por datos nulos
-     * @throws Exception  excepcion general
+     * @throws Exception excepcion general
      */
     @Override
     public List<Segmenu> findByCodmenu(BigInteger codmenu)
@@ -80,8 +82,9 @@ public class SegBusqueda implements SegBusquedaLocal {
         }
     }
 
-   /**
+    /**
      * Meotod que buysca los menus que no pertenenecen al perfil
+     *
      * @param codPerfil codigo del perfil para bsuacr emnu
      * @return retorna una lis ade segmenu
      * @throws java.lang.Exception excepcion que puede lanzar
@@ -294,10 +297,10 @@ public class SegBusqueda implements SegBusquedaLocal {
             throw e;
         }
     }
-    
-    
-     /**
+
+    /**
      * Metodo que busca los modulos por tipo de datos que se le encia
+     *
      * @param parametros objeto llave valor con los campos necesarios
      * @return una lista de segmodulo
      * @throws NullPointerException validaciones nulas
@@ -349,9 +352,8 @@ public class SegBusqueda implements SegBusquedaLocal {
         }
         return lstModulos;
     }
-    
-         
-     /**
+
+    /**
      * Metodo que obtiene el valor maximo de la pantallas por modulo
      *
      * @param codModulo modulo al que pertencen las pantallas
@@ -382,8 +384,7 @@ public class SegBusqueda implements SegBusquedaLocal {
             throw new Exception("Error al obtener el código máximo de pantalla", e);
         }
     }
-    
-    
+
     /**
      * Metodo que buscara los perfiles segun los parametros que se le envien, si
      * no se envia parametros los buscara todos
@@ -424,7 +425,7 @@ public class SegBusqueda implements SegBusquedaLocal {
         }
     }
 
-     /**
+    /**
      * Busca usuarios en la base de datos según los parámetros proporcionados en
      * el mapa.
      *
@@ -436,9 +437,9 @@ public class SegBusqueda implements SegBusquedaLocal {
      * @throws Exception si ocurre cualquier otro error durante la búsqueda.
      */
     @Override
-    public Segusuarios buscarUsuarios(Map elementos) throws NullPointerException, Exception {
+    public List<Segusuarios> buscarUsuarios(Map elementos) throws NullPointerException, Exception {
 
-        Segusuarios usuario = new Segusuarios();
+        List<Segusuarios> usuario = new ArrayList();
         StringBuilder sql = new StringBuilder();
 
         try {
@@ -453,7 +454,12 @@ public class SegBusqueda implements SegBusquedaLocal {
             if (elementos.containsKey("estado")) {
                 sql.append(" AND u.estado = :estado");
             }
-
+            if (elementos.containsKey("nombre")) {
+                sql.append(" AND UPPER(u.persona.nomcom) LIKE UPPER(:nombre)");
+            }
+            if (elementos.containsKey("corsucursal")) {
+                sql.append(" AND u.persona.corrper = :corsucursal");
+            }
             Query consulta = em.createQuery(sql.toString());
             if (elementos.containsKey("usuario")) {
                 consulta.setParameter("usuario", elementos.get("usuario"));
@@ -464,8 +470,13 @@ public class SegBusqueda implements SegBusquedaLocal {
             if (elementos.containsKey("estado")) {
                 consulta.setParameter("estado", elementos.get("estado"));
             }
-
-            usuario = (Segusuarios) consulta.getSingleResult();
+            if (elementos.containsKey("nombre")) {
+                consulta.setParameter("nombre", "%" + elementos.get("nombre").toString().toUpperCase() + "%");
+            }
+            if (elementos.containsKey("corsucursal")) {
+                consulta.setParameter("corsucursal", elementos.get("corsucursal"));
+            }
+            usuario =  consulta.getResultList();
             return usuario;
         } catch (NoResultException e) {
             // Registrar el caso en el que no se encuentra ningún resultado

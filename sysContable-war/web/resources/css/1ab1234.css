@@ -295,6 +295,15 @@ Para el encabezado del accordeon
     width: 100%;
 }
 
+.ui-autocomplete .inputTest {
+    border-radius: 8px; /* Define el radio de los bordes */
+    border: 1px solid  !important; /*Define el borde y su color */
+    border-color: var(--primary-200) !important;
+    background-color: var(--primary-50) !important; /* Define el color de fondo */
+    padding: 8px; /* Añade espacio interno para el contenido */
+    color: #333; /* Define el color del texto */
+    width: 100%;
+}
 
 /* Estilo para cuando el input está enfocado */
 .panel-stilo .ui-inputtext:focus {

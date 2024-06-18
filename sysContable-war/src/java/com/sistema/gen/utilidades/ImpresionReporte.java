@@ -38,7 +38,7 @@ public class ImpresionReporte {
 
             // Configurar los atributos de sesión necesarios para el servlet
             String servletUrl = request.getContextPath() + "/ImpresionReporteServlet";
-            request.getSession().setAttribute("ds", "jdbc/_contabilidad");
+            request.getSession().setAttribute("ds", "jdbc/mysql");
             request.getSession().setAttribute("url", urlReporte + nombreReporte+".jasper");
             request.getSession().setAttribute("parameters", parametros);
             request.getSession().setAttribute("format", formato.toUpperCase());
