@@ -1,14 +1,19 @@
 package com.sistema.general.negocio;
 
 import com.sistema.general.entidades.Gencorrelativos;
+import com.sistema.general.entidades.Genpersonas;
+import com.sistema.general.entidades.Genpuntoventas;
 import com.sistema.general.validaciones.ValidacionesException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -162,6 +167,96 @@ public class GenBusqueda<T> implements GenBusquedadLocal<T> {
             throw np;
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Excepción no controlada", ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public List<Genpuntoventas> buscarPuntoVenta(Map parametros) throws NullPointerException, Exception {
+        try {
+            StringBuilder jpql = new StringBuilder();
+            jpql.append("SELECT p FROM Genpuntoventas p ");
+            jpql.append("WHERE 1=1 ");
+            if (parametros.containsKey("corrpventa")) {
+                jpql.append("AND p.corrpventa=:corrpventa ");
+            }
+
+            Query q = em.createQuery(jpql.toString(), Genpuntoventas.class);
+            if (parametros.containsKey("corrpventa")) {
+                q.setParameter("corrpventa", parametros.get("corrpventa"));
+            }
+            return q.getResultList();
+        } catch (NoResultException e) {
+            return null;// Retornar una lista vacía si no hay resultados
+        } catch (NullPointerException ne) {
+            LOGGER.log(Level.SEVERE, "Excepción por datos nulos en : buscarPuntoVenta", ne);
+            throw ne;
+
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Excepción no controlada en :buscarPuntoVenta", ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public List<Genpersonas> buscarPersona(Map parametros) throws NullPointerException, Exception {
+        try {
+            StringBuilder jpql = new StringBuilder();
+            jpql.append("SELECT p FROM Genpersonas p ");
+            jpql.append("WHERE 1=1 ");
+            if (parametros.containsKey("corrper")) {
+                jpql.append("AND p.corrper=:corrper ");
+            }
+            if (parametros.containsKey("prinombre")) {
+                jpql.append("AND UPPER(p.prinombre) LIKE UPPER(:prinombre) ");
+            }
+            if (parametros.containsKey("segnombre")) {
+                jpql.append("AND UPPER(p.segnombre) LIKE UPPER(:segnombre) ");
+            }
+            if (parametros.containsKey("priapellido")) {
+                jpql.append("AND UPPER(p.priapellido) LIKE UPPER(:priapellido) ");
+            }
+            if (parametros.containsKey("dui")) {
+                jpql.append("AND p.dui=:dui ");
+            }
+            if (parametros.containsKey("nomcom")) {
+                jpql.append("AND UPPER(p.nomcom) LIKE UPPER(:nomcom) ");
+            }
+            if (parametros.containsKey("puntoventa")) {
+                jpql.append("AND p.puntoventa.corrpventa=:puntoventa ");
+            }
+
+            Query q = em.createQuery(jpql.toString());
+
+            if (parametros.containsKey("corrper")) {
+                q.setParameter("corrper", parametros.get("corrper"));
+            }
+            if (parametros.containsKey("prinombre")) {
+                q.setParameter("prinombre", "%" + parametros.get("prinombre").toString().toUpperCase() + "%");
+            }
+            if (parametros.containsKey("segnombre")) {
+                q.setParameter("segnombre", "%" + parametros.get("segnombre").toString().toUpperCase() + "%");
+            }
+            if (parametros.containsKey("priapellido")) {
+                q.setParameter("priapellido", "%" + parametros.get("priapellido").toString().toUpperCase() + "%");
+            }
+            if (parametros.containsKey("dui")) {
+                q.setParameter("dui", parametros.get("dui"));
+            }
+            if (parametros.containsKey("nomcom")) {
+                q.setParameter("nomcom", "%" + parametros.get("nomcom").toString().toUpperCase() + "%");
+            }
+            if (parametros.containsKey("puntoventa")) {
+                q.setParameter("puntoventa", parametros.get("puntoventa"));
+            }
+            List<Genpersonas> lstPersonas = new ArrayList();
+            return lstPersonas = q.getResultList();
+        } catch (NullPointerException ne) {
+            LOGGER.log(Level.SEVERE, "Excepción por datos nulos en : buscarPersona", ne);
+            throw ne;
+
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Excepción no controlada en :buscarPersona", ex);
             throw ex;
         }
     }

@@ -15,15 +15,21 @@
                 <p:tab title="Busqueda">
                     <p:menubar styleClass="custom-menubar">
                         <p:menuitem value="Buscar" 
-                                    icon="pi pi-plus"
+                                    icon="pi pi-search"
                                     update="formUsuarios:singleDT"
                                     styleClass="custom-menuitem"
                                     action="#{mttUsuarios.buscarUsuario()}"/>
-                            <p:menuitem value="Limpiar" 
+                        <p:menuitem value="Nuevo" 
+                                    icon="pi pi-plus-circle"
+                                    update="formUsuarios"
+                                    styleClass="custom-menuitem"
+                                    action="#{mttUsuarios.agregarNuevo()}"/>
+                        <p:menuitem value="Limpiar" 
                                     icon="pi pi-trash"
                                     update="formUsuarios"
                                     styleClass="custom-menuitem"
                                     action="#{mttUsuarios.limpiarBusqueda()}"/>
+
                     </p:menubar>
                     <p:panelGrid  id="pnModulos" columns="4" layout="grid" 
                                   styleClass="panel-stilo">
@@ -72,23 +78,37 @@
                     </p:dataTable>
                 </p:tab>
                 <p:tab title="Detalle">
-                      <p:menubar styleClass="custom-menubar">
+                    <p:menubar styleClass="custom-menubar">
                         <p:menuitem value="Buscar" 
                                     icon="pi pi-plus"
                                     update="formUsuarios:singleDT"
                                     styleClass="custom-menuitem"
                                     action="#{mttUsuarios.buscarUsuario()}"/>
-                            <p:menuitem value="Limpiar" 
-                                    icon="pi pi-trash"
+                        <p:menuitem value="Nuevo" 
+                                    icon="pi pi-plus-circle"
                                     update="formUsuarios"
                                     styleClass="custom-menuitem"
-                                    action="#{mttUsuarios.limpiarBusqueda()}"/>
+                                    action="#{mttUsuarios.agregarNuevo()}"/>
+                        <p:menuitem value="Guardar" 
+                                    icon="pi pi-save" 
+                                    update="formUsuarios"
+                                    styleClass="custom-menuitem"
+                                    action="#{mttUsuarios.guardarUsuario()}"
+                                    />
                     </p:menubar>
-                    <p:panelGrid  id="pnUserdt" columns="4" layout="grid" 
+                    <h:panelGrid  id="pnUserdt" columns="4" cellspacing="8px"
                                   styleClass="panel-stilo">
-                        <p:outputLabel for="txtCodUserdt" value="Nombre" />
-                        <p:inputText id="txtCodUserdt" value="#{mttUsuarios.nombreUser}"
-                                     onkeypress="return validarSoloLetras(event)"/>
+                        <p:outputLabel for="txtCodUserdt" value="Nombre" style="padding: 0;"/>
+                        <p:column>
+                            <div class="ui-inputgroup">
+                                <p:inputText id="txtCodUserdt" placeholder="buscar nombre"
+                                             disabled="true" value="#{mttUsuarios.nombreUser}"
+                                             />
+                                <p:commandButton icon="pi pi-search" styleClass="ui-button-info"
+                                                 onclick="PF('busPersona').show();"
+                                                 disabled="#{!mttUsuarios.esNuevo}" />
+                            </div> 
+                        </p:column>
                         <p:outputLabel for="lblsucursaldt" value="Sucursal" />
                         <p:selectOneMenu id="lblsucursaldt" value="#{mttUsuarios.corrVenta}">
                             <f:selectItem itemLabel="Seleccione" itemValue="0" />
@@ -99,7 +119,7 @@
                                      onkeypress="return validarSoloLetras(event)"/>
                         <p:outputLabel for="txtdurclavedt" value="Duracion de clave" />
                         <p:inputText id="txtdurclavedt" value="#{mttUsuarios.duraClave}"
-                                     onkeypress="return validarSoloLetras(event)"/>
+                                     onkeypress="return soloNumeros(event)"/>
                         <p:outputLabel for="txtestadodt" value="Estado" />
                         <p:selectOneMenu id="txtestadodt" value="#{mttUsuarios.estado}">
                             <f:selectItem itemLabel="Seleccione" itemValue="0" />
@@ -111,7 +131,7 @@
                             <f:selectItem itemLabel="Seleccione" itemValue="0" />
                             <f:selectItems value="#{mttUsuarios.itmPerfiles}" />
                         </p:selectOneMenu>
-                    </p:panelGrid>
+                    </h:panelGrid>
                 </p:tab>
             </p:tabView>
         </h:form>
@@ -129,6 +149,66 @@
                 >
                 <p:autoUpdate />
             </p:messages>
+        </p:dialog>
+        <!--dialogo para buscra personas-->
+        <p:dialog header="Buscar personas" 
+                  widgetVar="busPersona" 
+                  minHeight="60"
+                  width="80%"
+                  modal="true">
+            <h:form id="busPer">
+                <p:menubar styleClass="custom-menubar">
+                    <p:menuitem value="Buscar" 
+                                icon="pi pi-search"
+                                update="busPer:tbBuspersona"
+                                styleClass="custom-menuitem"
+                                action="#{mttUsuarios.buscarPersona()}"/>
+                    <p:menuitem value="Limpiar" 
+                                icon="pi pi-trash"
+                                update="busPer"
+                                styleClass="custom-menuitem"
+                                action="#{mttUsuarios.limpiarBusPersona()}"/>
+                </p:menubar>
+                <h:panelGrid columns="4" cellpadding="7" styleClass="panel-stilo" >
+                    <p:outputLabel for="txtBusperNombre" value="Nombre :" />
+                    <p:inputText id="txtBusperNombre"
+                                 value="#{mttUsuarios.busPerNomcom}" 
+                                 onkeypress="return validarSoloLetras(event)"/>
+                    <p:outputLabel for="txtBusPerDui" value="DUI:"                    />
+                    <p:inputMask id="txtBusPerDui"
+                                 value="#{mttUsuarios.busPerDui}"
+                                 mask="99999999-9" 
+                                 styleClass="input-right"
+                                 />
+                    <p:outputLabel for="somSucursal" value="Sucursal" />
+                    <p:selectOneMenu id="somSucursal" value="#{mttUsuarios.busPerCorVenta}">
+                        <f:selectItem itemLabel="Seleccione" itemValue="0" />
+                        <f:selectItems value="#{mttUsuarios.itmSucursales}" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <p:dataTable id="tbBuspersona" var="p" value="#{mttUsuarios.lstBusPerUsuario}" 
+                             rowKey="#{p.corrper}"
+                             paginator="true" 
+                             paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rows="10"
+                             styleClass="style-table"
+                             paginatorPosition="bottom"
+                             selectionMode="single" 
+                             selection="#{mttUsuarios.personaSelect}">
+                    <p:ajax event="rowSelect"  listener="#{mttUsuarios.cargarPersonaSelect()}" 
+                            update="formUsuarios" />
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{p.nomcom}" />
+                    </p:column>
+                    <p:column headerText="DUI">
+                        <h:outputText value="#{p.dui}" />
+                    </p:column>
+                    <p:column headerText="Punto de venta">
+                        <h:outputText value="#{p.puntoventa.nombre}" />
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
         </p:dialog>
     </h:body>
 </html>

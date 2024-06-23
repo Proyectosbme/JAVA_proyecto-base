@@ -1,7 +1,10 @@
 package com.sistema.general.negocio;
 
+import com.sistema.general.entidades.Genpersonas;
+import com.sistema.general.entidades.Genpuntoventas;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -53,4 +56,9 @@ public interface GenBusquedadLocal<T> {
      */
     public BigInteger obtenerCorrelativo(String nombreEntidad)
             throws NullPointerException, Exception;
+    
+    
+     public List<Genpuntoventas> buscarPuntoVenta(Map parametros) throws NullPointerException, Exception;
+     
+      public List<Genpersonas> buscarPersona(Map parametros) throws NullPointerException, Exception ;
 }
