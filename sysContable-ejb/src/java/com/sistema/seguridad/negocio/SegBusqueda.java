@@ -460,6 +460,9 @@ public class SegBusqueda implements SegBusquedaLocal {
             if (elementos.containsKey("corsucursal")) {
                 sql.append(" AND u.persona.corrper = :corsucursal");
             }
+            if (elementos.containsKey("persona")) {
+                sql.append(" AND u.persona = :persona");
+            }
             Query consulta = em.createQuery(sql.toString());
             if (elementos.containsKey("usuario")) {
                 consulta.setParameter("usuario", elementos.get("usuario"));
@@ -476,7 +479,10 @@ public class SegBusqueda implements SegBusquedaLocal {
             if (elementos.containsKey("corsucursal")) {
                 consulta.setParameter("corsucursal", elementos.get("corsucursal"));
             }
-            usuario =  consulta.getResultList();
+            if (elementos.containsKey("persona")) {
+                consulta.setParameter("persona", elementos.get("persona"));
+            }
+            usuario = consulta.getResultList();
             return usuario;
         } catch (NoResultException e) {
             // Registrar el caso en el que no se encuentra ningún resultado
