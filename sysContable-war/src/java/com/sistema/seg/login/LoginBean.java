@@ -1,6 +1,10 @@
 package com.sistema.seg.login;
 
 import com.sistema.gen.utilidades.ValidacionMensajes;
+import com.sistema.general.entidades.Gencatdeta;
+import com.sistema.general.entidades.GencatdetaPK;
+import com.sistema.general.negocio.GenProcesosLocal;
+import static com.sistema.seg.login.cambioClave.encryptPassword;
 import com.sistema.seguridad.entidades.Segusuarios;
 import com.sistema.seguridad.negocio.SegBusquedaLocal;
 import java.io.Serializable;
@@ -26,6 +30,8 @@ import javax.servlet.http.HttpSession;
 public class LoginBean implements Serializable {
 
     @EJB
+    private GenProcesosLocal genProcesos;
+    @EJB
     private SegBusquedaLocal segBusqueda;
 
     @Inject
@@ -35,7 +41,9 @@ public class LoginBean implements Serializable {
     private String password = "";
     private Date fecha = new Date();
     private Segusuarios usuario;
+    private boolean nuevo = false;
     private final ValidacionMensajes validarMsj = new ValidacionMensajes();
+    private int intentos = 0;
 
     @PostConstruct
     public void init() {
@@ -57,12 +65,17 @@ public class LoginBean implements Serializable {
                 this.validaDatosUsuario(elementos);
 
                 if (validarMsj.getMessages().isEmpty()) {
-                    try{
-                    this.guardarSession();
-                    }catch(IllegalStateException e){
-                         return "login";
+                    try {
+                        this.guardarSession();
+                    } catch (IllegalStateException e) {
+                        return "login";
                     }
-                    return "index"; // Redirigir al usuario a la página de inicio
+                    if (!nuevo) {
+                        return "index"; // Redirigir al usuario a la página de inicio
+                    } else {
+                        return "clave";
+                    }
+
                 } else {
                     validarMsj.mostrarMsj();
                 }
@@ -92,10 +105,29 @@ public class LoginBean implements Serializable {
             }
             if (usuario == null) {
                 validarMsj.agregarMsj(ValidacionMensajes.Severidad.ERROR, "El usuario no existe");
-            } else if (usuario.getEstado().compareTo(BigInteger.ONE) != 0) {
+            } else if (usuario.getGenCatdetaEstado().getGencatdetaPK().getCodcor()
+                    .compareTo(new BigInteger("20")) == 0) {
+                validarMsj.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Usuario bloqueado");
+            } else if (usuario.getGenCatdetaEstado().getGencatdetaPK().getCodcor()
+                    .compareTo(new BigInteger("30")) == 0) {
                 validarMsj.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Usuario inactivo");
-            } else if (!usuario.getClave().equals(password)) {
+            } else if (usuario.getGenCatdetaEstado().getGencatdetaPK().getCodcor()
+                    .compareTo(new BigInteger("40")) == 0 || usuario.getGenCatdetaEstado().getGencatdetaPK().getCodcor()
+                    .compareTo(new BigInteger("50")) == 0) {
+                nuevo = true;
+            } else if (!verifyPassword(password, usuario.getClave())) {
                 validarMsj.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Contraseña incorrecta");
+                intentos++;
+
+                if (intentos == 3) {
+                    Gencatdeta estadodt = new Gencatdeta(new GencatdetaPK(new BigInteger("10"), new BigInteger("10"), new BigInteger("20")));
+                    usuario.setGenCatdetaEstado(estadodt);
+                    genProcesos.edit(usuario);
+                     validarMsj.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Usuario bloqueado");
+                } else {
+                    int restan = 3 - intentos;
+                    validarMsj.agregarMsj(ValidacionMensajes.Severidad.ERROR, "Quedan :" + restan + " Intentos");
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -134,6 +166,14 @@ public class LoginBean implements Serializable {
         return "login";
     }
 
+    // Método para verificar si la contraseña ingresada coincide con la contraseña almacenada
+    public static boolean verifyPassword(String enteredPassword, String storedEncryptedPassword) {
+        // Encriptar la contraseña ingresada para compararla con la almacenada
+        String enteredEncryptedPassword = encryptPassword(enteredPassword);
+        
+        // Comparar las versiones encriptadas
+        return enteredEncryptedPassword.equals(storedEncryptedPassword);
+    }
     public String getUsername() {
         return username;
     }

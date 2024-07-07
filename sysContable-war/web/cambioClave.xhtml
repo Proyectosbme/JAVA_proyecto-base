@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta charset="UTF-8"></meta>
+        <title>SysContable</title>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+        <h:outputStylesheet library="css" name="cssLoginNue.css" />
+        <h:outputStylesheet name="primefaces-nova-light/theme.css" />
+    </h:head>
+    <h:body>
+        <h:form>
+            <div class="login-container">
+                <h2>Cambio de clave</h2>
+                <h:outputLabel for="username" rendered="#{cambioClave.render}">Contraseña</h:outputLabel>
+                <h:inputSecret id="username" rendered="#{cambioClave.render}" value="#{cambioClave.password}"/>
+                <br/>
+                <h:outputLabel for="passwordnew">nueva contraseña</h:outputLabel>
+                <h:inputSecret id="passwordnew" value="#{cambioClave.newPassword}"/>
+                <h:outputLabel for="passwordconfir">confirmar nueva contraseña</h:outputLabel>
+                <h:inputSecret id="passwordconfir" value="#{cambioClave.confirnewPassword}"/>
+                <br/>
+                <h:commandButton value="Cambiar clave" action="#{cambioClave.cambiarCable()}" />
+            </div>
+        </h:form>
+        <h:form>
+            <p:dialog id="busc" 
+                      header="Informacion" 
+                      widgetVar="dlgMensajes"
+                      width="70%" height="40%"
+                      modal="true"
+                      >
+                <p:messages 
+                    id="msj"
+                    showDetail="true" closable="false"
+                    >
+                    <p:autoUpdate />
+                </p:messages>
+            </p:dialog>
+        </h:form>
+    </h:body>
+</html>
