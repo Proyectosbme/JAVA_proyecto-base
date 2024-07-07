@@ -6,6 +6,8 @@
 package com.sistema.seg.mantenimiento;
 
 import com.sistema.gen.utilidades.ValidacionMensajes;
+import com.sistema.general.entidades.Gencatdeta;
+import com.sistema.general.entidades.GencatdetaPK;
 import com.sistema.general.entidades.Genpersonas;
 import com.sistema.general.entidades.Genpuntoventas;
 import com.sistema.general.negocio.GenBusquedadLocal;
@@ -54,23 +56,23 @@ public class MttUsuarios implements Serializable {
      */
     List<Segusuarios> lstUsuarios = new ArrayList();
     /**
-     * Contendra el nombre del usuario a buscar
+     * Contendra el busNombre del usuario a buscar
      */
-    private String nombre;
+    private String busNombre;
     /**
      * Contendra el codigo de usuario a buscar
      */
-    private String codUser;
+    private String busCodUser;
     /**
      * Variable que contendra el correlativo de la sucursal
      */
-    private BigInteger corSucursal;
+    private BigInteger busCorSucursal;
     /**
      * Contendra la lista de select item a selecionar para buscar
      */
     private List<SelectItem> itmSucursales = new ArrayList<>();
     /**
-     * Variable que almacenara la lista de nombre para el auto complete
+     * Variable que almacenara la lista de busNombre para el auto complete
      */
     List<String> lstNombre = new ArrayList();
 //</editor-fold>
@@ -90,7 +92,7 @@ public class MttUsuarios implements Serializable {
      */
     private List<SelectItem> itmPerfiles = new ArrayList<>();
     /**
-     * Contendra el nombre de la persona seleccionada
+     * Contendra el busNombre de la persona seleccionada
      */
     String nombreUser = "";
     /**
@@ -168,7 +170,7 @@ public class MttUsuarios implements Serializable {
     }
 
     /**
-     * Metodo que busca el nombre al ingresar 3 letras o mas en el inputtex
+     * Metodo que busca el busNombre al ingresar 3 letras o mas en el inputtex
      *
      * @param query recibe la letras digitadas
      * @return regres una lista de coincidencias
@@ -186,14 +188,14 @@ public class MttUsuarios implements Serializable {
     public void buscarUsuario() {
         try {
             Map parametros = new HashMap();
-            if (codUser != null && !codUser.trim().isEmpty()) {
-                parametros.put("usuario", codUser);
+            if (busCodUser != null && !busCodUser.trim().isEmpty()) {
+                parametros.put("usuario", busCodUser);
             }
-            if (nombre != null && !nombre.trim().isEmpty()) {
-                parametros.put("nombre", nombre);
+            if (busNombre != null && !busNombre.trim().isEmpty()) {
+                parametros.put("nombre", busNombre);
             }
-            if (corSucursal != null && !corSucursal.toString().trim().isEmpty()) {
-                parametros.put("corsucursal", corSucursal);
+            if (busCorSucursal != null && !busCorSucursal.toString().trim().isEmpty()) {
+                parametros.put("corsucursal", busCorSucursal);
             }
             if (parametros.isEmpty()) {
                 validar.agregarMsj(ValidacionMensajes.Severidad.ERROR,
@@ -270,9 +272,9 @@ public class MttUsuarios implements Serializable {
      */
     public void limpiarBusqueda() {
         lstUsuarios = new ArrayList();
-        nombre = "";
-        codUser = "";
-        corSucursal = BigInteger.ZERO;
+        busNombre = "";
+        busCodUser = "";
+        busCorSucursal = BigInteger.ZERO;
         limpiarUserSelccionado();
     }
 
@@ -305,30 +307,72 @@ public class MttUsuarios implements Serializable {
             validar.mostrarMsj();
             return;
         }
+        try {
+            //busquedas
+            //perfiles
+            Map paramPerfil = new HashMap();
+            paramPerfil.put("codperfil", codPerfil);
+            Segperfiles newPerfil = new Segperfiles();
+            newPerfil = segBusqueda.buscarPerfiles(paramPerfil).get(0);
+            //punto de venta
+            //buscar punto de venta
+            Map paramPVenta = new HashMap();
+            paramPVenta.put("corrpventa", corrVenta);
+            Genpuntoventas newPuntoVentas = new Genpuntoventas();
+            newPuntoVentas = (Genpuntoventas) genBusqueda.buscarPuntoVenta(paramPVenta).get(0);
 
-        if (esNuevo) {
-            System.err.println("Es nuevo");
-        } else {
-            try {
+            //agregar nuevo
+            if (esNuevo) {
+                Gencatdeta estadodt = new Gencatdeta(new GencatdetaPK(new BigInteger("10"),new BigInteger("10"), new BigInteger("40")));
+                Segusuarios newUsuario = new Segusuarios();
+                newUsuario.setCoduser(codiUser);//codiUser estado duraClave personaSelect
+                newUsuario.setEstado(estado);
+                newUsuario.setDuraclave(duraClave);
+                newUsuario.setSegPerfiles(newPerfil);
+                personaSelect.setPuntoventa(newPuntoVentas);
+                newUsuario.setPersona(personaSelect);
+                newUsuario.setGenCatdetaEstado(estadodt);
+                genProcesos.edit(newUsuario);
+                validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Usuario agregado correctamente");
+                validar.mostrarMsj();
+                System.err.println("Es nuevo");
+            } else {//editar usuario
                 selectUsuario.setEstado(estado);
                 selectUsuario.setDuraclave(duraClave);
-                Map paramPerfil = new HashMap();
-                //buscar perfil
-                paramPerfil.put("codperfil", codPerfil);
-                selectUsuario.setSegPerfiles(segBusqueda.buscarPerfiles(paramPerfil).get(0));
-                //buscar punto de venta
-                Map paramPVenta = new HashMap();
-                paramPVenta.put("corrpventa", corrVenta);
-                personaSelect.setPuntoventa((Genpuntoventas) genBusqueda.buscarPuntoVenta(paramPVenta).get(0));
+                selectUsuario.setSegPerfiles(newPerfil);
+                personaSelect.setPuntoventa(newPuntoVentas);
                 selectUsuario.setPersona(personaSelect);
                 genProcesos.edit(selectUsuario);
                 validar.agregarMsj(ValidacionMensajes.Severidad.INFO, "Usuario modificado correctamente");
                 validar.mostrarMsj();
-            } catch (Exception ex) {
-                validar.manejarExcepcion(ex, "Error al editar usuario");
-            }
-        }
 
+            }
+        } catch (Exception ex) {
+            validar.manejarExcepcion(ex, "Error al editar usuario");
+        }
+    }
+
+    public List<String> validarUsuario() {
+
+        if (codPerfil == null) {
+
+        }
+        if (corrVenta == null) {
+
+        }
+        if (codiUser == null) {
+
+        }
+        if (estado == null) {
+
+        }
+        if (duraClave == null) {
+
+        }
+        if (personaSelect == null) {
+
+        }
+        return null;
     }
 
     /**
@@ -409,9 +453,9 @@ public class MttUsuarios implements Serializable {
     }
 
     /**
-     * Metodo que crea el usuario de la persona seguna las variables de nombre o
-     * apelliod, ademas por algun tipo de dato con error le genera un valor
-     * aleatorio
+     * Metodo que crea el usuario de la persona seguna las variables de
+     * busNombre o apelliod, ademas por algun tipo de dato con error le genera
+     * un valor aleatorio
      *
      * @param per parametro que recibe es una persona
      */
@@ -491,28 +535,28 @@ public class MttUsuarios implements Serializable {
         this.lstUsuarios = lstUsuarios;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getBusNombre() {
+        return busNombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setBusNombre(String busNombre) {
+        this.busNombre = busNombre;
     }
 
-    public String getCodUser() {
-        return codUser;
+    public String getBusCodUser() {
+        return busCodUser;
     }
 
-    public void setCodUser(String codUser) {
-        this.codUser = codUser;
+    public void setBusCodUser(String busCodUser) {
+        this.busCodUser = busCodUser;
     }
 
-    public BigInteger getCorSucursal() {
-        return corSucursal;
+    public BigInteger getBusCorSucursal() {
+        return busCorSucursal;
     }
 
-    public void setCorSucursal(BigInteger corSucursal) {
-        this.corSucursal = corSucursal;
+    public void setBusCorSucursal(BigInteger busCorSucursal) {
+        this.busCorSucursal = busCorSucursal;
     }
 
     public List<SelectItem> getItmSucursales() {

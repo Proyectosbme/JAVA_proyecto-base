@@ -28,7 +28,8 @@ public class PageRestrictionFilter implements Filter {
     private static final Set<String> ALLOWED_PAGES = new HashSet<>(Arrays.asList(
             "/index.xhtml",
             "/login.xhtml",
-            "/ImpresionReporteServlet"
+            "/ImpresionReporteServlet",
+            "/cambioClave.xhtml"
     ));
 
     // Conjunto de recursos estáticos permitidos

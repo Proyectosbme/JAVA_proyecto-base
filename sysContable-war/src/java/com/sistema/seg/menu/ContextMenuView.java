@@ -6,13 +6,18 @@ package com.sistema.seg.menu;
  * and open the template in the editor.
  */
 import com.sistema.gen.utilidades.ValidacionMensajes;
+import com.sistema.seguridad.entidades.Segusuarios;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.TreeNode;
 
@@ -69,12 +74,46 @@ public class ContextMenuView implements Serializable {
      */
     @PostConstruct
     public void init() {
-        try {
-            lstMenu = menuService.crearMenuPadre();
-        } catch (Exception e) {
-            validar.manejarExcepcion(e, "Error al cargar el menu");
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+
+        if (session != null) {
+            Segusuarios usuario = (Segusuarios) session.getAttribute("usuario");
+            if (usuario != null && usuario.getSegPerfiles() != null && usuario.getSegPerfiles().getCodperfil() != null) {
+                try {
+                    lstMenu = menuService.crearMenuPadre();
+                } catch (Exception e) {
+                    validar.manejarExcepcion(e, "Error al cargar el menu");
+                }
+            } else {
+                // Redirigir a la página de login
+                try {
+                    externalContext.redirect(externalContext.getRequestContextPath() + "/login.xhtml");
+                } catch (IOException e) {
+                    // Manejar la excepción si ocurre algún error al redirigir
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            // Redirigir a la página de login si no hay sesión
+            try {
+                externalContext.redirect(externalContext.getRequestContextPath() + "/login.xhtml");
+            } catch (IOException e) {
+                // Manejar la excepción si ocurre algún error al redirigir
+                e.printStackTrace();
+            }
         }
     }
+
+//    @PostConstruct
+//    public void init() {
+//        try {
+//            lstMenu = menuService.crearMenuPadre();
+//        } catch (Exception e) {
+//            validar.manejarExcepcion(e, "Error al cargar el menu");
+//        }
+//    }
 
     /**
      * Maneja el evento de selección de nodo en el árbol de menú.
@@ -100,7 +139,6 @@ public class ContextMenuView implements Serializable {
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="GET AND ">
-    
     public ValidacionMensajes getValidar() {
         return validar;
     }

@@ -5,6 +5,7 @@
  */
 package com.sistema.seguridad.entidades;
 
+import com.sistema.general.entidades.Gencatdeta;
 import com.sistema.general.entidades.Genpersonas;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -14,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -42,7 +44,7 @@ public class Segusuarios implements Serializable {
     @Basic(optional = false)
     @Column(name = "CODUSER", nullable = false, length = 100)
     private String coduser;
-    @Column(name = "CLAVE", length = 100)
+    @Column(name = "CLAVE", length = 500)
     private String clave;
     @Column(name = "DURACLAVE")
     private BigInteger duraclave;
@@ -56,6 +58,12 @@ public class Segusuarios implements Serializable {
     @JoinColumn(name = "CODPER", referencedColumnName = "CORRPER")
     @ManyToOne(fetch = FetchType.LAZY)
     private Genpersonas persona;
+        @JoinColumns({
+        @JoinColumn(name = "MODESTADO", referencedColumnName = "CODMOD")
+        , @JoinColumn(name = "CATESTADO", referencedColumnName = "CODCAT")
+        , @JoinColumn(name = "CORESTADO", referencedColumnName = "CODCOR")})
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Gencatdeta genCatdetaEstado;
 
     public Segusuarios() {
     }
@@ -143,6 +151,14 @@ public class Segusuarios implements Serializable {
 
     public void setPersona(Genpersonas persona) {
         this.persona = persona;
+    }
+
+    public Gencatdeta getGenCatdetaEstado() {
+        return genCatdetaEstado;
+    }
+
+    public void setGenCatdetaEstado(Gencatdeta genCatdetaEstado) {
+        this.genCatdetaEstado = genCatdetaEstado;
     }
 
 }

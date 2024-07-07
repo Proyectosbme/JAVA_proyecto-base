@@ -482,6 +482,7 @@ public class SegBusqueda implements SegBusquedaLocal {
             if (elementos.containsKey("persona")) {
                 consulta.setParameter("persona", elementos.get("persona"));
             }
+            consulta.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
             usuario = consulta.getResultList();
             return usuario;
         } catch (NoResultException e) {

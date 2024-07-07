@@ -34,18 +34,18 @@
                     <p:panelGrid  id="pnModulos" columns="4" layout="grid" 
                                   styleClass="panel-stilo">
                         <p:outputLabel value="Nombre" for="@next"/>
-                        <p:autoComplete id="atcNombre" value="#{mttUsuarios.nombre}"
+                        <p:autoComplete id="atcNombre" value="#{mttUsuarios.busNombre}"
                                         completeMethod="#{mttUsuarios.obtenerNombre}" 
                                         minQueryLength="3" scrollHeight="250"
                                         onkeypress="return validarSoloLetras(event)" 
                                         inputStyleClass="inputTest" 
                                         />
                         <p:outputLabel for="txtCodUser" value="Codigo de usuario" />
-                        <p:inputText id="txtCodUser" value="#{mttUsuarios.codUser}"
+                        <p:inputText id="txtCodUser" value="#{mttUsuarios.busCodUser}"
                                      onkeypress="return validarSoloLetras(event)"/>
 
                         <p:outputLabel for="lblcorrelativo" value="Sucursal" />
-                        <p:selectOneMenu id="lblcorrelativo" value="#{mttUsuarios.corSucursal}">
+                        <p:selectOneMenu id="lblcorrelativo" value="#{mttUsuarios.busCorSucursal}">
                             <f:selectItem itemLabel="Seleccione" itemValue="" />
                             <f:selectItems value="#{mttUsuarios.itmSucursales}" />
                         </p:selectOneMenu>
